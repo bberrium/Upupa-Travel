@@ -40,11 +40,11 @@ button{font-family:inherit;cursor:pointer}
   transition:box-shadow .3s;
 }
 #nav.scrolled-shadow{box-shadow:0 2px 14px rgba(0,0,0,.06)}
-.nav-inner{max-width:1200px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;justify-content:flex-end;height:84px;position:relative}
-.logo{display:flex;align-items:center;gap:.75rem;margin-top:10px}
-.logo-img{width:64px;height:64px;border-radius:50%;overflow:hidden;border:1.5px solid var(--blue);background:var(--blue-pale);flex-shrink:0}
+.nav-inner{max-width:1200px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:60px}
+.logo{display:flex;align-items:center;gap:.75rem}
+.logo-img{width:38px;height:38px;border-radius:50%;overflow:hidden;border:1.5px solid var(--blue);background:var(--blue-pale);flex-shrink:0}
 .logo-img img{width:100%;height:100%;object-fit:cover}
-.logo-text{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;letter-spacing:.06em;color:var(--blue)}
+.logo-text{font-family:'Playfair Display',serif;font-size:.9rem;font-weight:700;letter-spacing:.06em;color:var(--blue)}
 .logo-sub{font-size:.55rem;letter-spacing:.18em;color:var(--orange);font-weight:500;text-transform:uppercase;margin-top:1px}
 .nav-links{display:flex;align-items:center;gap:2rem}
 .nav-a{font-size:.75rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);transition:color .2s;position:relative}
@@ -243,8 +243,20 @@ footer{background:var(--blue-deep);padding:2rem 1.5rem}
 <!-- NAV ──────────────────────────────────────────── -->
 <nav id="nav">
   <div class="nav-inner">
+    <a href="#" class="logo">
+      <div class="logo-img">
+        <!-- 📷 REPLACE src with your logo file -->
+        <img src="upupa.png" alt="Upupa" onerror="this.style.display='none'"/>
+      </div>
+      <div>
+        <div class="logo-text" id="logo-text">UPUPA TRAVEL</div>
+        <div class="logo-sub">discover armenia</div>
+      </div>
+    </a>
+
     <div class="nav-links" id="nav-links" style="display:none"><!-- shown on desktop via JS -->
       <a href="#tours" class="nav-a">Tours</a>
+      <a href="#experience" class="nav-a">Experience</a>
       <a href="#reviews" class="nav-a">Reviews</a>
       <a href="#contact" class="nav-a">Contact</a>
       <a href="#contact" class="nav-cta">Book a Call</a>
@@ -257,6 +269,7 @@ footer{background:var(--blue-deep);padding:2rem 1.5rem}
 
   <div id="mobile-nav">
     <a href="#tours" class="nav-a" onclick="closeMobile()">Tours</a>
+    <a href="#experience" class="nav-a" onclick="closeMobile()">Experience</a>
     <a href="#reviews" class="nav-a" onclick="closeMobile()">Reviews</a>
     <a href="#contact" class="nav-a" onclick="closeMobile()">Contact</a>
     <a href="#contact" class="nav-cta" onclick="closeMobile()">Book a Call</a>
@@ -273,13 +286,6 @@ footer{background:var(--blue-deep);padding:2rem 1.5rem}
   <div class="hero-vignette"></div>
 
   <div class="hero-body">
-    <div class="hero-logo" style="display:flex;align-items:center;gap:.85rem;margin-bottom:1.5rem">
-      <img src="upupa.png" alt="Logo" style="width:2.5rem">
-      <div>
-        <div style="font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;letter-spacing:.06em;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.45)">UPUPA TRAVEL</div>
-        <div style="font-size:.62rem;letter-spacing:.18em;color:#ff9d4d;font-weight:600;text-transform:uppercase;margin-top:2px">discover armenia</div>
-      </div>
-    </div>
     <!-- 📝 EDIT hero tag text -->
     <div class="hero-tag" style="border-color:rgba(255,255,255,.4);color:rgba(255,255,255,.9)">Private guide service · Yerevan, Armenia</div>
     <p class="hero-sub" style="color:rgba(255,255,255,.88);font-weight:400;max-width:46ch">Handcrafted private tours across ancient monasteries, volcanic highlands, and vine-draped valleys — designed by locals who know every hidden road.</p>
@@ -292,7 +298,15 @@ footer{background:var(--blue-deep);padding:2rem 1.5rem}
     </div>
   </div>
 
-
+  <!-- 📝 EDIT stat values -->
+  <div class="stat-strip">
+    <div class="stat-strip-inner">
+      <div class="stat-box"><div class="stat-n">100%</div><div class="stat-l">Tailored &amp; Private</div></div>
+      <div class="stat-box"><div class="stat-n" style="font-size:1rem">All-Inclusive</div><div class="stat-l">Transport &amp; Fees</div></div>
+      <div class="stat-box"><div class="stat-n" style="font-size:1rem">Off-Grid</div><div class="stat-l">Hidden Gems</div></div>
+      <div class="stat-box"><div class="stat-n" style="font-size:1rem">Anytime</div><div class="stat-l">Flexible Dates</div></div>
+    </div>
+  </div>
 </section>
 
 <!-- TOURS ────────────────────────────────────────── -->
@@ -458,6 +472,49 @@ footer{background:var(--blue-deep);padding:2rem 1.5rem}
   </div>
 </section>
 
+<!-- EXPERIENCE ───────────────────────────────────── -->
+<section id="experience" class="section" style="background:#fff">
+  <div class="section-inner">
+    <div class="section-header r" style="text-align:center">
+      <div class="eyebrow">How We Travel</div>
+      <h2 class="section-title" style="margin:0 auto">The Upupa Experience</h2>
+      <div class="section-rule center"></div>
+      <p class="section-lead" style="margin:0 auto">Why experienced travellers choose a boutique private guide over a crowded bus.</p>
+    </div>
+
+    <!-- 📝 EDIT the 3 experience cards below -->
+    <div class="exp-grid r">
+      <div class="exp-cell">
+        <div class="exp-num">01</div>
+        <div class="exp-icon">
+          <svg viewBox="0 0 24 24"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21 3 6"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/></svg>
+        </div>
+        <div class="exp-title">Beyond the Guidebooks</div>
+        <p class="exp-text">Hidden viewpoints, village lunch spots, canyon trails only shepherds know. Every itinerary has at least one moment you'll never find online.</p>
+        <div class="exp-foot">Zero tourist traps</div>
+      </div>
+      <div class="exp-cell">
+        <div class="exp-num">02</div>
+        <div class="exp-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div class="exp-title">Your Pace, Your Rules</div>
+        <p class="exp-text">No rigid schedules. Stop for coffee over a canyon. Linger at a monastery. If a roadside vendor is selling the season's best pomegranates, we stop.</p>
+        <div class="exp-foot">Fully flexible itineraries</div>
+      </div>
+      <div class="exp-cell">
+        <div class="exp-num">03</div>
+        <div class="exp-icon">
+          <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        </div>
+        <div class="exp-title">Local Storytelling</div>
+        <p class="exp-text">Our guides grew up with these legends, studied these monasteries, debated this history over dinner. Every crumbling wall has a story they actually know.</p>
+        <div class="exp-foot">Native guides only</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- REVIEWS ──────────────────────────────────────── -->
 <section id="reviews" class="section reviews-section">
   <div class="section-inner">
@@ -478,8 +535,45 @@ footer{background:var(--blue-deep);padding:2rem 1.5rem}
       </select>
     </div>
 
-    <!-- Reviews grid — empty, new reviews appear here via JS as visitors submit them -->
+    <!-- Reviews grid — seeded with 3 starter reviews, new ones appear via JS -->
     <div class="reviews-grid r" id="reviews-grid">
+
+      <!-- 📝 EDIT or REMOVE these placeholder reviews — replace with real ones -->
+      <div class="review-card" data-stars="5" data-date="2024-10-15">
+        <div class="stars">★★★★★</div>
+        <p class="review-text">"The Tatev trip was the highlight of our entire Caucasus journey. Our guide brought history alive in a way no audio guide ever could. The cable car alone is worth the trip to Armenia."</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar">JK</div>
+          <div>
+            <div class="reviewer-name">James K.</div>
+            <div class="reviewer-meta">London, UK · October 2024</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card" data-stars="5" data-date="2024-06-20">
+        <div class="stars">★★★★★</div>
+        <p class="review-text">"We came for a genealogy trip — Upupa found my grandmother's village on old Soviet maps, arranged a meeting with the local historian, and we found family we didn't know we had. Life-changing."</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar" style="background:#fef1e8;color:#d96a28">SD</div>
+          <div>
+            <div class="reviewer-name">Susan D.</div>
+            <div class="reviewer-meta">Boston, USA · June 2024</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card" data-stars="5" data-date="2024-05-08">
+        <div class="stars">★★★★★</div>
+        <p class="review-text">"As a birder I was specific: I wanted Caucasian Grouse and the Arapan wetlands. Upupa found both. They understood exactly what I needed and didn't try to sell me a generic package."</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar">RV</div>
+          <div>
+            <div class="reviewer-name">Rens V.</div>
+            <div class="reviewer-meta">Amsterdam, NL · May 2024</div>
+          </div>
+        </div>
+      </div>
 
     </div><!-- /reviews-grid -->
 
