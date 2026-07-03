@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Upupa Travel — Discover Armenia</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 /* ── RESET & BASE ─────────────────────────────────── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -14,8 +14,9 @@ body{font-family:'Inter','Helvetica Neue',Arial,sans-serif;color:#111;background
 a{text-decoration:none;color:inherit}
 img{display:block;max-width:100%}
 button{font-family:inherit;cursor:pointer}
+ul{list-style:none}
 
-/* ── TOKENS ──────────────────────────────────────── */
+/* ── TOKENS (unchanged palette) ───────────────────── */
 :root{
   --blue:#2E6FD9;
   --blue-dark:#2459b3;
@@ -46,7 +47,7 @@ button{font-family:inherit;cursor:pointer}
 .logo-img img{width:100%;height:100%;object-fit:cover}
 .logo-text{font-family:'Playfair Display',serif;font-size:.9rem;font-weight:700;letter-spacing:.06em;color:var(--blue)}
 .logo-sub{font-size:.55rem;letter-spacing:.18em;color:var(--orange);font-weight:500;text-transform:uppercase;margin-top:1px}
-.nav-links{display:flex;align-items:center;gap:2rem}
+.nav-links{display:flex;align-items:center;gap:1.75rem}
 .nav-a{font-size:.75rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);transition:color .2s;position:relative}
 .nav-a::after{content:'';position:absolute;bottom:-3px;left:0;right:0;height:1px;background:var(--orange);transform:scaleX(0);transform-origin:left;transition:transform .25s}
 .nav-a:hover{color:var(--orange)}
@@ -60,31 +61,32 @@ button{font-family:inherit;cursor:pointer}
 #mobile-nav .nav-a:last-of-type{border-bottom:none}
 #mobile-nav .nav-cta{margin-top:.75rem;text-align:center;display:block;padding:.65rem 1rem}
 
+/* language switch */
+.lang-switch{display:flex;align-items:center;gap:.2rem;margin-left:.5rem;padding-left:.9rem;border-left:1px solid var(--border)}
+.lang-btn{font-size:.68rem;font-weight:600;letter-spacing:.03em;color:var(--stone);background:transparent;border:none;border-radius:5px;padding:.3rem .45rem;transition:all .2s}
+.lang-btn:hover{color:var(--blue)}
+.lang-btn.active{background:var(--blue-pale);color:var(--blue)}
+#mobile-nav .lang-switch{border-left:none;padding-left:0;justify-content:center;margin:.85rem 0 0;gap:.4rem}
+#mobile-nav .lang-btn{border:1px solid var(--border)}
+
 /* ── HERO ────────────────────────────────────────── */
-.hero{min-height:78vh;position:relative;display:flex;flex-direction:column;justify-content:flex-end;background:#eef2f7}
+.hero{min-height:74vh;position:relative;display:flex;flex-direction:column;justify-content:center;background:#eef2f7}
 .hero-bg{position:absolute;inset:0;background:linear-gradient(160deg,#dce6f5 0%,#eef4fd 60%,#f7faff 100%)}
 .hero-photo{position:absolute;inset:0}
 .hero-photo img{width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.2s}
 .hero-photo img.loaded{opacity:1}
-.hero-vignette{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,20,35,.62) 0%,rgba(10,20,35,.18) 45%,rgba(10,20,35,0) 70%)}
-.hero-body{position:relative;z-index:2;max-width:1200px;margin:0 auto;width:100%;padding:0 1.5rem 4.5rem}
-.hero-tag{display:inline-block;font-size:.65rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:1.25rem;border:1px solid rgba(255,255,255,.2);border-radius:4px;padding:.3rem .7rem}
+.hero-vignette{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,20,35,.55) 0%,rgba(10,20,35,.35) 45%,rgba(10,20,35,.55) 100%)}
+.hero-body{position:relative;z-index:2;max-width:1200px;margin:0 auto;width:100%;padding:6.5rem 1.5rem 5rem;text-align:center;display:flex;flex-direction:column;align-items:center}
+.hero-tag{display:inline-block;font-size:.65rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.85);margin-bottom:1.25rem;border:1px solid rgba(255,255,255,.3);border-radius:4px;padding:.3rem .7rem}
 .hero-h1{font-family:'Playfair Display',serif;font-size:clamp(2.6rem,6vw,4.5rem);font-weight:700;color:#fff;line-height:1.05;letter-spacing:-.01em;margin-bottom:1.25rem}
 .hero-h1 em{font-style:italic;color:var(--orange)}
-.hero-sub{font-size:.95rem;font-weight:300;color:rgba(255,255,255,.72);max-width:42ch;line-height:1.75;margin-bottom:2rem}
-.hero-actions{display:flex;flex-wrap:wrap;gap:.75rem}
+.hero-sub{font-size:.95rem;font-weight:300;color:rgba(255,255,255,.85);max-width:46ch;line-height:1.75;margin-bottom:2rem}
+.hero-actions{display:flex;flex-wrap:wrap;gap:.75rem;justify-content:center}
 .btn-primary{display:inline-flex;align-items:center;gap:.5rem;background:var(--orange);color:#fff;border:none;border-radius:7px;padding:.65rem 1.4rem;font-size:.82rem;font-weight:500;letter-spacing:.02em;transition:background .2s,transform .15s}
 .btn-primary:hover{background:#d96a28;transform:translateY(-1px)}
-.btn-secondary{display:inline-flex;align-items:center;gap:.5rem;background:transparent;color:rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.35);border-radius:7px;padding:.65rem 1.4rem;font-size:.82rem;font-weight:400;transition:border-color .2s,background .2s}
-.btn-secondary:hover{border-color:rgba(255,255,255,.7);background:rgba(255,255,255,.08)}
-
-/* stat strip */
-.stat-strip{position:relative;z-index:2;border-top:1px solid rgba(255,255,255,.1);background:rgba(0,0,0,.18);backdrop-filter:blur(4px)}
-.stat-strip-inner{max-width:1200px;margin:0 auto;padding:1.5rem;display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
-.stat-box{text-align:center}
-.stat-n{font-family:'Playfair Display',serif;font-size:1.35rem;font-weight:700;color:#fff;line-height:1}
-.stat-l{font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-top:.3rem}
-@media(max-width:600px){.stat-strip-inner{grid-template-columns:repeat(2,1fr)}.hero-h1{font-size:2.4rem}}
+.btn-secondary{display:inline-flex;align-items:center;gap:.5rem;background:transparent;color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.4);border-radius:7px;padding:.65rem 1.4rem;font-size:.82rem;font-weight:400;transition:border-color .2s,background .2s}
+.btn-secondary:hover{border-color:rgba(255,255,255,.75);background:rgba(255,255,255,.08)}
+@media(max-width:600px){.hero-h1{font-size:2.4rem}.hero-actions{flex-direction:column;width:100%}.hero-actions a{justify-content:center}}
 
 /* ── SECTION HELPERS ─────────────────────────────── */
 .section{padding:5rem 1.5rem}
@@ -100,71 +102,39 @@ button{font-family:inherit;cursor:pointer}
 .r{opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease}
 .r.on{opacity:1;transform:none}
 
-/* ── TOURS ───────────────────────────────────────── */
+/* ── ABOUT ───────────────────────────────────────── */
+.about-section{background:#fff}
+.about-grid{display:grid;gap:2.5rem;align-items:center}
+@media(min-width:860px){.about-grid{grid-template-columns:.85fr 1.15fr}}
+.about-media{aspect-ratio:4/3;border-radius:var(--radius);background:linear-gradient(135deg,var(--blue) 0%,var(--blue-deep) 100%);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.about-media svg{width:70%;height:70%}
+.about-copy .section-lead{max-width:58ch;font-size:.92rem}
+.about-facts{display:flex;flex-wrap:wrap;gap:1.1rem 1.6rem;margin-top:1.75rem}
+.about-fact{display:flex;align-items:center;gap:.55rem;font-size:.8rem;color:var(--ink);font-weight:500}
+.about-fact-dot{width:8px;height:8px;border-radius:50%;background:var(--orange);flex-shrink:0}
+
+/* ── TOURS (single feature card) ──────────────────── */
 .tours-section{background:var(--mist)}
-.filter-row{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:2.5rem}
-.ftab{font-size:.72rem;font-weight:500;letter-spacing:.05em;padding:.38rem .9rem;border-radius:999px;border:1px solid rgba(10,66,165,.25);color:var(--blue);background:transparent;cursor:pointer;transition:all .2s}
-.ftab:hover{background:#e8eef9}
-.ftab.on{background:var(--blue);color:#fff;border-color:var(--blue)}
-.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem}
-.card{background:#fff;border-radius:var(--radius);border:1px solid var(--border);overflow:hidden;display:flex;flex-direction:column;transition:box-shadow .25s,transform .25s}
-.card:hover{box-shadow:0 8px 32px rgba(10,66,165,.1);transform:translateY(-3px)}
-.card-img{height:190px;overflow:hidden;position:relative;background:linear-gradient(135deg,#c8d8f0,#a8c0e8)}
-.card-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
-.card:hover .card-img img{transform:scale(1.04)}
-.card-img-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(7,46,122,.35) 0%,transparent 55%)}
-.card-tags{position:absolute;bottom:.75rem;left:.75rem;display:flex;gap:.35rem}
-.tag{font-size:.62rem;font-weight:600;letter-spacing:.03em;padding:2px 8px;border-radius:999px}
-.tag-blue{background:rgba(10,66,165,.85);color:#fff}
-.tag-orange{background:rgba(243,131,69,.9);color:#fff}
-.tag-green{background:rgba(22,101,52,.85);color:#fff}
-.tag-red{background:rgba(192,21,27,.85);color:#fff}
-.card-body{padding:1.1rem 1.1rem .9rem;display:flex;flex-direction:column;flex:1}
-.card-row{display:flex;justify-content:space-between;align-items:flex-start;gap:.5rem;margin-bottom:.6rem}
-.card-title{font-family:'Playfair Display',serif;font-size:.97rem;font-weight:700;color:var(--ink);line-height:1.3;flex:1}
-.card-price{font-family:'Playfair Display',serif;font-size:.97rem;font-weight:700;color:var(--blue);white-space:nowrap;text-align:right;flex-shrink:0}
-.card-price-sub{font-size:.6rem;color:var(--stone);text-align:right}
-.card-desc{font-size:.78rem;color:var(--stone);line-height:1.7;flex:1;margin-bottom:.9rem}
-.card-btn{font-size:.72rem;font-weight:500;letter-spacing:.03em;color:var(--blue);border:1px solid rgba(10,66,165,.3);border-radius:6px;padding:.45rem .9rem;background:transparent;width:100%;display:flex;align-items:center;justify-content:center;gap:.4rem;transition:all .2s}
-.card-btn:hover{background:var(--blue);color:#fff;border-color:var(--blue)}
-.card-btn svg.chev{transition:transform .3s}
-
-/* accordion */
-.itin-panel{max-height:0;overflow:hidden;opacity:0;transition:max-height .5s cubic-bezier(.4,0,.2,1),opacity .3s}
-.itin-panel.open{max-height:1800px;opacity:1}
-.itin-body{padding:.9rem 1.1rem 1rem;border-top:1px solid var(--border)}
-.itin-label{font-size:.6rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--orange);margin-bottom:.75rem}
-.day-badge{display:inline-block;font-size:.6rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:2px 7px;border-radius:999px;margin-bottom:.6rem}
-.day-badge.b{background:#e8eef9;color:var(--blue)}
-.day-badge.o{background:#fef1e8;color:#d96a28}
-.tl{position:relative;padding-left:1.6rem;margin-bottom:.75rem}
-.tl::before{content:'';position:absolute;left:.47rem;top:1.2rem;bottom:-.3rem;width:1.5px;background:#e8e8e6}
-.tl:last-child::before{display:none}
-.tl-dot{position:absolute;left:0;top:.25rem;width:.95rem;height:.95rem;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.tl-dot::after{content:'';width:4px;height:4px;border-radius:50%;background:#fff}
-.tl-t{font-size:.75rem;font-weight:600;color:var(--ink);margin-bottom:.15rem}
-.tl-d{font-size:.72rem;color:var(--stone);line-height:1.6}
-
-/* deposit */
-.deposit{background:var(--blue-deep);border-radius:8px;padding:1rem 1.1rem;margin-top:1rem;display:flex;flex-direction:column;gap:.5rem}
-.deposit-title{font-size:.8rem;font-weight:600;color:#fff;text-align:center}
-.deposit-sub{font-size:.65rem;color:rgba(255,255,255,.5);text-align:center}
-.deposit-btn{display:flex;align-items:center;justify-content:center;gap:.4rem;background:var(--orange);color:#fff;border:none;border-radius:6px;padding:.55rem 1rem;font-size:.78rem;font-weight:500;cursor:pointer;transition:background .2s}
-.deposit-btn:hover{background:#d96a28}
-
-/* ── EXPERIENCE ──────────────────────────────────── */
-.exp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
-.exp-cell{background:#fff;padding:2rem 1.75rem;position:relative}
-.exp-num{font-family:'Playfair Display',serif;font-size:4rem;font-weight:700;color:#f0efed;line-height:1;position:absolute;top:.75rem;right:1.25rem;user-select:none}
-.exp-icon{width:40px;height:40px;border-radius:10px;background:#f0f4fc;display:flex;align-items:center;justify-content:center;margin-bottom:1.1rem}
-.exp-icon svg{width:20px;height:20px;stroke:var(--blue);fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
-.exp-title{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--blue);margin-bottom:.6rem}
-.exp-text{font-size:.8rem;color:var(--stone);line-height:1.75}
-.exp-foot{margin-top:1.25rem;padding-top:1rem;border-top:1px solid var(--border);font-size:.62rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--orange)}
+.tour-feature{display:grid;background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:0 8px 32px rgba(10,66,165,.07)}
+@media(min-width:800px){.tour-feature{grid-template-columns:1fr 1fr}}
+.tour-feature-media{position:relative;min-height:260px;background:linear-gradient(135deg,#c8d8f0,#a8c0e8)}
+.tour-feature-media img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.tour-feature-media .tfm-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(7,46,122,.4) 0%,transparent 55%)}
+.tour-feature-media .tag{position:absolute;top:1rem;left:1rem;font-size:.62rem;font-weight:600;letter-spacing:.03em;padding:3px 10px;border-radius:999px;background:rgba(243,131,69,.92);color:#fff}
+.tour-feature-body{padding:2.5rem 2.25rem}
+.tour-feature-title{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:var(--blue);margin-bottom:.75rem;line-height:1.2}
+.tour-feature-desc{font-size:.88rem;color:var(--stone);line-height:1.8;margin-bottom:1.5rem}
+.tour-feature-list{display:flex;flex-direction:column;gap:.65rem;margin-bottom:2rem}
+.tour-feature-list li{display:flex;align-items:center;gap:.6rem;font-size:.82rem;color:var(--ink)}
+.tour-feature-check{width:18px;height:18px;border-radius:50%;background:var(--blue-pale);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tour-feature-check svg{width:10px;height:10px;stroke:var(--blue);fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.tour-feature-cta{display:inline-flex;align-items:center;gap:.5rem;background:var(--blue);color:#fff;border:none;border-radius:7px;padding:.75rem 1.5rem;font-size:.83rem;font-weight:500;letter-spacing:.02em;transition:background .2s,transform .15s}
+.tour-feature-cta:hover{background:var(--blue-dark);transform:translateY(-1px)}
 
 /* ── REVIEWS ─────────────────────────────────────── */
 .reviews-section{background:var(--mist)}
 .reviews-grid{display:grid;gap:1rem}
+.reviews-grid:not(:empty){margin-bottom:2.5rem}
 @media(min-width:640px){.reviews-grid{grid-template-columns:repeat(2,1fr)}}
 @media(min-width:900px){.reviews-grid{grid-template-columns:repeat(3,1fr)}}
 .review-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;display:flex;flex-direction:column;gap:.75rem}
@@ -179,22 +149,20 @@ button{font-family:inherit;cursor:pointer}
 .write-review{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:1.75rem}
 .wr-title{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;color:var(--blue);margin-bottom:.3rem}
 .wr-sub{font-size:.78rem;color:var(--stone);margin-bottom:1.25rem}
+.wr-rating-label{margin-bottom:.5rem;font-size:.65rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--blue)}
 .star-pick{display:flex;gap:.3rem;margin-bottom:1.25rem}
 .star-pick button{background:none;border:none;font-size:1.4rem;color:#ddd;cursor:pointer;line-height:1;transition:color .1s;padding:0}
-.star-pick button.active,.star-pick button:hover,.star-pick button:hover~button{color:var(--orange)}/* handled in JS */
 .wr-fields{display:grid;gap:.75rem}
+.wr-row2{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
 .wr-input{width:100%;padding:.65rem .85rem;border:1px solid var(--border);border-radius:7px;font-size:.82rem;font-family:inherit;color:var(--ink);outline:none;transition:border-color .2s}
 .wr-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(10,66,165,.07)}
 .wr-textarea{min-height:80px;resize:vertical}
 .wr-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem;margin-top:.85rem}
 .wr-note{font-size:.65rem;color:var(--stone)}
 #wr-success{display:none;text-align:center;padding:1.5rem;color:var(--blue);font-size:.85rem}
+.flabel{display:block;font-size:.65rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);margin-bottom:.35rem}
 
 /* sort/filter bar */
-.reviews-bar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem;margin-bottom:1.75rem}
-.reviews-count{font-size:.78rem;color:var(--stone)}
-.reviews-sort{font-size:.75rem;color:var(--stone);border:1px solid var(--border);border-radius:6px;padding:.35rem .7rem;background:#fff;font-family:inherit;outline:none;cursor:pointer}
-
 /* ── CONTACT ─────────────────────────────────────── */
 .contact-section{background:var(--blue-deep);position:relative;overflow:hidden}
 .contact-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 70% 50%,rgba(46,111,217,.5) 0%,transparent 70%)}
@@ -216,7 +184,6 @@ button{font-family:inherit;cursor:pointer}
 .form-card-title{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;color:var(--blue);margin-bottom:1.25rem}
 .form-fields{display:flex;flex-direction:column;gap:.9rem}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
-.flabel{display:block;font-size:.65rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);margin-bottom:.35rem}
 .finput{width:100%;padding:.65rem .85rem;border:1px solid var(--border);border-radius:7px;font-size:.82rem;font-family:inherit;color:var(--ink);outline:none;transition:border-color .2s,box-shadow .2s}
 .finput:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(10,66,165,.07)}
 .fselect{width:100%;padding:.65rem .85rem;border:1px solid var(--border);border-radius:7px;font-size:.82rem;font-family:inherit;color:var(--ink);background:#fff;outline:none;cursor:pointer;transition:border-color .2s}
@@ -235,7 +202,7 @@ footer{background:var(--blue-deep);padding:2rem 1.5rem}
 .footer-links a{font-size:.7rem;color:rgba(255,255,255,.4);transition:color .2s}
 .footer-links a:hover{color:var(--orange)}
 
-@media(max-width:600px){.form-row{grid-template-columns:1fr}.hero-actions{flex-direction:column}.exp-grid{grid-template-columns:1fr}}
+@media(max-width:600px){.form-row{grid-template-columns:1fr}.wr-row2{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -250,16 +217,22 @@ footer{background:var(--blue-deep);padding:2rem 1.5rem}
       </div>
       <div>
         <div class="logo-text" id="logo-text">UPUPA TRAVEL</div>
-        <div class="logo-sub">discover armenia</div>
+        <div class="logo-sub" data-i18n="hero_tag_short">discover armenia</div>
       </div>
     </a>
 
     <div class="nav-links" id="nav-links" style="display:none"><!-- shown on desktop via JS -->
-      <a href="#tours" class="nav-a">Tours</a>
-      <a href="#experience" class="nav-a">Experience</a>
-      <a href="#reviews" class="nav-a">Reviews</a>
-      <a href="#contact" class="nav-a">Contact</a>
-      <a href="#contact" class="nav-cta">Book a Call</a>
+      <a href="#" class="nav-a" data-i18n="nav_home">Home</a>
+      <a href="#about" class="nav-a" data-i18n="nav_about">About</a>
+      <a href="#tours" class="nav-a" data-i18n="nav_tours">Tours</a>
+      <a href="#reviews" class="nav-a" data-i18n="nav_reviews">Reviews</a>
+      <a href="#contact" class="nav-a" data-i18n="nav_contact">Contact</a>
+      <a href="#contact" class="nav-cta" data-i18n="nav_cta">Book a Call</a>
+      <div class="lang-switch" id="lang-switch">
+        <button class="lang-btn" data-lang="en" onclick="applyLang('en')">EN</button>
+        <button class="lang-btn" data-lang="ru" onclick="applyLang('ru')">RU</button>
+        <button class="lang-btn" data-lang="hy" onclick="applyLang('hy')">ՀԱՅ</button>
+      </div>
     </div>
 
     <button id="hamburger" onclick="toggleMobile()" aria-label="Menu">
@@ -268,11 +241,17 @@ footer{background:var(--blue-deep);padding:2rem 1.5rem}
   </div>
 
   <div id="mobile-nav">
-    <a href="#tours" class="nav-a" onclick="closeMobile()">Tours</a>
-    <a href="#experience" class="nav-a" onclick="closeMobile()">Experience</a>
-    <a href="#reviews" class="nav-a" onclick="closeMobile()">Reviews</a>
-    <a href="#contact" class="nav-a" onclick="closeMobile()">Contact</a>
-    <a href="#contact" class="nav-cta" onclick="closeMobile()">Book a Call</a>
+    <a href="#" class="nav-a" onclick="closeMobile()" data-i18n="nav_home">Home</a>
+    <a href="#about" class="nav-a" onclick="closeMobile()" data-i18n="nav_about">About</a>
+    <a href="#tours" class="nav-a" onclick="closeMobile()" data-i18n="nav_tours">Tours</a>
+    <a href="#reviews" class="nav-a" onclick="closeMobile()" data-i18n="nav_reviews">Reviews</a>
+    <a href="#contact" class="nav-a" onclick="closeMobile()" data-i18n="nav_contact">Contact</a>
+    <a href="#contact" class="nav-cta" onclick="closeMobile()" data-i18n="nav_cta">Book a Call</a>
+    <div class="lang-switch">
+      <button class="lang-btn" data-lang="en" onclick="applyLang('en')">EN</button>
+      <button class="lang-btn" data-lang="ru" onclick="applyLang('ru')">RU</button>
+      <button class="lang-btn" data-lang="hy" onclick="applyLang('hy')">ՀԱՅ</button>
+    </div>
   </div>
 </nav>
 
@@ -286,25 +265,42 @@ footer{background:var(--blue-deep);padding:2rem 1.5rem}
   <div class="hero-vignette"></div>
 
   <div class="hero-body">
-    <!-- 📝 EDIT hero tag text -->
-    <div class="hero-tag" style="border-color:rgba(255,255,255,.4);color:rgba(255,255,255,.9)">Private guide service · Yerevan, Armenia</div>
-    <p class="hero-sub" style="color:rgba(255,255,255,.88);font-weight:400;max-width:46ch">Handcrafted private tours across ancient monasteries, volcanic highlands, and vine-draped valleys — designed by locals who know every hidden road.</p>
+    <div class="hero-tag" data-i18n="hero_tag">Private Guide Service · Yerevan, Armenia</div>
+    <h1 class="hero-h1" data-i18n-html="hero_h1">Discover <em>Armenia</em> Your Way</h1>
+    <p class="hero-sub" data-i18n="hero_sub">Handcrafted private tours across ancient monasteries, volcanic highlands, and vine-draped valleys — designed by locals who know every hidden road.</p>
     <div class="hero-actions">
-      <a href="#tours" class="btn-primary">
-        Explore Tours
+      <a href="tours.html" class="btn-primary">
+        <span data-i18n="hero_btn1">Tour Packages</span>
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
-      <a href="#contact" class="btn-secondary">Contact</a>
+      <a href="#contact" class="btn-secondary" data-i18n="hero_btn2">Contact Us</a>
     </div>
   </div>
+</section>
 
-  <!-- 📝 EDIT stat values -->
-  <div class="stat-strip">
-    <div class="stat-strip-inner">
-      <div class="stat-box"><div class="stat-n">100%</div><div class="stat-l">Tailored &amp; Private</div></div>
-      <div class="stat-box"><div class="stat-n" style="font-size:1rem">All-Inclusive</div><div class="stat-l">Transport &amp; Fees</div></div>
-      <div class="stat-box"><div class="stat-n" style="font-size:1rem">Off-Grid</div><div class="stat-l">Hidden Gems</div></div>
-      <div class="stat-box"><div class="stat-n" style="font-size:1rem">Anytime</div><div class="stat-l">Flexible Dates</div></div>
+<!-- ABOUT ────────────────────────────────────────── -->
+<section id="about" class="section about-section">
+  <div class="section-inner">
+    <div class="about-grid">
+      <div class="about-media r">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="100" cy="68" r="24" fill="rgba(255,255,255,.18)"/>
+          <path d="M8 158 L58 92 L92 130 L128 72 L192 158 Z" fill="rgba(255,255,255,.22)"/>
+          <path d="M8 168 L68 112 L108 150 L148 98 L192 168 Z" fill="rgba(255,255,255,.34)"/>
+        </svg>
+      </div>
+      <div class="about-copy r">
+        <div class="eyebrow" data-i18n="about_eyebrow">Who We Are</div>
+        <h2 class="section-title" data-i18n="about_title">About Upupa Travel</h2>
+        <div class="section-rule"></div>
+        <!-- 📝 Placeholder copy — replace with the real "about" text -->
+        <p class="section-lead" data-i18n="about_lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        <div class="about-facts">
+          <div class="about-fact"><span class="about-fact-dot"></span><span data-i18n="about_fact1">Local, native guides</span></div>
+          <div class="about-fact"><span class="about-fact-dot"></span><span data-i18n="about_fact2">Small, private groups</span></div>
+          <div class="about-fact"><span class="about-fact-dot"></span><span data-i18n="about_fact3">Custom-built routes</span></div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -313,203 +309,31 @@ footer{background:var(--blue-deep);padding:2rem 1.5rem}
 <section id="tours" class="section tours-section">
   <div class="section-inner">
     <div class="section-header r">
-      <div class="eyebrow">Curated Experiences</div>
-      <h2 class="section-title">Tours &amp; Packages</h2>
+      <div class="eyebrow" data-i18n="tours_eyebrow">Curated Experiences</div>
+      <h2 class="section-title" data-i18n="tours_title">Tours &amp; Packages</h2>
       <div class="section-rule"></div>
-      <p class="section-lead">Built around your pace — not a bus schedule. Private transport, expert guides, and places most tourists never find.</p>
+      <p class="section-lead" data-i18n="tours_lead">Built around your pace — not a bus schedule. Private transport, expert guides, and places most tourists never find.</p>
     </div>
 
-    <div class="filter-row r">
-      <button class="ftab on" onclick="filterCards('all',this)">All</button>
-      <button class="ftab" onclick="filterCards('daily',this)">Day Trips</button>
-      <button class="ftab" onclick="filterCards('multi',this)">Multi-Day</button>
-    </div>
-
-    <div class="cards">
-
-      <!-- CARD 1 ─────────────────────────────────── -->
-      <div class="card r" data-cat="daily">
-        <div class="card-img">
-          <!-- 📷 EDIT IMAGE: images/garni.jpg -->
-          <img src="/api/placeholder/600/190" alt="Garni Temple"/>
-          <div class="card-img-overlay"></div>
-          <div class="card-tags">
-            <span class="tag tag-blue">Day Trip</span>
-            <span class="tag tag-green">8 hrs</span>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="card-row">
-            <!-- 📝 EDIT title -->
-            <div class="card-title">Garni, Geghard &amp; Symphony of Stones</div>
-            <div>
-              <!-- 💰 EDIT price -->
-              <div class="card-price">from $XX</div>
-              <div class="card-price-sub">per person</div>
-            </div>
-          </div>
-          <!-- 📝 EDIT description -->
-          <p class="card-desc">Hellenistic temple, UNESCO cave monastery, and the dramatic basalt columns of the Azat gorge — Armenia's greatest day trip.</p>
-          <button class="card-btn" onclick="toggleItin('i1',this)">
-            <svg class="chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-            View Itinerary
-          </button>
-        </div>
-        <div class="itin-panel" id="i1">
-          <div class="itin-body">
-            <div class="itin-label">Day Schedule</div>
-            <!-- ⏱️ EDIT timeline steps -->
-            <div class="tl"><div class="tl-dot"></div><div class="tl-t">08:30 — Hotel Pickup</div><div class="tl-d">Private vehicle, water provided.</div></div>
-            <div class="tl"><div class="tl-dot"></div><div class="tl-t">09:30 — Garni Temple</div><div class="tl-d">Armenia's only Greco-Roman temple, 1st c. AD.</div></div>
-            <div class="tl"><div class="tl-dot"></div><div class="tl-t">11:00 — Symphony of Stones</div><div class="tl-d">Hexagonal basalt columns, Azat river gorge.</div></div>
-            <div class="tl"><div class="tl-dot"></div><div class="tl-t">14:00 — Geghard Monastery (UNESCO)</div><div class="tl-d">Cave-carved 4th-c. monastery, extraordinary acoustics.</div></div>
-            <div class="tl"><div class="tl-dot"></div><div class="tl-t">16:30 — Return to Yerevan</div></div>
-            <!-- 💳 DEPOSIT: replace href="#" with your Stripe link -->
-            <div class="deposit">
-              <div class="deposit-title">Secure Your Date — $50 Deposit</div>
-              <div class="deposit-sub">Balance due on the day · Full refund 48 hrs before</div>
-              <a href="#" class="deposit-btn">Pay Deposit &amp; Confirm →</a>
-            </div>
-          </div>
-        </div>
+    <div class="tour-feature r">
+      <div class="tour-feature-media">
+        <!-- 📷 EDIT IMAGE -->
+        <img src="/api/placeholder/700/560" alt="Armenia tours" onerror="this.style.display='none'"/>
+        <div class="tfm-overlay"></div>
+        <span class="tag" data-i18n="tours_card_tag">Day Trips &amp; Multi‑Day</span>
       </div>
-
-      <!-- CARD 2 ─────────────────────────────────── -->
-      <div class="card r" data-cat="daily" style="transition-delay:.08s">
-        <div class="card-img">
-          <!-- 📷 EDIT IMAGE: images/khor-virap.jpg -->
-          <img src="/api/placeholder/600/190" alt="Khor Virap and Mount Ararat"/>
-          <div class="card-img-overlay"></div>
-          <div class="card-tags">
-            <span class="tag tag-blue">Day Trip</span>
-            <span class="tag tag-green">9 hrs</span>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="card-row">
-            <div class="card-title">Khor Virap, Areni Cave &amp; Noravank</div>
-            <div>
-              <!-- 💰 EDIT price -->
-              <div class="card-price">from $XX</div>
-              <div class="card-price-sub">per person</div>
-            </div>
-          </div>
-          <p class="card-desc">Monastery at Ararat's feet, the world's oldest winery, and rust-red canyon cliffs. A journey through myth and geology.</p>
-          <button class="card-btn" onclick="toggleItin('i2',this)">
-            <svg class="chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-            View Itinerary
-          </button>
-        </div>
-        <div class="itin-panel" id="i2">
-          <div class="itin-body">
-            <div class="itin-label">Day Schedule</div>
-            <!-- ⏱️ EDIT timeline steps -->
-            <div class="tl"><div class="tl-dot"></div><div class="tl-t">08:00 — Departure</div><div class="tl-d">South through the Ararat plain.</div></div>
-            <div class="tl"><div class="tl-dot"></div><div class="tl-t">09:00 — Khor Virap Monastery</div><div class="tl-d">Best Ararat views. Gregory the Illuminator's dungeon.</div></div>
-            <div class="tl"><div class="tl-dot"></div><div class="tl-t">11:00 — Areni-1 Cave + Wine Tasting</div><div class="tl-d">6,100-year-old winery. Tasting at a local producer.</div></div>
-            <div class="tl"><div class="tl-dot"></div><div class="tl-t">14:30 — Noravank Monastery</div><div class="tl-d">13th-c. double-church complex in rust-red cliffs.</div></div>
-            <div class="tl"><div class="tl-dot"></div><div class="tl-t">17:00 — Return to Yerevan</div></div>
-            <!-- 💳 DEPOSIT -->
-            <div class="deposit">
-              <div class="deposit-title">Secure Your Date — $50 Deposit</div>
-              <div class="deposit-sub">Balance due on the day · Full refund 48 hrs before</div>
-              <a href="#" class="deposit-btn">Pay Deposit &amp; Confirm →</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- CARD 3 ─────────────────────────────────── -->
-      <div class="card r" data-cat="multi" style="transition-delay:.16s">
-        <div class="card-img">
-          <!-- 📷 EDIT IMAGE: images/tatev.jpg -->
-          <img src="/api/placeholder/600/190" alt="Tatev Monastery and Wings cable car"/>
-          <div class="card-img-overlay"></div>
-          <div class="card-tags">
-            <span class="tag tag-red">⭐ Bestseller</span>
-            <span class="tag tag-orange">2 Days</span>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="card-row">
-            <div class="card-title">Tatev &amp; Syunik South Expedition</div>
-            <div>
-              <!-- 💰 EDIT price -->
-              <div class="card-price">from $XXX</div>
-              <div class="card-price-sub">per person</div>
-            </div>
-          </div>
-          <p class="card-desc">World's longest cable car over the Vorotan gorge, medieval Tatev Monastery, Armenia's Stonehenge. Overnight in canyon-town Goris.</p>
-          <button class="card-btn" onclick="toggleItin('i3',this)">
-            <svg class="chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-            View Itinerary
-          </button>
-        </div>
-        <div class="itin-panel" id="i3">
-          <div class="itin-body">
-            <div class="day-badge b">Day 1 — Yerevan → Goris</div>
-            <!-- ⏱️ EDIT Day 1 steps -->
-            <div class="tl"><div class="tl-dot"></div><div class="tl-t">08:00 — Depart Yerevan</div><div class="tl-d">~3.5 hr scenic drive, Vayots Dzor highlands.</div></div>
-            <div class="tl"><div class="tl-dot"></div><div class="tl-t">12:00 — Wings of Tatev Cable Car</div><div class="tl-d">5.7 km over the Vorotan gorge. Guinness Record.</div></div>
-            <div class="tl"><div class="tl-dot"></div><div class="tl-t">13:00 — Tatev Monastery</div><div class="tl-d">9th-c. complex, frescoes and canyon panoramas.</div></div>
-            <div class="tl"><div class="tl-dot"></div><div class="tl-t">18:00 — Overnight, Goris</div><div class="tl-d">Boutique guesthouse. Dinner included.</div></div>
-            <div class="day-badge o" style="margin-top:1rem">Day 2 — Carahunge → Yerevan</div>
-            <!-- ⏱️ EDIT Day 2 steps -->
-            <div class="tl"><div class="tl-dot"></div><div class="tl-t">09:00 — Zorats Karer (Carahunge)</div><div class="tl-d">Armenia's Stonehenge, 7,500 yrs old.</div></div>
-            <div class="tl"><div class="tl-dot"></div><div class="tl-t">12:00 — Selim Caravanserai</div><div class="tl-d">14th-c. Silk Road waystation, 2,400 m altitude.</div></div>
-            <div class="tl"><div class="tl-dot"></div><div class="tl-t">17:30 — Back in Yerevan</div></div>
-            <!-- 💳 DEPOSIT -->
-            <div class="deposit">
-              <div class="deposit-title">Secure Your Date — $100 Deposit</div>
-              <div class="deposit-sub">Balance due on the day · Full refund 48 hrs before</div>
-              <a href="#" class="deposit-btn">Pay Deposit &amp; Confirm →</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div><!-- /cards -->
-  </div>
-</section>
-
-<!-- EXPERIENCE ───────────────────────────────────── -->
-<section id="experience" class="section" style="background:#fff">
-  <div class="section-inner">
-    <div class="section-header r" style="text-align:center">
-      <div class="eyebrow">How We Travel</div>
-      <h2 class="section-title" style="margin:0 auto">The Upupa Experience</h2>
-      <div class="section-rule center"></div>
-      <p class="section-lead" style="margin:0 auto">Why experienced travellers choose a boutique private guide over a crowded bus.</p>
-    </div>
-
-    <!-- 📝 EDIT the 3 experience cards below -->
-    <div class="exp-grid r">
-      <div class="exp-cell">
-        <div class="exp-num">01</div>
-        <div class="exp-icon">
-          <svg viewBox="0 0 24 24"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21 3 6"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/></svg>
-        </div>
-        <div class="exp-title">Beyond the Guidebooks</div>
-        <p class="exp-text">Hidden viewpoints, village lunch spots, canyon trails only shepherds know. Every itinerary has at least one moment you'll never find online.</p>
-        <div class="exp-foot">Zero tourist traps</div>
-      </div>
-      <div class="exp-cell">
-        <div class="exp-num">02</div>
-        <div class="exp-icon">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        </div>
-        <div class="exp-title">Your Pace, Your Rules</div>
-        <p class="exp-text">No rigid schedules. Stop for coffee over a canyon. Linger at a monastery. If a roadside vendor is selling the season's best pomegranates, we stop.</p>
-        <div class="exp-foot">Fully flexible itineraries</div>
-      </div>
-      <div class="exp-cell">
-        <div class="exp-num">03</div>
-        <div class="exp-icon">
-          <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-        </div>
-        <div class="exp-title">Local Storytelling</div>
-        <p class="exp-text">Our guides grew up with these legends, studied these monasteries, debated this history over dinner. Every crumbling wall has a story they actually know.</p>
-        <div class="exp-foot">Native guides only</div>
+      <div class="tour-feature-body">
+        <div class="tour-feature-title" data-i18n="tours_card_title">Explore Our Tour Packages</div>
+        <p class="tour-feature-desc" data-i18n="tours_card_desc">From Garni's Hellenistic temple to the cable cars of Tatev — every route is private, flexible, and led by a guide who actually grew up here.</p>
+        <ul class="tour-feature-list">
+          <li><span class="tour-feature-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span data-i18n="tours_feat1">Private transport &amp; driver</span></li>
+          <li><span class="tour-feature-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span data-i18n="tours_feat2">Expert local guides</span></li>
+          <li><span class="tour-feature-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span data-i18n="tours_feat3">Flexible dates, any group size</span></li>
+        </ul>
+        <a href="tours.html" class="tour-feature-cta">
+          <span data-i18n="tours_cta">Tour Packages</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
       </div>
     </div>
   </div>
@@ -518,78 +342,21 @@ footer{background:var(--blue-deep);padding:2rem 1.5rem}
 <!-- REVIEWS ──────────────────────────────────────── -->
 <section id="reviews" class="section reviews-section">
   <div class="section-inner">
-    <div class="section-header r">
-      <div class="eyebrow">Traveller Stories</div>
-      <h2 class="section-title">What Our Guests Say</h2>
-      <div class="section-rule"></div>
-      <p class="section-lead">Real experiences from real travellers. Read them, then add yours.</p>
-    </div>
-
-    <!-- Sort / count bar -->
-    <div class="reviews-bar r">
-      <div class="reviews-count" id="review-count">Showing all reviews</div>
-      <select class="reviews-sort" onchange="sortReviews(this.value)">
-        <option value="newest">Newest first</option>
-        <option value="highest">Highest rated</option>
-        <option value="lowest">Lowest rated</option>
-      </select>
-    </div>
-
-    <!-- Reviews grid — seeded with 3 starter reviews, new ones appear via JS -->
-    <div class="reviews-grid r" id="reviews-grid">
-
-      <!-- 📝 EDIT or REMOVE these placeholder reviews — replace with real ones -->
-      <div class="review-card" data-stars="5" data-date="2024-10-15">
-        <div class="stars">★★★★★</div>
-        <p class="review-text">"The Tatev trip was the highlight of our entire Caucasus journey. Our guide brought history alive in a way no audio guide ever could. The cable car alone is worth the trip to Armenia."</p>
-        <div class="reviewer">
-          <div class="reviewer-avatar">JK</div>
-          <div>
-            <div class="reviewer-name">James K.</div>
-            <div class="reviewer-meta">London, UK · October 2024</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="review-card" data-stars="5" data-date="2024-06-20">
-        <div class="stars">★★★★★</div>
-        <p class="review-text">"We came for a genealogy trip — Upupa found my grandmother's village on old Soviet maps, arranged a meeting with the local historian, and we found family we didn't know we had. Life-changing."</p>
-        <div class="reviewer">
-          <div class="reviewer-avatar" style="background:#fef1e8;color:#d96a28">SD</div>
-          <div>
-            <div class="reviewer-name">Susan D.</div>
-            <div class="reviewer-meta">Boston, USA · June 2024</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="review-card" data-stars="5" data-date="2024-05-08">
-        <div class="stars">★★★★★</div>
-        <p class="review-text">"As a birder I was specific: I wanted Caucasian Grouse and the Arapan wetlands. Upupa found both. They understood exactly what I needed and didn't try to sell me a generic package."</p>
-        <div class="reviewer">
-          <div class="reviewer-avatar">RV</div>
-          <div>
-            <div class="reviewer-name">Rens V.</div>
-            <div class="reviewer-meta">Amsterdam, NL · May 2024</div>
-          </div>
-        </div>
-      </div>
-
-    </div><!-- /reviews-grid -->
+    <!-- Newly submitted reviews render here (hidden until the first one is posted) -->
+    <div class="reviews-grid r" id="reviews-grid"></div>
 
     <!-- Write a review -->
-    <div class="write-review r" id="write-review" style="margin-top:2.5rem">
-      <div class="wr-title">Share Your Experience</div>
-      <p class="wr-sub">Travelled with us? We'd love to hear about it — your story helps other travellers decide.</p>
+    <div class="write-review r" id="write-review">
+      <div class="wr-title" data-i18n="wr_title">Share Your Experience</div>
+      <p class="wr-sub" data-i18n="wr_sub">Travelled with us? We'd love to hear about it — your story helps other travellers decide.</p>
 
       <div id="wr-success">
         <div style="font-size:1.5rem;margin-bottom:.5rem">🙏</div>
-        Thank you! Your review will appear here shortly.
+        <span data-i18n="wr_success">Thank you! Your review will appear here shortly.</span>
       </div>
 
       <div id="wr-form">
-        <!-- Star picker -->
-        <div style="margin-bottom:.5rem;font-size:.65rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--blue)">Your Rating</div>
+        <div class="wr-rating-label" data-i18n="wr_rating_label">Your Rating</div>
         <div class="star-pick" id="star-pick">
           <button type="button" data-val="1" onclick="pickStar(1)">★</button>
           <button type="button" data-val="2" onclick="pickStar(2)">★</button>
@@ -599,36 +366,36 @@ footer{background:var(--blue-deep);padding:2rem 1.5rem}
         </div>
 
         <div class="wr-fields">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
+          <div class="wr-row2">
             <div>
-              <label class="flabel" for="wr-name">Your Name</label>
-              <input class="wr-input" id="wr-name" type="text" placeholder="Jane Smith" maxlength="60"/>
+              <label class="flabel" for="wr-name" data-i18n="wr_name_label">Your Name</label>
+              <input class="wr-input" id="wr-name" type="text" data-i18n-placeholder="wr_name_ph" placeholder="Jane Smith" maxlength="60"/>
             </div>
             <div>
-              <label class="flabel" for="wr-location">City / Country</label>
-              <input class="wr-input" id="wr-location" type="text" placeholder="Paris, France" maxlength="60"/>
+              <label class="flabel" for="wr-location" data-i18n="wr_location_label">City / Country</label>
+              <input class="wr-input" id="wr-location" type="text" data-i18n-placeholder="wr_location_ph" placeholder="Paris, France" maxlength="60"/>
             </div>
           </div>
           <div>
-            <label class="flabel" for="wr-tour">Tour Taken</label>
+            <label class="flabel" for="wr-tour" data-i18n="wr_tour_label">Tour Taken</label>
             <select class="wr-input" id="wr-tour" style="cursor:pointer">
-              <option value="">Select a tour…</option>
+              <option value="" data-i18n="wr_tour_select">Select a tour…</option>
               <option>Garni, Geghard &amp; Symphony of Stones</option>
               <option>Khor Virap, Areni Cave &amp; Noravank</option>
               <option>Tatev &amp; Syunik South Expedition</option>
-              <option>Custom Itinerary</option>
+              <option data-i18n="f_tour_custom">Custom Itinerary</option>
             </select>
           </div>
           <div>
-            <label class="flabel" for="wr-text">Your Review</label>
-            <textarea class="wr-input wr-textarea" id="wr-text" placeholder="Tell future travellers what made your trip memorable…" maxlength="600"></textarea>
+            <label class="flabel" for="wr-text" data-i18n="wr_text_label">Your Review</label>
+            <textarea class="wr-input wr-textarea" id="wr-text" data-i18n-placeholder="wr_text_ph" placeholder="Tell future travellers what made your trip memorable…" maxlength="600"></textarea>
           </div>
         </div>
 
         <div class="wr-footer">
-          <p class="wr-note">Reviews are stored locally in your browser and visible to you immediately.<br>They'll appear for everyone once we approve them.</p>
+          <p class="wr-note" data-i18n-html="wr_note">Reviews are stored locally in your browser and visible to you immediately.<br>They'll appear for everyone once we approve them.</p>
           <button class="btn-primary" onclick="submitReview()" style="flex-shrink:0">
-            Post Review
+            <span data-i18n="wr_submit">Post Review</span>
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
           </button>
         </div>
@@ -642,68 +409,65 @@ footer{background:var(--blue-deep);padding:2rem 1.5rem}
 <section id="contact" class="contact-section">
   <div class="contact-inner">
 
-    <!-- Left copy -->
     <div class="contact-copy">
-      <div class="eyebrow">Ready to explore?</div>
-      <h2 class="contact-title">Let's plan your Armenia trip.</h2>
-      <p class="contact-sub">Tell us your dates, interests, and group size. We reply within hours with availability — then a small deposit locks your date instantly.</p>
+      <div class="eyebrow" data-i18n="contact_eyebrow">Ready to Explore?</div>
+      <h2 class="contact-title" data-i18n="contact_title">Let's plan your Armenia trip.</h2>
+      <p class="contact-sub" data-i18n="contact_sub">Tell us your dates, interests, and group size. We reply within hours with availability — then a small deposit locks your date instantly.</p>
 
       <div class="contact-steps">
-        <div class="c-step"><div class="c-step-num">1</div><div><div class="c-step-t">Send your enquiry</div><div class="c-step-d">Takes 2 minutes. No account needed.</div></div></div>
-        <div class="c-step"><div class="c-step-num">2</div><div><div class="c-step-t">We confirm availability</div><div class="c-step-d">Typically within a few hours.</div></div></div>
-        <div class="c-step"><div class="c-step-num">3</div><div><div class="c-step-t">Pay a deposit to lock your date</div><div class="c-step-d">Secure and instant. Balance on the day.</div></div></div>
+        <div class="c-step"><div class="c-step-num">1</div><div><div class="c-step-t" data-i18n="c_step1_t">Send your enquiry</div><div class="c-step-d" data-i18n="c_step1_d">Takes 2 minutes. No account needed.</div></div></div>
+        <div class="c-step"><div class="c-step-num">2</div><div><div class="c-step-t" data-i18n="c_step2_t">We confirm availability</div><div class="c-step-d" data-i18n="c_step2_d">Typically within a few hours.</div></div></div>
+        <div class="c-step"><div class="c-step-num">3</div><div><div class="c-step-t" data-i18n="c_step3_t">Pay a deposit to lock your date</div><div class="c-step-d" data-i18n="c_step3_d">Secure and instant. Balance on the day.</div></div></div>
       </div>
 
       <!-- 📝 EDIT contact details -->
       <div class="contact-direct">
-        <div class="contact-direct-label">Or reach us directly</div>
+        <div class="contact-direct-label" data-i18n="contact_direct_label">Or reach us directly</div>
         <a href="mailto:hello@upupatravel.com">hello@upupatravel.com</a>
         <a href="https://wa.me/37400000000">WhatsApp: +374 XX XXX XXX</a>
       </div>
     </div>
 
-    <!-- Right form -->
     <div>
       <div class="form-card">
-        <div class="form-card-title">Request a Tour or Custom Itinerary</div>
+        <div class="form-card-title" data-i18n="form_title">Request a Tour or Custom Itinerary</div>
         <!-- 🔌 Add action="https://formspree.io/f/YOUR_ID" when ready -->
         <form name="booking" method="POST" data-netlify="true" class="form-fields">
           <div class="form-row">
             <div>
-              <label class="flabel" for="f-name">Full Name</label>
-              <input class="finput" id="f-name" name="name" type="text" placeholder="Jane Smith" required/>
+              <label class="flabel" for="f-name" data-i18n="f_name_label">Full Name</label>
+              <input class="finput" id="f-name" name="name" type="text" data-i18n-placeholder="f_name_ph" placeholder="Jane Smith" required/>
             </div>
             <div>
-              <label class="flabel" for="f-contact">Email or WhatsApp</label>
-              <input class="finput" id="f-contact" name="contact" type="text" placeholder="email or +1…" required/>
+              <label class="flabel" for="f-contact" data-i18n="f_contact_label">Email or WhatsApp</label>
+              <input class="finput" id="f-contact" name="contact" type="text" data-i18n-placeholder="f_contact_ph" placeholder="email or +1…" required/>
             </div>
           </div>
           <div class="form-row">
             <div>
-              <label class="flabel" for="f-tour">Tour</label>
-              <!-- 📝 EDIT tour options -->
+              <label class="flabel" for="f-tour" data-i18n="f_tour_label">Tour</label>
               <select class="fselect" id="f-tour" name="tour">
-                <option value="">Choose…</option>
+                <option value="" data-i18n="f_tour_choose">Choose…</option>
                 <option>Garni, Geghard &amp; Symphony</option>
                 <option>Khor Virap, Areni &amp; Noravank</option>
                 <option>Tatev &amp; Syunik (2-Day)</option>
-                <option>Custom Itinerary</option>
+                <option data-i18n="f_tour_custom">Custom Itinerary</option>
               </select>
             </div>
             <div>
-              <label class="flabel" for="f-date">Desired Date</label>
+              <label class="flabel" for="f-date" data-i18n="f_date_label">Desired Date</label>
               <input class="finput" id="f-date" name="date" type="date"/>
             </div>
           </div>
           <div>
-            <label class="flabel" for="f-msg">Group Size &amp; Notes</label>
-            <textarea class="ftextarea" id="f-msg" name="message" placeholder="How many people? Dietary needs, interests…"></textarea>
+            <label class="flabel" for="f-msg" data-i18n="f_msg_label">Group Size &amp; Notes</label>
+            <textarea class="ftextarea" id="f-msg" name="message" data-i18n-placeholder="f_msg_ph" placeholder="How many people? Dietary needs, interests…"></textarea>
           </div>
           <button type="submit" class="btn-primary" style="width:100%;justify-content:center;padding:.8rem">
-            Send Enquiry
+            <span data-i18n="f_submit">Send Enquiry</span>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
           </button>
-          <p class="form-note">No payment now. We confirm availability first.</p>
+          <p class="form-note" data-i18n="f_note">No payment now. We confirm availability first.</p>
         </form>
       </div>
     </div>
@@ -715,15 +479,13 @@ footer{background:var(--blue-deep);padding:2rem 1.5rem}
 <footer>
   <div class="footer-inner">
     <div>
-      <!-- 📝 EDIT footer brand name and copyright -->
       <div class="footer-brand">UPUPA TRAVEL</div>
-      <div class="footer-meta" style="margin-top:.3rem">© 2026 · Yerevan, Armenia · Ministry of Tourism Licensed</div>
+      <div class="footer-meta" style="margin-top:.3rem" data-i18n="footer_meta">© 2026 · Yerevan, Armenia · Ministry of Tourism Licensed</div>
     </div>
     <div class="footer-links">
-      <!-- 📝 EDIT social links -->
-      <a href="#">Instagram</a>
-      <a href="#">TripAdvisor</a>
-      <a href="#">Facebook</a>
+      <a href="#" data-i18n="footer_ig">Instagram</a>
+      <a href="#" data-i18n="footer_ta">TripAdvisor</a>
+      <a href="#" data-i18n="footer_fb">Facebook</a>
     </div>
   </div>
 </footer>
@@ -731,11 +493,9 @@ footer{background:var(--blue-deep);padding:2rem 1.5rem}
 <script>
 /* ── NAV ──────────────────────────────────────── */
 const navEl = document.getElementById('nav');
-const logoText = document.getElementById('logo-text');
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('nav-links');
 
-// show desktop links only on wider screens
 function setDesktopLinks(){
   navLinks.style.display = window.innerWidth >= 768 ? 'flex' : 'none';
   hamburger.style.display = window.innerWidth >= 768 ? 'none' : 'block';
@@ -751,29 +511,6 @@ updateNav();
 
 function toggleMobile(){ document.getElementById('mobile-nav').classList.toggle('open'); }
 function closeMobile(){ document.getElementById('mobile-nav').classList.remove('open'); }
-
-/* ── TOUR FILTER ──────────────────────────────── */
-function filterCards(cat, btn){
-  document.querySelectorAll('.ftab').forEach(b => b.classList.remove('on'));
-  btn.classList.add('on');
-  document.querySelectorAll('.card[data-cat]').forEach(c => {
-    c.style.display = (cat === 'all' || c.dataset.cat === cat) ? 'flex' : 'none';
-  });
-}
-
-/* ── ACCORDION ────────────────────────────────── */
-function toggleItin(id, btn){
-  const panel = document.getElementById(id);
-  const open = panel.classList.contains('open');
-  document.querySelectorAll('.itin-panel').forEach(p => p.classList.remove('open'));
-  document.querySelectorAll('.chev').forEach(c => c.style.transform = '');
-  if(!open){
-    panel.classList.add('open');
-    const chev = btn.querySelector('.chev');
-    if(chev){ chev.style.transform = 'rotate(90deg)'; }
-    setTimeout(() => panel.scrollIntoView({behavior:'smooth',block:'nearest'}), 80);
-  }
-}
 
 /* ── SCROLL REVEAL ────────────────────────────── */
 const observer = new IntersectionObserver(entries => {
@@ -795,7 +532,6 @@ function pickStar(n){
 }
 
 /* ── REVIEWS ──────────────────────────────────── */
-// Load any saved reviews from localStorage
 function loadSavedReviews(){
   const saved = JSON.parse(localStorage.getItem('upupa_reviews') || '[]');
   saved.forEach(r => appendReviewCard(r));
@@ -824,8 +560,11 @@ function appendReviewCard(r){
 }
 
 function updateReviewCount(){
+  const el = document.getElementById('review-count');
+  if(!el) return;
   const n = document.querySelectorAll('#reviews-grid .review-card').length;
-  document.getElementById('review-count').textContent = `${n} review${n !== 1 ? 's' : ''}`;
+  const t = translations[currentLang];
+  el.textContent = (t && t.reviews_count) ? t.reviews_count : `${n} review${n !== 1 ? 's' : ''}`;
 }
 
 function escHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
@@ -848,7 +587,6 @@ function submitReview(){
     dateLabel: now.toLocaleDateString('en-GB',{month:'long',year:'numeric'})
   };
 
-  // Save to localStorage
   const saved = JSON.parse(localStorage.getItem('upupa_reviews') || '[]');
   saved.unshift(r);
   localStorage.setItem('upupa_reviews', JSON.stringify(saved));
@@ -856,11 +594,9 @@ function submitReview(){
   appendReviewCard(r);
   updateReviewCount();
 
-  // Show success, hide form
   document.getElementById('wr-form').style.display = 'none';
   document.getElementById('wr-success').style.display = 'block';
 
-  // Reset form silently
   setTimeout(() => {
     document.getElementById('wr-name').value = '';
     document.getElementById('wr-location').value = '';
@@ -873,19 +609,203 @@ function submitReview(){
   }, 4000);
 }
 
-function sortReviews(method){
-  const grid = document.getElementById('reviews-grid');
-  const cards = Array.from(grid.querySelectorAll('.review-card'));
-  cards.sort((a,b) => {
-    if(method === 'newest') return (b.dataset.date || '').localeCompare(a.dataset.date || '');
-    if(method === 'highest') return parseInt(b.dataset.stars||0) - parseInt(a.dataset.stars||0);
-    if(method === 'lowest') return parseInt(a.dataset.stars||0) - parseInt(b.dataset.stars||0);
-    return 0;
+loadSavedReviews();
+
+/* ── I18N ──────────────────────────────────────── */
+const translations = {
+  en: {
+    hero_tag_short: "discover armenia",
+    nav_home:"Home", nav_about:"About", nav_tours:"Tours", nav_reviews:"Reviews", nav_contact:"Contact", nav_cta:"Book a Call",
+    hero_tag:"Private Guide Service · Yerevan, Armenia",
+    hero_h1:"Discover <em>Armenia</em> Your Way",
+    hero_sub:"Handcrafted private tours across ancient monasteries, volcanic highlands, and vine-draped valleys — designed by locals who know every hidden road.",
+    hero_btn1:"Tour Packages", hero_btn2:"Contact Us",
+    mission_eyebrow:"Our Mission", mission_title:"Every Trip, Made Personal",
+    mission_lead:"We believe every guest deserves more than a bus schedule and a checklist. Our mission is simple — to share the Armenia we love, one small, unhurried group at a time.",
+    mission_s1_n:"100%", mission_s1_l:"Tailored & Private",
+    mission_s2_n:"All‑Inclusive", mission_s2_l:"Transport & Fees",
+    mission_s3_n:"Off‑Grid", mission_s3_l:"Hidden Gems",
+    mission_s4_n:"Anytime", mission_s4_l:"Flexible Dates",
+    about_eyebrow:"Who We Are", about_title:"About Upupa Travel",
+    about_lead:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+    about_fact1:"Local, native guides", about_fact2:"Small, private groups", about_fact3:"Custom-built routes",
+    tours_eyebrow:"Curated Experiences", tours_title:"Tours & Packages",
+    tours_lead:"Built around your pace — not a bus schedule. Private transport, expert guides, and places most tourists never find.",
+    tours_card_tag:"Day Trips & Multi‑Day", tours_card_title:"Explore Our Tour Packages",
+    tours_card_desc:"From Garni's Hellenistic temple to the cable cars of Tatev — every route is private, flexible, and led by a guide who actually grew up here.",
+    tours_feat1:"Private transport & driver", tours_feat2:"Expert local guides", tours_feat3:"Flexible dates, any group size",
+    tours_cta:"Tour Packages",
+    why_eyebrow:"How We Travel", why_title:"The Upupa Experience",
+    why_lead:"Why experienced travellers choose a boutique private guide over a crowded bus.",
+    why1_title:"Beyond the Guidebooks", why1_text:"Hidden viewpoints, village lunch spots, canyon trails only shepherds know. Every itinerary has at least one moment you'll never find online.", why1_foot:"Zero tourist traps",
+    why2_title:"Your Pace, Your Rules", why2_text:"No rigid schedules. Stop for coffee over a canyon. Linger at a monastery. If a roadside vendor is selling the season's best pomegranates, we stop.", why2_foot:"Fully flexible itineraries",
+    why3_title:"Local Storytelling", why3_text:"Our guides grew up with these legends, studied these monasteries, debated this history over dinner. Every crumbling wall has a story they actually know.", why3_foot:"Native guides only",
+    reviews_eyebrow:"Traveller Stories", reviews_title:"What Our Guests Say",
+    reviews_lead:"Real experiences from real travellers. Read them, then add yours.",
+    reviews_count:"Showing all reviews", sort_newest:"Newest first", sort_highest:"Highest rated", sort_lowest:"Lowest rated",
+    wr_title:"Share Your Experience", wr_sub:"Travelled with us? We'd love to hear about it — your story helps other travellers decide.",
+    wr_rating_label:"Your Rating", wr_name_label:"Your Name", wr_name_ph:"Jane Smith",
+    wr_location_label:"City / Country", wr_location_ph:"Paris, France",
+    wr_tour_label:"Tour Taken", wr_tour_select:"Select a tour…",
+    wr_text_label:"Your Review", wr_text_ph:"Tell future travellers what made your trip memorable…",
+    wr_note:"Reviews are stored locally in your browser and visible to you immediately.<br>They'll appear for everyone once we approve them.",
+    wr_submit:"Post Review", wr_success:"Thank you! Your review will appear here shortly.",
+    f_tour_custom:"Custom Itinerary",
+    contact_eyebrow:"Ready to Explore?", contact_title:"Let's plan your Armenia trip.",
+    contact_sub:"Tell us your dates, interests, and group size. We reply within hours with availability — then a small deposit locks your date instantly.",
+    c_step1_t:"Send your enquiry", c_step1_d:"Takes 2 minutes. No account needed.",
+    c_step2_t:"We confirm availability", c_step2_d:"Typically within a few hours.",
+    c_step3_t:"Pay a deposit to lock your date", c_step3_d:"Secure and instant. Balance on the day.",
+    contact_direct_label:"Or reach us directly",
+    form_title:"Request a Tour or Custom Itinerary",
+    f_name_label:"Full Name", f_name_ph:"Jane Smith",
+    f_contact_label:"Email or WhatsApp", f_contact_ph:"email or +1…",
+    f_tour_label:"Tour", f_tour_choose:"Choose…",
+    f_date_label:"Desired Date",
+    f_msg_label:"Group Size & Notes", f_msg_ph:"How many people? Dietary needs, interests…",
+    f_submit:"Send Enquiry", f_note:"No payment now. We confirm availability first.",
+    footer_meta:"© 2026 · Yerevan, Armenia · Ministry of Tourism Licensed",
+    footer_ig:"Instagram", footer_ta:"TripAdvisor", footer_fb:"Facebook"
+  },
+  ru: {
+    hero_tag_short: "откройте армению",
+    nav_home:"Главная", nav_about:"О нас", nav_tours:"Туры", nav_reviews:"Отзывы", nav_contact:"Контакты", nav_cta:"Заказать звонок",
+    hero_tag:"Частный гид-сервис · Ереван, Армения",
+    hero_h1:"Откройте <em>Армению</em> по-своему",
+    hero_sub:"Авторские частные туры к древним монастырям, вулканическим плато и виноградным долинам — маршруты, которые знают только местные.",
+    hero_btn1:"Туристические пакеты", hero_btn2:"Связаться с нами",
+    mission_eyebrow:"Наша миссия", mission_title:"Каждая поездка — личная",
+    mission_lead:"Мы верим, что каждый гость заслуживает большего, чем расписание автобуса и список галочек. Наша миссия проста — делиться той Арменией, которую мы любим, в небольших неспешных группах.",
+    mission_s1_n:"100%", mission_s1_l:"Индивидуально и приватно",
+    mission_s2_n:"Всё включено", mission_s2_l:"Транспорт и сборы",
+    mission_s3_n:"Вне маршрутов", mission_s3_l:"Скрытые места",
+    mission_s4_n:"В любое время", mission_s4_l:"Гибкие даты",
+    about_eyebrow:"Кто мы", about_title:"О компании Upupa Travel",
+    about_lead:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+    about_fact1:"Местные гиды-носители культуры", about_fact2:"Небольшие частные группы", about_fact3:"Маршруты под вас",
+    tours_eyebrow:"Авторские маршруты", tours_title:"Туры и пакеты",
+    tours_lead:"Маршрут подстраивается под вас, а не под расписание автобуса. Частный транспорт, опытные гиды и места, куда редко попадают туристы.",
+    tours_card_tag:"Однодневные и многодневные туры", tours_card_title:"Изучите наши турпакеты",
+    tours_card_desc:"От эллинистического храма Гарни до канатной дороги в Татев — каждый маршрут приватный, гибкий и ведётся гидом, который здесь вырос.",
+    tours_feat1:"Частный транспорт и водитель", tours_feat2:"Опытные местные гиды", tours_feat3:"Гибкие даты, любой размер группы",
+    tours_cta:"Туристические пакеты",
+    why_eyebrow:"Как мы путешествуем", why_title:"Опыт Upupa",
+    why_lead:"Почему опытные путешественники выбирают частного гида, а не переполненный автобус.",
+    why1_title:"Не только путеводители", why1_text:"Скрытые смотровые площадки, деревенские обеды, тропы в каньонах, о которых знают только пастухи. В каждом маршруте есть момент, которого вы не найдёте онлайн.", why1_foot:"Никаких туристических ловушек",
+    why2_title:"Ваш темп, ваши правила", why2_text:"Никаких жёстких расписаний. Остановка на кофе над каньоном. Задержаться у монастыря. Если у дороги продают лучшие гранаты сезона — мы остановимся.", why2_foot:"Полностью гибкие маршруты",
+    why3_title:"Живые истории", why3_text:"Наши гиды выросли с этими легендами, изучали эти монастыри, спорили об этой истории за ужином. У каждой полуразрушенной стены есть история, которую они действительно знают.", why3_foot:"Только местные гиды",
+    reviews_eyebrow:"Истории путешественников", reviews_title:"Что говорят наши гости",
+    reviews_lead:"Реальный опыт реальных путешественников. Прочитайте их истории, затем добавьте свою.",
+    reviews_count:"Показаны все отзывы", sort_newest:"Сначала новые", sort_highest:"Сначала с высоким рейтингом", sort_lowest:"Сначала с низким рейтингом",
+    wr_title:"Поделитесь впечатлением", wr_sub:"Путешествовали с нами? Будем рады узнать об этом — ваша история поможет другим путешественникам определиться.",
+    wr_rating_label:"Ваша оценка", wr_name_label:"Ваше имя", wr_name_ph:"Иван Иванов",
+    wr_location_label:"Город / страна", wr_location_ph:"Париж, Франция",
+    wr_tour_label:"Пройденный тур", wr_tour_select:"Выберите тур…",
+    wr_text_label:"Ваш отзыв", wr_text_ph:"Расскажите будущим путешественникам, что сделало вашу поездку незабываемой…",
+    wr_note:"Отзывы сохраняются локально в вашем браузере и видны вам сразу.<br>Всем остальным они станут видны после проверки.",
+    wr_submit:"Опубликовать отзыв", wr_success:"Спасибо! Ваш отзыв скоро появится здесь.",
+    f_tour_custom:"Индивидуальный маршрут",
+    contact_eyebrow:"Готовы к путешествию?", contact_title:"Спланируем вашу поездку в Армению.",
+    contact_sub:"Расскажите нам о датах, интересах и размере группы. Мы ответим в течение нескольких часов — а небольшой депозит сразу закрепит дату.",
+    c_step1_t:"Отправьте заявку", c_step1_d:"Это займёт 2 минуты. Без регистрации.",
+    c_step2_t:"Мы подтверждаем наличие мест", c_step2_d:"Обычно в течение нескольких часов.",
+    c_step3_t:"Внесите депозит, чтобы закрепить дату", c_step3_d:"Безопасно и мгновенно. Остальное — в день тура.",
+    contact_direct_label:"Или свяжитесь с нами напрямую",
+    form_title:"Запросить тур или индивидуальный маршрут",
+    f_name_label:"Полное имя", f_name_ph:"Иван Иванов",
+    f_contact_label:"Email или WhatsApp", f_contact_ph:"email или +1…",
+    f_tour_label:"Тур", f_tour_choose:"Выбрать…",
+    f_date_label:"Желаемая дата",
+    f_msg_label:"Размер группы и заметки", f_msg_ph:"Сколько человек? Особенности питания, интересы…",
+    f_submit:"Отправить заявку", f_note:"Оплата пока не требуется. Сначала мы подтвердим наличие мест.",
+    footer_meta:"© 2026 · Ереван, Армения · Лицензия Министерства туризма",
+    footer_ig:"Instagram", footer_ta:"TripAdvisor", footer_fb:"Facebook"
+  },
+  hy: {
+    hero_tag_short: "բացահայտեք հայաստանը",
+    nav_home:"Գլխավոր", nav_about:"Մեր մասին", nav_tours:"Տուրեր", nav_reviews:"Կարծիքներ", nav_contact:"Կապ", nav_cta:"Պատվիրել զանգ",
+    hero_tag:"Մասնավոր գիդի ծառայություն · Երևան, Հայաստան",
+    hero_h1:"Բացահայտեք <em>Հայաստանը</em> Ձեր ձևով",
+    hero_sub:"Անհատական մասնավոր տուրեր դեպի հին վանքեր, հրաբխային բարձունքներ և խաղողի հովիտներ՝ նախագծված տեղացիների կողմից, ովքեր գիտեն ամեն թաքնված ճանապարհ:",
+    hero_btn1:"Տուրիստական փաթեթներ", hero_btn2:"Կապվեք մեզ հետ",
+    mission_eyebrow:"Մեր առաքելությունը", mission_title:"Ամեն ուղևորություն՝ անհատական",
+    mission_lead:"Մենք հավատում ենք, որ յուրաքանչյուր հյուր արժանի է ավելիին, քան ավտոբուսի ժամանակացույցը: Մեր առաքելությունն է կիսվել այն Հայաստանով, որը մենք սիրում ենք՝ փոքր, հանգիստ խմբերով:",
+    mission_s1_n:"100%", mission_s1_l:"Անհատական և մասնավոր",
+    mission_s2_n:"Ամեն ինչ ներառված", mission_s2_l:"Տրանսպորտ և վճարներ",
+    mission_s3_n:"Քիչ հայտնի", mission_s3_l:"Թաքնված վայրեր",
+    mission_s4_n:"Ցանկացած ժամանակ", mission_s4_l:"Ճկուն ամսաթվեր",
+    about_eyebrow:"Ովքե՞ր ենք մենք", about_title:"Upupa Travel-ի մասին",
+    about_lead:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+    about_fact1:"Տեղացի գիդեր", about_fact2:"Փոքր, մասնավոր խմբեր", about_fact3:"Ձեզ համար կազմված երթուղիներ",
+    tours_eyebrow:"Ընտրովի փորձառություններ", tours_title:"Տուրեր և փաթեթներ",
+    tours_lead:"Երթուղին հարմարվում է ձեզ, ոչ թե ավտոբուսի ժամանակացույցին: Մասնավոր տրանսպորտ, փորձառու գիդեր և վայրեր, որտեղ քիչ զբոսաշրջիկ է հասնում:",
+    tours_card_tag:"Մեկօրյա և բազմօրյա տուրեր", tours_card_title:"Ուսումնասիրեք մեր տուրիստական փաթեթները",
+    tours_card_desc:"Գառնիի հելլենիստական տաճարից մինչև Տաթևի ճոպանուղին՝ ամեն երթուղի մասնավոր է, ճկուն և վարվում է գիդի կողմից, ով իսկապես մեծացել է այստեղ:",
+    tours_feat1:"Մասնավոր տրանսպորտ և վարորդ", tours_feat2:"Փորձառու տեղացի գիդեր", tours_feat3:"Ճկուն ամսաթվեր, ցանկացած խմբի չափ",
+    tours_cta:"Տուրիստական փաթեթներ",
+    why_eyebrow:"Ինչպես ենք ճամփորդում", why_title:"Upupa փորձառությունը",
+    why_lead:"Ինչու են փորձառու ճամփորդները ընտրում մասնավոր գիդ՝ լցված ավտոբուսի փոխարեն:",
+    why1_title:"Ուղեցույցներից այն կողմ", why1_text:"Թաքնված տեսարանային կետեր, գյուղական ճաշարաններ, կիրճերի արահետներ, որոնք միայն հովիվներն են ճանաչում: Ամեն երթուղում կա գոնե մեկ պահ, որը ինտերնետում չեք գտնի:", why1_foot:"Ոչ մի զբոսաշրջային թակարդ",
+    why2_title:"Ձեր տեմպը, ձեր կանոնները", why2_text:"Առանց խիստ ժամանակացույցի: Կանգ առեք սուրճի համար կիրճի վրա: Ուշանալ վանքի մոտ: Եթե ճանապարհին վաճառում են սեզոնի լավագույն նռները՝ մենք կանգ ենք առնում:", why2_foot:"Լիովին ճկուն երթուղիներ",
+    why3_title:"Տեղական պատմություններ", why3_text:"Մեր գիդերը մեծացել են այս լեգենդներով, ուսումնասիրել են այս վանքերը, քննարկել այս պատմությունը ընթրիքի ժամանակ: Ամեն փլված պատ ունի պատմություն, որը նրանք իսկապես գիտեն:", why3_foot:"Միայն տեղացի գիդեր",
+    reviews_eyebrow:"Ճամփորդների պատմություններ", reviews_title:"Ինչ են ասում մեր հյուրերը",
+    reviews_lead:"Իրական փորձառություններ իրական ճամփորդներից: Կարդացեք և ավելացրեք ձերը:",
+    reviews_count:"Ցուցադրվում են բոլոր կարծիքները", sort_newest:"Նախ նորերը", sort_highest:"Նախ բարձր գնահատականները", sort_lowest:"Նախ ցածր գնահատականները",
+    wr_title:"Կիսվեք ձեր փորձառությամբ", wr_sub:"Ճամփորդե՞լ եք մեզ հետ: Կցանկանայինք լսել այդ մասին. ձեր պատմությունը կօգնի այլ ճամփորդների:",
+    wr_rating_label:"Ձեր գնահատականը", wr_name_label:"Ձեր անունը", wr_name_ph:"Անի Հակոբյան",
+    wr_location_label:"Քաղաք / երկիր", wr_location_ph:"Փարիզ, Ֆրանսիա",
+    wr_tour_label:"Կատարված տուր", wr_tour_select:"Ընտրեք տուր…",
+    wr_text_label:"Ձեր կարծիքը", wr_text_ph:"Պատմեք ապագա ճամփորդներին, թե ինչն էր անմոռանալի ձեր ուղևորության մեջ…",
+    wr_note:"Կարծիքները պահվում են տեղական՝ ձեր բրաուզերում և տեսանելի են ձեզ անմիջապես:<br>Մյուսների համար դրանք կհայտնվեն հաստատումից հետո:",
+    wr_submit:"Հրապարակել կարծիքը", wr_success:"Շնորհակալություն! Ձեր կարծիքը շուտով կհայտնվի այստեղ:",
+    f_tour_custom:"Անհատական երթուղի",
+    contact_eyebrow:"Պատրա՞ստ եք ճամփորդել", contact_title:"Եկեք պլանավորենք ձեր ուղևորությունը Հայաստան:",
+    contact_sub:"Ասացեք մեզ ձեր ամսաթվերը, հետաքրքրությունները և խմբի չափը: Կպատասխանենք մի քանի ժամվա ընթացքում, իսկ փոքր կանխավճարը անմիջապես կամրագրի ձեր ամսաթիվը:",
+    c_step1_t:"Ուղարկեք հարցում", c_step1_d:"Տևում է 2 րոպե: Հաշիվ պետք չէ:",
+    c_step2_t:"Մենք հաստատում ենք հասանելիությունը", c_step2_d:"Սովորաբար մի քանի ժամվա ընթացքում:",
+    c_step3_t:"Կատարեք կանխավճար՝ ամսաթիվը ամրագրելու համար", c_step3_d:"Անվտանգ և ակնթարթային: Մնացորդը՝ օրվա ընթացքում:",
+    contact_direct_label:"Կամ կապվեք մեզ հետ ուղղակիորեն",
+    form_title:"Պատվիրեք տուր կամ անհատական երթուղի",
+    f_name_label:"Անուն ազգանուն", f_name_ph:"Անի Հակոբյան",
+    f_contact_label:"Էլ. փոստ կամ WhatsApp", f_contact_ph:"էլ. փոստ կամ +1…",
+    f_tour_label:"Տուր", f_tour_choose:"Ընտրեք…",
+    f_date_label:"Ցանկալի ամսաթիվ",
+    f_msg_label:"Խմբի չափ և նշումներ", f_msg_ph:"Քանի՞ մարդ: Սննդային առանձնահատկություններ, հետաքրքրություններ…",
+    f_submit:"Ուղարկել հարցումը", f_note:"Վճարում դեռ պետք չէ: Նախ կհաստատենք հասանելիությունը:",
+    footer_meta:"© 2026 · Երևան, Հայաստան · Լիցենզավորված Զբոսաշրջության նախարարության կողմից",
+    footer_ig:"Instagram", footer_ta:"TripAdvisor", footer_fb:"Facebook"
+  }
+};
+
+let currentLang = localStorage.getItem('upupa_lang') || 'en';
+
+function applyLang(lang){
+  if(!translations[lang]) return;
+  currentLang = lang;
+  document.documentElement.lang = lang;
+  const t = translations[lang];
+
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const k = el.getAttribute('data-i18n');
+    if(t[k] !== undefined) el.textContent = t[k];
   });
-  cards.forEach(c => grid.appendChild(c));
+  document.querySelectorAll('[data-i18n-html]').forEach(el => {
+    const k = el.getAttribute('data-i18n-html');
+    if(t[k] !== undefined) el.innerHTML = t[k];
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const k = el.getAttribute('data-i18n-placeholder');
+    if(t[k] !== undefined) el.placeholder = t[k];
+  });
+  document.querySelectorAll('.lang-btn').forEach(b => {
+    b.classList.toggle('active', b.getAttribute('data-lang') === lang);
+  });
+
+  updateReviewCount();
+  localStorage.setItem('upupa_lang', lang);
 }
 
-loadSavedReviews();
+applyLang(currentLang);
 </script>
 </body>
 </html>
