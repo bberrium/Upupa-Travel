@@ -73,9 +73,12 @@ ul{list-style:none}
 .hero{min-height:74vh;position:relative;display:flex;flex-direction:column;justify-content:center;background:#eef2f7}
 .hero-bg{position:absolute;inset:0;background:linear-gradient(160deg,#dce6f5 0%,#eef4fd 60%,#f7faff 100%)}
 .hero-photo{position:absolute;inset:0}
-.hero-photo img{width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.2s}
-.hero-photo img.loaded{opacity:1}
+.hero-slide{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.6s ease}
+.hero-slide.active{opacity:1}
 .hero-vignette{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,20,35,.55) 0%,rgba(10,20,35,.35) 45%,rgba(10,20,35,.55) 100%)}
+.hero-dots{position:absolute;bottom:1.5rem;left:50%;transform:translateX(-50%);z-index:3;display:flex;gap:.5rem}
+.hero-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.4);border:none;padding:0;cursor:pointer;transition:background .2s,transform .2s}
+.hero-dot.active{background:#fff;transform:scale(1.25)}
 .hero-body{position:relative;z-index:2;max-width:1200px;margin:0 auto;width:100%;padding:6.5rem 1.5rem 5rem;text-align:center;display:flex;flex-direction:column;align-items:center}
 .hero-tag{display:inline-block;font-size:.65rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.85);margin-bottom:1.25rem;border:1px solid rgba(255,255,255,.3);border-radius:4px;padding:.3rem .7rem}
 .hero-h1{font-family:'Playfair Display',serif;font-size:clamp(2.6rem,6vw,4.5rem);font-weight:700;color:#fff;line-height:1.05;letter-spacing:-.01em;margin-bottom:1.25rem}
@@ -213,7 +216,7 @@ footer{background:var(--blue-deep);padding:2rem 1.5rem}
     <a href="#" class="logo">
       <div class="logo-img">
         <!-- 📷 REPLACE src with your logo file -->
-        <img src="upupa.png" alt="Upupa" onerror="this.style.display='none'"/>
+        <img src="images/Hoopoe_1080.jpg" alt="Upupa" onerror="this.style.display='none'"/>
       </div>
       <div>
         <div class="logo-text" id="logo-text">UPUPA TRAVEL</div>
@@ -258,11 +261,16 @@ footer{background:var(--blue-deep);padding:2rem 1.5rem}
 <!-- HERO ─────────────────────────────────────────── -->
 <section class="hero">
   <div class="hero-bg"></div>
-  <div class="hero-photo">
-    <!-- 📷 Ararat photo — replace with a higher-res version if you have one -->
-    <img src="ararat1.jpg" alt="Mount Ararat, Armenia" id="hero-img"/>
+  <div class="hero-photo" id="hero-photo">
+    <!-- 📷 Add/replace as many slides as you like — just drop the image files next to index.html
+         and list their filenames here. The slideshow auto-detects how many there are. -->
+    <img class="hero-slide" src="images/ararat1.jpg" alt="Armenia"/>
+    <img class="hero-slide" src="images/vanq.jpg" alt="Armenia"/>
+    <img class="hero-slide" src="images/cascade.jpg" alt="Armenia"/>
+    <img class="hero-slide" src="hero4.jpg" alt="Armenia"/>
   </div>
   <div class="hero-vignette"></div>
+  <div class="hero-dots" id="hero-dots"></div>
 
   <div class="hero-body">
     <div class="hero-tag" data-i18n="hero_tag">Private Guide Service · Yerevan, Armenia</div>
@@ -518,9 +526,52 @@ const observer = new IntersectionObserver(entries => {
 }, {threshold: 0.08});
 document.querySelectorAll('.r').forEach(el => observer.observe(el));
 
-/* ── HERO IMAGE ───────────────────────────────── */
-const hi = document.getElementById('hero-img');
-if(hi){ hi.addEventListener('load', () => hi.classList.add('loaded')); if(hi.complete) hi.classList.add('loaded'); }
+/* ── HERO SLIDESHOW ───────────────────────────── */
+(function(){
+  const photoWrap = document.getElementById('hero-photo');
+  const dotsWrap = document.getElementById('hero-dots');
+  let slides = Array.from(photoWrap.querySelectorAll('.hero-slide'));
+  let idx = 0, timer = null;
+
+  // If an image file doesn't exist yet, drop it from rotation instead of showing a blank frame.
+  slides.forEach(img => {
+    img.addEventListener('error', () => {
+      img.remove();
+      slides = slides.filter(s => s !== img);
+      buildDots();
+      if(slides.length) show(0);
+    });
+  });
+
+  function buildDots(){
+    dotsWrap.innerHTML = '';
+    if(slides.length < 2) return;
+    slides.forEach((_, i) => {
+      const d = document.createElement('button');
+      d.className = 'hero-dot' + (i === idx ? ' active' : '');
+      d.setAttribute('aria-label', 'Slide ' + (i+1));
+      d.onclick = () => { show(i); restart(); };
+      dotsWrap.appendChild(d);
+    });
+  }
+
+  function show(i){
+    if(!slides.length) return;
+    slides[idx] && slides[idx].classList.remove('active');
+    idx = (i + slides.length) % slides.length;
+    slides[idx].classList.add('active');
+    dotsWrap.querySelectorAll('.hero-dot').forEach((d,n) => d.classList.toggle('active', n === idx));
+  }
+
+  function restart(){
+    if(timer) clearInterval(timer);
+    if(slides.length > 1) timer = setInterval(() => show(idx + 1), 5500);
+  }
+
+  if(slides.length) slides[0].classList.add('active');
+  buildDots();
+  restart();
+})();
 
 /* ── STAR PICKER ──────────────────────────────── */
 let selectedStars = 0;
@@ -806,6 +857,39 @@ function applyLang(lang){
 }
 
 applyLang(currentLang);
+
+/* ── BOOKING HANDOFF FROM tour-detail.html ────── */
+(function(){
+  const q = new URLSearchParams(window.location.search);
+  const tour = q.get('tour');
+  if(!tour) return;
+
+  const date = q.get('date');
+  const adults = q.get('adults');
+  const hotel = q.get('hotel');
+
+  // Try to match the tour name to an existing option; otherwise add one so it's never lost.
+  const tourSelect = document.getElementById('f-tour');
+  let matched = Array.from(tourSelect.options).find(o => o.text.trim() === tour.trim());
+  if(!matched){
+    matched = document.createElement('option');
+    matched.text = tour;
+    matched.value = tour;
+    tourSelect.add(matched, 1);
+  }
+  tourSelect.value = matched.value;
+
+  if(date) document.getElementById('f-date').value = date;
+
+  const notesParts = [];
+  if(adults) notesParts.push(`${adults} adult${adults === '1' ? '' : 's'}`);
+  if(hotel) notesParts.push(`${hotel} preferred`);
+  if(notesParts.length) document.getElementById('f-msg').value = notesParts.join(' · ');
+
+  // Clean the URL so a refresh doesn't re-trigger this, then scroll to the form.
+  window.history.replaceState({}, '', window.location.pathname + '#contact');
+  setTimeout(() => document.getElementById('contact').scrollIntoView({behavior:'smooth'}), 300);
+})();
 </script>
 </body>
 </html>
