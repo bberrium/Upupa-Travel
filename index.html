@@ -33,25 +33,27 @@ ul{list-style:none}
 /* ── TYPE ────────────────────────────────────────── */
 .serif{font-family:'Playfair Display',Georgia,serif}
 
-/* ── NAV ─────────────────────────────────────────── */
+/* ── NAV (transparent over the hero, solid once scrolled) ───────────────── */
 #nav{
   position:fixed;top:0;left:0;right:0;z-index:300;
-  background:rgba(255,255,255,.98);backdrop-filter:blur(10px);
-  box-shadow:0 1px 0 var(--border);
-  transition:box-shadow .3s;
+  background:transparent;
+  transition:background .35s ease,box-shadow .35s ease;
 }
-#nav.scrolled-shadow{box-shadow:0 2px 14px rgba(0,0,0,.06)}
+#nav.solid{background:rgba(255,255,255,.98);backdrop-filter:blur(10px);box-shadow:0 2px 14px rgba(0,0,0,.06)}
 .nav-inner{max-width:1200px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:120px}
 .logo{display:flex;align-items:center;gap:.75rem}
-.logo-full{height:120px;width:auto;max-height:120px;display:block}
+.logo-full{height:120px;width:auto;max-height:120px;display:block;filter:drop-shadow(0 1px 8px rgba(0,0,0,.4));transition:filter .35s}
+#nav.solid .logo-full{filter:none}
 .nav-links{display:flex;align-items:center;gap:1.75rem}
-.nav-a{font-size:.9rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);transition:color .2s;position:relative}
+.nav-a{font-size:.9rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:#fff;transition:color .2s;position:relative}
+#nav.solid .nav-a{color:var(--blue)}
 .nav-a::after{content:'';position:absolute;bottom:-3px;left:0;right:0;height:1px;background:var(--orange);transform:scaleX(0);transform-origin:left;transition:transform .25s}
 .nav-a:hover{color:var(--orange)}
 .nav-a:hover::after{transform:scaleX(1)}
 .nav-cta{font-size:.9rem;font-weight:500;letter-spacing:.05em;color:#fff;background:var(--orange);border:none;border-radius:6px;padding:.45rem 1rem;transition:background .2s}
 .nav-cta:hover{background:#d96a28}
-#hamburger{display:none;background:none;border:none;padding:.3rem;color:var(--blue)}
+#hamburger{display:none;background:none;border:none;padding:.3rem;color:#fff;transition:color .35s}
+#nav.solid #hamburger{color:var(--blue)}
 #mobile-nav{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(255,255,255,.98);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:1rem 1.5rem;flex-direction:column;gap:.25rem}
 #mobile-nav.open{display:flex}
 #mobile-nav .nav-a{color:var(--blue);padding:.6rem 0;border-bottom:1px solid var(--border);font-size:.85rem}
@@ -59,20 +61,24 @@ ul{list-style:none}
 #mobile-nav .nav-cta{margin-top:.75rem;text-align:center;display:block;padding:.65rem 1rem}
 
 /* language switch */
-.lang-switch{display:flex;align-items:center;gap:.2rem;margin-left:.5rem;padding-left:.9rem;border-left:1px solid var(--border)}
-.lang-btn{font-size:.68rem;font-weight:600;letter-spacing:.03em;color:var(--stone);background:transparent;border:none;border-radius:5px;padding:.3rem .45rem;transition:all .2s}
-.lang-btn:hover{color:var(--blue)}
-.lang-btn.active{background:var(--blue-pale);color:var(--blue)}
+.lang-switch{display:flex;align-items:center;gap:.2rem;margin-left:.5rem;padding-left:.9rem;border-left:1px solid rgba(255,255,255,.35);transition:border-color .35s}
+#nav.solid .lang-switch{border-left-color:var(--border)}
+.lang-btn{font-size:.68rem;font-weight:600;letter-spacing:.03em;color:rgba(255,255,255,.8);background:transparent;border:none;border-radius:5px;padding:.3rem .45rem;transition:all .2s}
+#nav.solid .lang-btn{color:var(--stone)}
+.lang-btn:hover{color:var(--orange)}
+.lang-btn.active{background:rgba(255,255,255,.2);color:#fff}
+#nav.solid .lang-btn.active{background:var(--blue-pale);color:var(--blue)}
 #mobile-nav .lang-switch{border-left:none;padding-left:0;justify-content:center;margin:.85rem 0 0;gap:.4rem}
-#mobile-nav .lang-btn{border:1px solid var(--border)}
+#mobile-nav .lang-btn{border:1px solid var(--border);color:var(--stone)}
+#mobile-nav .lang-btn.active{background:var(--blue-pale);color:var(--blue)}
 
 /* ── HERO ────────────────────────────────────────── */
-.hero{min-height:74vh;position:relative;display:flex;flex-direction:column;justify-content:center;background:#eef2f7}
+.hero{min-height:88vh;position:relative;display:flex;flex-direction:column;justify-content:center;background:#eef2f7}
 .hero-bg{position:absolute;inset:0;background:linear-gradient(160deg,#dce6f5 0%,#eef4fd 60%,#f7faff 100%)}
 .hero-photo{position:absolute;inset:0}
 .hero-slide{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.6s ease}
 .hero-slide.active{opacity:1}
-.hero-vignette{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,20,35,.55) 0%,rgba(10,20,35,.35) 45%,rgba(10,20,35,.55) 100%)}
+.hero-vignette{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,20,35,.6) 0%,rgba(10,20,35,.3) 45%,rgba(10,20,35,.6) 100%)}
 .hero-dots{position:absolute;bottom:1.5rem;left:50%;transform:translateX(-50%);z-index:3;display:flex;gap:.5rem}
 .hero-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.4);border:none;padding:0;cursor:pointer;transition:background .2s,transform .2s}
 .hero-dot.active{background:#fff;transform:scale(1.25)}
@@ -97,39 +103,45 @@ ul{list-style:none}
 .section-rule{width:32px;height:2px;background:var(--orange);margin:.85rem 0 1.1rem;border-radius:2px}
 .section-rule.center{margin-left:auto;margin-right:auto}
 .section-lead{font-size:.9rem;color:var(--stone);max-width:48ch;line-height:1.8}
+.section-lead.center{margin-left:auto;margin-right:auto}
 
 /* reveal */
 .r{opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease}
 .r.on{opacity:1;transform:none}
 
-/* ── ABOUT ───────────────────────────────────────── */
-.about-section{background:#fff}
-.about-grid{display:grid;gap:2.5rem;align-items:center}
-@media(min-width:860px){.about-grid{grid-template-columns:.85fr 1.15fr}}
-.about-media{aspect-ratio:4/3;border-radius:var(--radius);background:linear-gradient(135deg,var(--blue) 0%,var(--blue-deep) 100%);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
-.about-media svg{width:70%;height:70%}
-.about-copy .section-lead{max-width:58ch;font-size:.92rem}
-.about-facts{display:flex;flex-wrap:wrap;gap:1.1rem 1.6rem;margin-top:1.75rem}
+/* ── TOURS BOX (single panel, hover-reveal buttons) ──────────────── */
+.tours-section{background:var(--mist)}
+.tours-panel{max-width:1200px;margin:0 auto;background:#fff;border:1px solid var(--border);border-radius:var(--radius);box-shadow:0 8px 32px rgba(10,66,165,.07);padding:3rem 1.75rem}
+@media(min-width:640px){.tours-panel{padding:3.5rem 3rem}}
+.tours-panel-header{text-align:center;margin-bottom:2.5rem}
+.tours-panel-header .eyebrow,.tours-panel-header .section-title{text-align:center}
+
+.tours-grid{display:grid;grid-template-columns:1fr;gap:1rem}
+@media(min-width:640px){.tours-grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:980px){.tours-grid{grid-template-columns:repeat(3,1fr)}}
+
+.tour-btn{position:relative;display:flex;flex-direction:column;justify-content:center;border:1px solid var(--border);border-radius:8px;padding:1.6rem 1.35rem;text-align:center;background:var(--blue-pale);transition:background .3s ease,border-color .3s ease,transform .2s ease,box-shadow .3s ease;min-height:118px}
+.tour-btn:hover{background:var(--blue);border-color:var(--blue);transform:translateY(-3px);box-shadow:0 10px 24px rgba(46,111,217,.25)}
+.tour-btn:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+.tour-btn-name{display:block;font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--blue);transition:color .3s ease,transform .3s ease}
+.tour-btn:hover .tour-btn-name{color:#fff;transform:translateY(-4px)}
+.tour-btn-reveal{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows .3s ease,opacity .25s ease;margin-top:0}
+.tour-btn-reveal > div{overflow:hidden}
+.tour-btn:hover .tour-btn-reveal{grid-template-rows:1fr;opacity:1;margin-top:.65rem}
+.tour-btn-desc{display:block;font-size:.72rem;color:rgba(255,255,255,.88);line-height:1.55;margin-bottom:.55rem}
+.tour-btn-more{display:inline-flex;align-items:center;gap:.3rem;font-size:.66rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#fff}
+.tour-btn-more svg{width:10px;height:10px;stroke:#fff}
+
+.tours-footer{text-align:center;margin-top:2.25rem}
+.tours-footer p{font-size:.8rem;color:var(--stone)}
+
+/* ── ABOUT (centered, single column) ─────────────── */
+.about-section{background:#fff;text-align:center}
+.about-inner{max-width:680px;margin:0 auto;display:flex;flex-direction:column;align-items:center}
+.about-lead{font-size:.92rem;color:var(--stone);line-height:1.9;max-width:58ch}
+.about-facts{display:flex;flex-wrap:wrap;justify-content:center;gap:1.1rem 1.6rem;margin-top:1.85rem}
 .about-fact{display:flex;align-items:center;gap:.55rem;font-size:.8rem;color:var(--ink);font-weight:500}
 .about-fact-dot{width:8px;height:8px;border-radius:50%;background:var(--orange);flex-shrink:0}
-
-/* ── TOURS (single feature card) ──────────────────── */
-.tours-section{background:var(--mist)}
-.tour-feature{display:grid;background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:0 8px 32px rgba(10,66,165,.07)}
-@media(min-width:800px){.tour-feature{grid-template-columns:1fr 1fr}}
-.tour-feature-media{position:relative;min-height:260px;background:linear-gradient(135deg,#c8d8f0,#a8c0e8)}
-.tour-feature-media img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
-.tour-feature-media .tfm-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(7,46,122,.4) 0%,transparent 55%)}
-.tour-feature-media .tag{position:absolute;top:1rem;left:1rem;font-size:.62rem;font-weight:600;letter-spacing:.03em;padding:3px 10px;border-radius:999px;background:rgba(243,131,69,.92);color:#fff}
-.tour-feature-body{padding:2.5rem 2.25rem}
-.tour-feature-title{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:var(--blue);margin-bottom:.75rem;line-height:1.2}
-.tour-feature-desc{font-size:.88rem;color:var(--stone);line-height:1.8;margin-bottom:1.5rem}
-.tour-feature-list{display:flex;flex-direction:column;gap:.65rem;margin-bottom:2rem}
-.tour-feature-list li{display:flex;align-items:center;gap:.6rem;font-size:.82rem;color:var(--ink)}
-.tour-feature-check{width:18px;height:18px;border-radius:50%;background:var(--blue-pale);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.tour-feature-check svg{width:10px;height:10px;stroke:var(--blue);fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
-.tour-feature-cta{display:inline-flex;align-items:center;gap:.5rem;background:var(--blue);color:#fff;border:none;border-radius:7px;padding:.75rem 1.5rem;font-size:.83rem;font-weight:500;letter-spacing:.02em;transition:background .2s,transform .15s}
-.tour-feature-cta:hover{background:var(--blue-dark);transform:translateY(-1px)}
 
 /* ── REVIEWS ─────────────────────────────────────── */
 .reviews-section{background:var(--mist)}
@@ -162,7 +174,6 @@ ul{list-style:none}
 #wr-success{display:none;text-align:center;padding:1.5rem;color:var(--blue);font-size:.85rem}
 .flabel{display:block;font-size:.65rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);margin-bottom:.35rem}
 
-/* sort/filter bar */
 /* ── CONTACT ─────────────────────────────────────── */
 .contact-section{background:var(--blue-deep);position:relative;overflow:hidden}
 .contact-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 70% 50%,rgba(46,111,217,.5) 0%,transparent 70%)}
@@ -256,8 +267,6 @@ footer{background:var(--blue-deep);padding:2rem 1.5rem}
          and list their filenames here. The slideshow auto-detects how many there are. -->
     <img class="hero-slide" src="images/ararat1.jpg" alt="Armenia"/>
     <img class="hero-slide" src="images/vanq.jpg" alt="Armenia"/>
-    <img class="hero-slide" src="images/cascade.jpg" alt="Armenia"/>
-    <img class="hero-slide" src="hero4.jpg" alt="Armenia"/>
   </div>
   <div class="hero-vignette"></div>
   <div class="hero-dots" id="hero-dots"></div>
@@ -267,7 +276,7 @@ footer{background:var(--blue-deep);padding:2rem 1.5rem}
     <h1 class="hero-h1" data-i18n-html="hero_h1">Discover <em>Armenia</em> Your Way</h1>
     <p class="hero-sub" data-i18n="hero_sub">Handcrafted private tours across ancient monasteries, volcanic highlands, and vine-draped valleys — designed by locals who know every hidden road.</p>
     <div class="hero-actions">
-      <a href="tours.html" class="btn-primary">
+      <a href="#tours" class="btn-primary">
         <span data-i18n="hero_btn1">Tour Packages</span>
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
@@ -276,63 +285,97 @@ footer{background:var(--blue-deep);padding:2rem 1.5rem}
   </div>
 </section>
 
-<!-- ABOUT ────────────────────────────────────────── -->
-<section id="about" class="section about-section">
+<!-- TOURS ────────────────────────────────────────── -->
+<section id="tours" class="section tours-section">
   <div class="section-inner">
-    <div class="about-grid">
-      <div class="about-media r">
-        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="100" cy="68" r="24" fill="rgba(255,255,255,.18)"/>
-          <path d="M8 158 L58 92 L92 130 L128 72 L192 158 Z" fill="rgba(255,255,255,.22)"/>
-          <path d="M8 168 L68 112 L108 150 L148 98 L192 168 Z" fill="rgba(255,255,255,.34)"/>
-        </svg>
+    <div class="tours-panel r">
+      <div class="tours-panel-header">
+        <div class="eyebrow" data-i18n="tours_eyebrow">Curated Experiences</div>
+        <h2 class="section-title" data-i18n="tours_title">Tours &amp; Packages</h2>
+        <div class="section-rule center"></div>
+        <p class="section-lead center" data-i18n="tours_lead">Built around your pace — not a bus schedule. Private transport, expert guides, and places most tourists never find.</p>
       </div>
-      <div class="about-copy r">
-        <div class="eyebrow" data-i18n="about_eyebrow">Who We Are</div>
-        <h2 class="section-title" data-i18n="about_title">About Upupa Travel</h2>
-        <div class="section-rule"></div>
-        <!-- 📝 Placeholder copy — replace with the real "about" text -->
-        <p class="section-lead" data-i18n="about_lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-        <div class="about-facts">
-          <div class="about-fact"><span class="about-fact-dot"></span><span data-i18n="about_fact1">Local, native guides</span></div>
-          <div class="about-fact"><span class="about-fact-dot"></span><span data-i18n="about_fact2">Small, private groups</span></div>
-          <div class="about-fact"><span class="about-fact-dot"></span><span data-i18n="about_fact3">Custom-built routes</span></div>
-        </div>
+
+      <!-- 📝 Each button is one tour: name always visible, tiny description + "See more" reveal on hover/tap.
+           `href` points to tour_detail.html?package=SLUG — slugs must match the `packages` object in tour_detail.html. -->
+      <div class="tours-grid">
+
+        <a href="tour_detail.html?package=garni-geghard-symphony-of-stones" class="tour-btn">
+          <span class="tour-btn-name">Garni, Geghard &amp; Symphony of Stones</span>
+          <span class="tour-btn-reveal"><div>
+            <span class="tour-btn-desc">Temple, cliffside monastery &amp; basalt gorge in a day.</span>
+            <span class="tour-btn-more" data-i18n="tours_seemore">See more
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </div></span>
+        </a>
+
+        <a href="tour_detail.html?package=khor-virap-areni-noravank" class="tour-btn">
+          <span class="tour-btn-name">Khor Virap, Areni Cave &amp; Noravank</span>
+          <span class="tour-btn-reveal"><div>
+            <span class="tour-btn-desc">Ararat views, an ancient wine cave &amp; canyon monastery.</span>
+            <span class="tour-btn-more" data-i18n="tours_seemore">See more
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </div></span>
+        </a>
+
+        <a href="tour_detail.html?package=tatev-syunik-expedition" class="tour-btn">
+          <span class="tour-btn-name">Tatev &amp; Syunik South Expedition</span>
+          <span class="tour-btn-reveal"><div>
+            <span class="tour-btn-desc">World's longest cable car &amp; a mountain overnight.</span>
+            <span class="tour-btn-more" data-i18n="tours_seemore">See more
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </div></span>
+        </a>
+
+        <a href="tour_detail.html?package=lake-sevan-dilijan-escape" class="tour-btn">
+          <span class="tour-btn-name">Lake Sevan &amp; Dilijan Escape</span>
+          <span class="tour-btn-reveal"><div>
+            <span class="tour-btn-desc">Armenia's mountain lake &amp; the forested "Little Switzerland."</span>
+            <span class="tour-btn-more" data-i18n="tours_seemore">See more
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </div></span>
+        </a>
+
+        <a href="tour_detail.html?package=classic-armenia-in-5-days" class="tour-btn">
+          <span class="tour-btn-name">Classic Armenia in 5 Days</span>
+          <span class="tour-btn-reveal"><div>
+            <span class="tour-btn-desc">The complete first-timer's route, at an easy pace.</span>
+            <span class="tour-btn-more" data-i18n="tours_seemore">See more
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </div></span>
+        </a>
+
+        <a href="tour_detail.html?package=northern-armenia-heritage-trail" class="tour-btn">
+          <span class="tour-btn-name">Northern Armenia Heritage Trail</span>
+          <span class="tour-btn-reveal"><div>
+            <span class="tour-btn-desc">UNESCO monasteries &amp; Debed Canyon, without the crowds.</span>
+            <span class="tour-btn-more" data-i18n="tours_seemore">See more
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </div></span>
+        </a>
+
       </div>
     </div>
   </div>
 </section>
 
-<!-- TOURS ────────────────────────────────────────── -->
-<section id="tours" class="section tours-section">
-  <div class="section-inner">
-    <div class="section-header r">
-      <div class="eyebrow" data-i18n="tours_eyebrow">Curated Experiences</div>
-      <h2 class="section-title" data-i18n="tours_title">Tours &amp; Packages</h2>
-      <div class="section-rule"></div>
-      <p class="section-lead" data-i18n="tours_lead">Built around your pace — not a bus schedule. Private transport, expert guides, and places most tourists never find.</p>
-    </div>
-
-    <div class="tour-feature r">
-      <div class="tour-feature-media">
-        <!-- 📷 EDIT IMAGE -->
-        <img src="/api/placeholder/700/560" alt="Armenia tours" onerror="this.style.display='none'"/>
-        <div class="tfm-overlay"></div>
-        <span class="tag" data-i18n="tours_card_tag">Day Trips &amp; Multi‑Day</span>
-      </div>
-      <div class="tour-feature-body">
-        <div class="tour-feature-title" data-i18n="tours_card_title">Explore Our Tour Packages</div>
-        <p class="tour-feature-desc" data-i18n="tours_card_desc">From Garni's Hellenistic temple to the cable cars of Tatev — every route is private, flexible, and led by a guide who actually grew up here.</p>
-        <ul class="tour-feature-list">
-          <li><span class="tour-feature-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span data-i18n="tours_feat1">Private transport &amp; driver</span></li>
-          <li><span class="tour-feature-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span data-i18n="tours_feat2">Expert local guides</span></li>
-          <li><span class="tour-feature-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span data-i18n="tours_feat3">Flexible dates, any group size</span></li>
-        </ul>
-        <a href="tours.html" class="tour-feature-cta">
-          <span data-i18n="tours_cta">Tour Packages</span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
-      </div>
+<!-- ABOUT ────────────────────────────────────────── -->
+<section id="about" class="section about-section">
+  <div class="section-inner about-inner r">
+    <div class="eyebrow" data-i18n="about_eyebrow">Who We Are</div>
+    <h2 class="section-title" data-i18n="about_title">About Upupa Travel</h2>
+    <div class="section-rule center"></div>
+    <p class="about-lead" data-i18n="about_lead">Upupa Travel is a private guide service based in Yerevan. We design personal day trips and multi-day journeys to Armenia's ancient monasteries, volcanic highlands, and hidden valleys — planned around you, and led by guides who grew up here.</p>
+    <div class="about-facts">
+      <div class="about-fact"><span class="about-fact-dot"></span><span data-i18n="about_fact1">Local, native guides</span></div>
+      <div class="about-fact"><span class="about-fact-dot"></span><span data-i18n="about_fact2">Small, private groups</span></div>
+      <div class="about-fact"><span class="about-fact-dot"></span><span data-i18n="about_fact3">Custom-built routes</span></div>
     </div>
   </div>
 </section>
@@ -381,6 +424,9 @@ footer{background:var(--blue-deep);padding:2rem 1.5rem}
               <option>Garni, Geghard &amp; Symphony of Stones</option>
               <option>Khor Virap, Areni Cave &amp; Noravank</option>
               <option>Tatev &amp; Syunik South Expedition</option>
+              <option>Lake Sevan &amp; Dilijan Escape</option>
+              <option>Classic Armenia in 5 Days</option>
+              <option>Northern Armenia Heritage Trail</option>
               <option data-i18n="f_tour_custom">Custom Itinerary</option>
             </select>
           </div>
@@ -446,9 +492,12 @@ footer{background:var(--blue-deep);padding:2rem 1.5rem}
               <label class="flabel" for="f-tour" data-i18n="f_tour_label">Tour</label>
               <select class="fselect" id="f-tour" name="tour">
                 <option value="" data-i18n="f_tour_choose">Choose…</option>
-                <option>Garni, Geghard &amp; Symphony</option>
-                <option>Khor Virap, Areni &amp; Noravank</option>
-                <option>Tatev &amp; Syunik (2-Day)</option>
+                <option>Garni, Geghard &amp; Symphony of Stones</option>
+                <option>Khor Virap, Areni Cave &amp; Noravank</option>
+                <option>Tatev &amp; Syunik South Expedition</option>
+                <option>Lake Sevan &amp; Dilijan Escape</option>
+                <option>Classic Armenia in 5 Days</option>
+                <option>Northern Armenia Heritage Trail</option>
                 <option data-i18n="f_tour_custom">Custom Itinerary</option>
               </select>
             </div>
@@ -502,7 +551,8 @@ setDesktopLinks();
 window.addEventListener('resize', setDesktopLinks);
 
 function updateNav(){
-  navEl.classList.toggle('scrolled-shadow', window.scrollY > 40);
+  // Nav stays transparent over the hero photo, then turns solid so links stay readable.
+  navEl.classList.toggle('solid', window.scrollY > window.innerHeight * 0.6);
 }
 window.addEventListener('scroll', updateNav, {passive:true});
 updateNav();
@@ -655,32 +705,17 @@ loadSavedReviews();
 /* ── I18N ──────────────────────────────────────── */
 const translations = {
   en: {
-    hero_tag_short: "discover armenia",
     nav_home:"Home", nav_about:"About", nav_tours:"Tours", nav_reviews:"Reviews", nav_contact:"Contact", nav_cta:"Book a Call",
     hero_tag:"Private Guide Service · Yerevan, Armenia",
     hero_h1:"Discover <em>Armenia</em> Your Way",
     hero_sub:"Handcrafted private tours across ancient monasteries, volcanic highlands, and vine-draped valleys — designed by locals who know every hidden road.",
     hero_btn1:"Tour Packages", hero_btn2:"Contact Us",
-    mission_eyebrow:"Our Mission", mission_title:"Every Trip, Made Personal",
-    mission_lead:"We believe every guest deserves more than a bus schedule and a checklist. Our mission is simple — to share the Armenia we love, one small, unhurried group at a time.",
-    mission_s1_n:"100%", mission_s1_l:"Tailored & Private",
-    mission_s2_n:"All‑Inclusive", mission_s2_l:"Transport & Fees",
-    mission_s3_n:"Off‑Grid", mission_s3_l:"Hidden Gems",
-    mission_s4_n:"Anytime", mission_s4_l:"Flexible Dates",
     about_eyebrow:"Who We Are", about_title:"About Upupa Travel",
-    about_lead:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+    about_lead:"Upupa Travel is a private guide service based in Yerevan. We design personal day trips and multi-day journeys to Armenia's ancient monasteries, volcanic highlands, and hidden valleys — planned around you, and led by guides who grew up here.",
     about_fact1:"Local, native guides", about_fact2:"Small, private groups", about_fact3:"Custom-built routes",
     tours_eyebrow:"Curated Experiences", tours_title:"Tours & Packages",
     tours_lead:"Built around your pace — not a bus schedule. Private transport, expert guides, and places most tourists never find.",
-    tours_card_tag:"Day Trips & Multi‑Day", tours_card_title:"Explore Our Tour Packages",
-    tours_card_desc:"From Garni's Hellenistic temple to the cable cars of Tatev — every route is private, flexible, and led by a guide who actually grew up here.",
-    tours_feat1:"Private transport & driver", tours_feat2:"Expert local guides", tours_feat3:"Flexible dates, any group size",
-    tours_cta:"Tour Packages",
-    why_eyebrow:"How We Travel", why_title:"The Upupa Experience",
-    why_lead:"Why experienced travellers choose a boutique private guide over a crowded bus.",
-    why1_title:"Beyond the Guidebooks", why1_text:"Hidden viewpoints, village lunch spots, canyon trails only shepherds know. Every itinerary has at least one moment you'll never find online.", why1_foot:"Zero tourist traps",
-    why2_title:"Your Pace, Your Rules", why2_text:"No rigid schedules. Stop for coffee over a canyon. Linger at a monastery. If a roadside vendor is selling the season's best pomegranates, we stop.", why2_foot:"Fully flexible itineraries",
-    why3_title:"Local Storytelling", why3_text:"Our guides grew up with these legends, studied these monasteries, debated this history over dinner. Every crumbling wall has a story they actually know.", why3_foot:"Native guides only",
+    tours_seemore:"See more",
     reviews_eyebrow:"Traveller Stories", reviews_title:"What Our Guests Say",
     reviews_lead:"Real experiences from real travellers. Read them, then add yours.",
     reviews_count:"Showing all reviews", sort_newest:"Newest first", sort_highest:"Highest rated", sort_lowest:"Lowest rated",
@@ -709,32 +744,17 @@ const translations = {
     footer_ig:"Instagram", footer_ta:"TripAdvisor", footer_fb:"Facebook"
   },
   ru: {
-    hero_tag_short: "откройте армению",
     nav_home:"Главная", nav_about:"О нас", nav_tours:"Туры", nav_reviews:"Отзывы", nav_contact:"Контакты", nav_cta:"Заказать звонок",
     hero_tag:"Частный гид-сервис · Ереван, Армения",
     hero_h1:"Откройте <em>Армению</em> по-своему",
     hero_sub:"Авторские частные туры к древним монастырям, вулканическим плато и виноградным долинам — маршруты, которые знают только местные.",
     hero_btn1:"Туристические пакеты", hero_btn2:"Связаться с нами",
-    mission_eyebrow:"Наша миссия", mission_title:"Каждая поездка — личная",
-    mission_lead:"Мы верим, что каждый гость заслуживает большего, чем расписание автобуса и список галочек. Наша миссия проста — делиться той Арменией, которую мы любим, в небольших неспешных группах.",
-    mission_s1_n:"100%", mission_s1_l:"Индивидуально и приватно",
-    mission_s2_n:"Всё включено", mission_s2_l:"Транспорт и сборы",
-    mission_s3_n:"Вне маршрутов", mission_s3_l:"Скрытые места",
-    mission_s4_n:"В любое время", mission_s4_l:"Гибкие даты",
     about_eyebrow:"Кто мы", about_title:"О компании Upupa Travel",
-    about_lead:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+    about_lead:"Upupa Travel — частный гид-сервис из Еревана. Мы разрабатываем индивидуальные однодневные и многодневные поездки к древним монастырям Армении, вулканическим плато и скрытым долинам — маршрут подстраивается под вас, а ведут его гиды, которые здесь выросли.",
     about_fact1:"Местные гиды-носители культуры", about_fact2:"Небольшие частные группы", about_fact3:"Маршруты под вас",
     tours_eyebrow:"Авторские маршруты", tours_title:"Туры и пакеты",
     tours_lead:"Маршрут подстраивается под вас, а не под расписание автобуса. Частный транспорт, опытные гиды и места, куда редко попадают туристы.",
-    tours_card_tag:"Однодневные и многодневные туры", tours_card_title:"Изучите наши турпакеты",
-    tours_card_desc:"От эллинистического храма Гарни до канатной дороги в Татев — каждый маршрут приватный, гибкий и ведётся гидом, который здесь вырос.",
-    tours_feat1:"Частный транспорт и водитель", tours_feat2:"Опытные местные гиды", tours_feat3:"Гибкие даты, любой размер группы",
-    tours_cta:"Туристические пакеты",
-    why_eyebrow:"Как мы путешествуем", why_title:"Опыт Upupa",
-    why_lead:"Почему опытные путешественники выбирают частного гида, а не переполненный автобус.",
-    why1_title:"Не только путеводители", why1_text:"Скрытые смотровые площадки, деревенские обеды, тропы в каньонах, о которых знают только пастухи. В каждом маршруте есть момент, которого вы не найдёте онлайн.", why1_foot:"Никаких туристических ловушек",
-    why2_title:"Ваш темп, ваши правила", why2_text:"Никаких жёстких расписаний. Остановка на кофе над каньоном. Задержаться у монастыря. Если у дороги продают лучшие гранаты сезона — мы остановимся.", why2_foot:"Полностью гибкие маршруты",
-    why3_title:"Живые истории", why3_text:"Наши гиды выросли с этими легендами, изучали эти монастыри, спорили об этой истории за ужином. У каждой полуразрушенной стены есть история, которую они действительно знают.", why3_foot:"Только местные гиды",
+    tours_seemore:"Подробнее",
     reviews_eyebrow:"Истории путешественников", reviews_title:"Что говорят наши гости",
     reviews_lead:"Реальный опыт реальных путешественников. Прочитайте их истории, затем добавьте свою.",
     reviews_count:"Показаны все отзывы", sort_newest:"Сначала новые", sort_highest:"Сначала с высоким рейтингом", sort_lowest:"Сначала с низким рейтингом",
@@ -763,32 +783,17 @@ const translations = {
     footer_ig:"Instagram", footer_ta:"TripAdvisor", footer_fb:"Facebook"
   },
   hy: {
-    hero_tag_short: "բացահայտեք հայաստանը",
     nav_home:"Գլխավոր", nav_about:"Մեր մասին", nav_tours:"Տուրեր", nav_reviews:"Կարծիքներ", nav_contact:"Կապ", nav_cta:"Պատվիրել զանգ",
     hero_tag:"Մասնավոր գիդի ծառայություն · Երևան, Հայաստան",
     hero_h1:"Բացահայտեք <em>Հայաստանը</em> Ձեր ձևով",
     hero_sub:"Անհատական մասնավոր տուրեր դեպի հին վանքեր, հրաբխային բարձունքներ և խաղողի հովիտներ՝ նախագծված տեղացիների կողմից, ովքեր գիտեն ամեն թաքնված ճանապարհ:",
     hero_btn1:"Տուրիստական փաթեթներ", hero_btn2:"Կապվեք մեզ հետ",
-    mission_eyebrow:"Մեր առաքելությունը", mission_title:"Ամեն ուղևորություն՝ անհատական",
-    mission_lead:"Մենք հավատում ենք, որ յուրաքանչյուր հյուր արժանի է ավելիին, քան ավտոբուսի ժամանակացույցը: Մեր առաքելությունն է կիսվել այն Հայաստանով, որը մենք սիրում ենք՝ փոքր, հանգիստ խմբերով:",
-    mission_s1_n:"100%", mission_s1_l:"Անհատական և մասնավոր",
-    mission_s2_n:"Ամեն ինչ ներառված", mission_s2_l:"Տրանսպորտ և վճարներ",
-    mission_s3_n:"Քիչ հայտնի", mission_s3_l:"Թաքնված վայրեր",
-    mission_s4_n:"Ցանկացած ժամանակ", mission_s4_l:"Ճկուն ամսաթվեր",
     about_eyebrow:"Ովքե՞ր ենք մենք", about_title:"Upupa Travel-ի մասին",
-    about_lead:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+    about_lead:"Upupa Travel-ը մասնավոր գիդի ծառայություն է՝ հիմնված Երևանում: Մենք նախագծում ենք անհատական մեկօրյա և բազմօրյա ուղևորություններ դեպի Հայաստանի հին վանքեր, հրաբխային բարձունքներ և թաքնված հովիտներ՝ հարմարեցված ձեզ համար և վարվող գիդերի կողմից, ովքեր մեծացել են այստեղ:",
     about_fact1:"Տեղացի գիդեր", about_fact2:"Փոքր, մասնավոր խմբեր", about_fact3:"Ձեզ համար կազմված երթուղիներ",
     tours_eyebrow:"Ընտրովի փորձառություններ", tours_title:"Տուրեր և փաթեթներ",
     tours_lead:"Երթուղին հարմարվում է ձեզ, ոչ թե ավտոբուսի ժամանակացույցին: Մասնավոր տրանսպորտ, փորձառու գիդեր և վայրեր, որտեղ քիչ զբոսաշրջիկ է հասնում:",
-    tours_card_tag:"Մեկօրյա և բազմօրյա տուրեր", tours_card_title:"Ուսումնասիրեք մեր տուրիստական փաթեթները",
-    tours_card_desc:"Գառնիի հելլենիստական տաճարից մինչև Տաթևի ճոպանուղին՝ ամեն երթուղի մասնավոր է, ճկուն և վարվում է գիդի կողմից, ով իսկապես մեծացել է այստեղ:",
-    tours_feat1:"Մասնավոր տրանսպորտ և վարորդ", tours_feat2:"Փորձառու տեղացի գիդեր", tours_feat3:"Ճկուն ամսաթվեր, ցանկացած խմբի չափ",
-    tours_cta:"Տուրիստական փաթեթներ",
-    why_eyebrow:"Ինչպես ենք ճամփորդում", why_title:"Upupa փորձառությունը",
-    why_lead:"Ինչու են փորձառու ճամփորդները ընտրում մասնավոր գիդ՝ լցված ավտոբուսի փոխարեն:",
-    why1_title:"Ուղեցույցներից այն կողմ", why1_text:"Թաքնված տեսարանային կետեր, գյուղական ճաշարաններ, կիրճերի արահետներ, որոնք միայն հովիվներն են ճանաչում: Ամեն երթուղում կա գոնե մեկ պահ, որը ինտերնետում չեք գտնի:", why1_foot:"Ոչ մի զբոսաշրջային թակարդ",
-    why2_title:"Ձեր տեմպը, ձեր կանոնները", why2_text:"Առանց խիստ ժամանակացույցի: Կանգ առեք սուրճի համար կիրճի վրա: Ուշանալ վանքի մոտ: Եթե ճանապարհին վաճառում են սեզոնի լավագույն նռները՝ մենք կանգ ենք առնում:", why2_foot:"Լիովին ճկուն երթուղիներ",
-    why3_title:"Տեղական պատմություններ", why3_text:"Մեր գիդերը մեծացել են այս լեգենդներով, ուսումնասիրել են այս վանքերը, քննարկել այս պատմությունը ընթրիքի ժամանակ: Ամեն փլված պատ ունի պատմություն, որը նրանք իսկապես գիտեն:", why3_foot:"Միայն տեղացի գիդեր",
+    tours_seemore:"Ավելին",
     reviews_eyebrow:"Ճամփորդների պատմություններ", reviews_title:"Ինչ են ասում մեր հյուրերը",
     reviews_lead:"Իրական փորձառություններ իրական ճամփորդներից: Կարդացեք և ավելացրեք ձերը:",
     reviews_count:"Ցուցադրվում են բոլոր կարծիքները", sort_newest:"Նախ նորերը", sort_highest:"Նախ բարձր գնահատականները", sort_lowest:"Նախ ցածր գնահատականները",
@@ -848,7 +853,7 @@ function applyLang(lang){
 
 applyLang(currentLang);
 
-/* ── BOOKING HANDOFF FROM tour-detail.html ────── */
+/* ── BOOKING HANDOFF FROM tour_detail.html ────── */
 (function(){
   const q = new URLSearchParams(window.location.search);
   const tour = q.get('tour');
