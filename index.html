@@ -33,47 +33,55 @@ ul{list-style:none}
 /* ── TYPE ────────────────────────────────────────── */
 .serif{font-family:'Playfair Display',Georgia,serif}
 
-/* ── NAV (transparent over the hero, solid once scrolled) ───────────────── */
+/* ── NAV (Hyur-style: large centered floating panel, translucent) ───────── */
 #nav{
-  position:fixed;top:0;left:0;right:0;z-index:300;
-  background:transparent;
-  transition:background .35s ease,box-shadow .35s ease;
+  position:fixed;top:1.25rem;left:50%;transform:translateX(-50%);z-index:300;
+  width:min(1180px,calc(100% - 2.5rem));
+  background:rgba(255,255,255,.72);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  border:1px solid rgba(255,255,255,.55);
+  border-radius:14px;
+  box-shadow:0 8px 30px rgba(10,20,40,.12);
+  transition:background .35s ease,box-shadow .35s ease,top .35s ease;
 }
-#nav.solid{background:rgba(255,255,255,.98);backdrop-filter:blur(10px);box-shadow:0 2px 14px rgba(0,0,0,.06)}
-.nav-inner{max-width:1200px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:120px}
-.logo{display:flex;align-items:center;gap:.75rem}
-.logo-full{height:120px;width:auto;max-height:120px;display:block;filter:drop-shadow(0 1px 8px rgba(0,0,0,.4));transition:filter .35s}
-#nav.solid .logo-full{filter:none}
-.nav-links{display:flex;align-items:center;gap:1.75rem}
-.nav-a{font-size:.9rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:#fff;transition:color .2s;position:relative}
-#nav.solid .nav-a{color:var(--blue)}
-.nav-a::after{content:'';position:absolute;bottom:-3px;left:0;right:0;height:1px;background:var(--orange);transform:scaleX(0);transform-origin:left;transition:transform .25s}
+#nav.solid{background:rgba(255,255,255,.92);box-shadow:0 10px 34px rgba(10,20,40,.16)}
+.nav-inner{max-width:1200px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;column-gap:1.25rem;height:110px}
+.logo{display:flex;align-items:center;gap:.75rem;flex-shrink:0}
+.logo-full{height:92px;width:auto;max-height:92px;display:block;transition:filter .35s}
+.nav-links{display:flex;align-items:center;justify-content:flex-end;gap:1.25rem;flex-wrap:wrap}
+.nav-a{font-size:.82rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);transition:color .2s;position:relative;white-space:nowrap}
+.nav-a::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:2px;background:var(--orange);transform:scaleX(0);transform-origin:left;transition:transform .25s}
 .nav-a:hover{color:var(--orange)}
 .nav-a:hover::after{transform:scaleX(1)}
-.nav-cta{font-size:.9rem;font-weight:500;letter-spacing:.05em;color:#fff;background:var(--orange);border:none;border-radius:6px;padding:.45rem 1rem;transition:background .2s}
-.nav-cta:hover{background:#d96a28}
-#hamburger{display:none;background:none;border:none;padding:.3rem;color:#fff;transition:color .35s}
-#nav.solid #hamburger{color:var(--blue)}
-#mobile-nav{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(255,255,255,.98);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:1rem 1.5rem;flex-direction:column;gap:.25rem}
+.nav-cta{font-size:.82rem;font-weight:600;letter-spacing:.04em;color:#fff;background:var(--orange);border:none;border-radius:8px;padding:.55rem 1.05rem;transition:background .2s,transform .15s;white-space:nowrap}
+.nav-cta:hover{background:#d96a28;transform:translateY(-1px)}
+#hamburger{display:none;background:none;border:none;padding:.3rem;color:var(--blue)}
+#mobile-nav{display:none;position:absolute;top:100%;left:0;right:0;margin-top:.5rem;background:rgba(255,255,255,.97);backdrop-filter:blur(14px);border:1px solid var(--border);border-radius:12px;padding:1rem 1.5rem;flex-direction:column;gap:.25rem;box-shadow:0 12px 30px rgba(10,20,40,.12)}
 #mobile-nav.open{display:flex}
 #mobile-nav .nav-a{color:var(--blue);padding:.6rem 0;border-bottom:1px solid var(--border);font-size:.85rem}
 #mobile-nav .nav-a:last-of-type{border-bottom:none}
 #mobile-nav .nav-cta{margin-top:.75rem;text-align:center;display:block;padding:.65rem 1rem}
 
 /* language switch */
-.lang-switch{display:flex;align-items:center;gap:.2rem;margin-left:.5rem;padding-left:.9rem;border-left:1px solid rgba(255,255,255,.35);transition:border-color .35s}
-#nav.solid .lang-switch{border-left-color:var(--border)}
-.lang-btn{font-size:.68rem;font-weight:600;letter-spacing:.03em;color:rgba(255,255,255,.8);background:transparent;border:none;border-radius:5px;padding:.3rem .45rem;transition:all .2s}
-#nav.solid .lang-btn{color:var(--stone)}
+.lang-switch{display:flex;align-items:center;gap:.2rem;margin-left:.4rem;padding-left:.9rem;border-left:1px solid rgba(30,50,90,.18)}
+.lang-btn{font-size:.7rem;font-weight:700;letter-spacing:.03em;color:var(--stone);background:transparent;border:none;border-radius:5px;padding:.3rem .45rem;transition:all .2s}
 .lang-btn:hover{color:var(--orange)}
-.lang-btn.active{background:rgba(255,255,255,.2);color:#fff}
-#nav.solid .lang-btn.active{background:var(--blue-pale);color:var(--blue)}
+.lang-btn.active{background:var(--blue-pale);color:var(--blue)}
 #mobile-nav .lang-switch{border-left:none;padding-left:0;justify-content:center;margin:.85rem 0 0;gap:.4rem}
 #mobile-nav .lang-btn{border:1px solid var(--border);color:var(--stone)}
 #mobile-nav .lang-btn.active{background:var(--blue-pale);color:var(--blue)}
 
+/* On small screens: stack neatly, keep logo centered */
+@media(max-width:820px){
+  #nav{top:.75rem;width:calc(100% - 1.5rem);border-radius:12px}
+  .nav-inner{height:78px;padding:0 1rem}
+  .logo-full{height:56px;max-height:56px}
+  #hamburger{display:block}
+}
+
 /* ── HERO ────────────────────────────────────────── */
-.hero{min-height:88vh;position:relative;display:flex;flex-direction:column;justify-content:center;background:#eef2f7}
+.hero{min-height:calc(100vh - 40px);position:relative;display:flex;flex-direction:column;justify-content:flex-start;background:#eef2f7;padding-bottom:0}
 .hero-bg{position:absolute;inset:0;background:linear-gradient(160deg,#dce6f5 0%,#eef4fd 60%,#f7faff 100%)}
 .hero-photo{position:absolute;inset:0}
 .hero-slide{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.6s ease}
@@ -82,17 +90,28 @@ ul{list-style:none}
 .hero-dots{position:absolute;bottom:1.5rem;left:50%;transform:translateX(-50%);z-index:3;display:flex;gap:.5rem}
 .hero-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.4);border:none;padding:0;cursor:pointer;transition:background .2s,transform .2s}
 .hero-dot.active{background:#fff;transform:scale(1.25)}
-.hero-body{position:relative;z-index:2;max-width:1200px;margin:0 auto;width:100%;padding:6.5rem 1.5rem 5rem;text-align:center;display:flex;flex-direction:column;align-items:center}
-.hero-tag{display:inline-block;font-size:.65rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.85);margin-bottom:1.25rem;border:1px solid rgba(255,255,255,.3);border-radius:4px;padding:.3rem .7rem}
-.hero-h1{font-family:'Playfair Display',serif;font-size:clamp(2.6rem,6vw,4.5rem);font-weight:700;color:#fff;line-height:1.05;letter-spacing:-.01em;margin-bottom:1.25rem}
-.hero-h1 em{font-style:italic;color:var(--orange)}
-.hero-sub{font-size:.95rem;font-weight:300;color:rgba(255,255,255,.85);max-width:46ch;line-height:1.75;margin-bottom:2rem}
-.hero-actions{display:flex;flex-wrap:wrap;gap:.75rem;justify-content:center}
+.hero-body{position:relative;z-index:2;max-width:1200px;margin:0 auto;width:100%;padding:10rem 1.5rem 1.5rem;text-align:center;display:flex;flex-direction:column;align-items:center;flex:1;justify-content:center}
+.hero-tagline{font-family:'Playfair Display',serif;font-size:clamp(1.5rem,2.8vw,2.3rem);font-weight:700;color:#fff;letter-spacing:.01em;text-shadow:0 2px 18px rgba(0,0,0,.45);margin:0 auto 1rem;max-width:44ch;line-height:1.25}
 .btn-primary{display:inline-flex;align-items:center;gap:.5rem;background:var(--orange);color:#fff;border:none;border-radius:7px;padding:.65rem 1.4rem;font-size:.82rem;font-weight:500;letter-spacing:.02em;transition:background .2s,transform .15s}
 .btn-primary:hover{background:#d96a28;transform:translateY(-1px)}
-.btn-secondary{display:inline-flex;align-items:center;gap:.5rem;background:transparent;color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.4);border-radius:7px;padding:.65rem 1.4rem;font-size:.82rem;font-weight:400;transition:border-color .2s,background .2s}
-.btn-secondary:hover{border-color:rgba(255,255,255,.75);background:rgba(255,255,255,.08)}
-@media(max-width:600px){.hero-h1{font-size:2.4rem}.hero-actions{flex-direction:column;width:100%}.hero-actions a{justify-content:center}}
+
+/* ── HERO CATEGORY CARDS (Hyur-style, overlapping bottom of hero) ─────── */
+.hero-cats{position:relative;z-index:3;max-width:1180px;margin:0 auto -60px;padding:0 1.5rem 2rem;display:grid;grid-template-columns:repeat(4,1fr);gap:1.1rem}
+.hero-cat{background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-radius:12px;overflow:hidden;box-shadow:0 14px 40px rgba(10,20,40,.22);display:flex;flex-direction:column;transition:transform .25s,box-shadow .25s}
+.hero-cat:hover{transform:translateY(-4px);box-shadow:0 20px 46px rgba(10,20,40,.28)}
+.hero-cat-head{padding:1.05rem 1.15rem .35rem;border-bottom:1px solid var(--border)}
+.hero-cat-title{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--blue);margin-bottom:.15rem}
+.hero-cat-sub{font-size:.7rem;color:var(--stone);letter-spacing:.03em}
+.hero-cat-list{padding:.55rem .5rem .8rem;display:flex;flex-direction:column}
+.hero-cat-list a{display:flex;justify-content:space-between;align-items:center;font-size:.82rem;color:var(--ink);padding:.55rem .7rem;border-radius:6px;transition:background .15s,color .15s}
+.hero-cat-list a:hover{background:var(--blue-pale);color:var(--blue)}
+.hero-cat-list a::after{content:'›';font-size:1.1rem;color:var(--stone);transition:color .15s,transform .15s}
+.hero-cat-list a:hover::after{color:var(--orange);transform:translateX(3px)}
+.hero-cat-img{width:100%;height:88px;background-size:cover;background-position:center;margin-top:auto}
+.hero-cats-spacer{height:90px;background:#fff}
+
+@media(max-width:980px){.hero-cats{grid-template-columns:repeat(2,1fr);margin-bottom:-30px}.hero-cats-spacer{height:50px}}
+@media(max-width:520px){.hero-cats{grid-template-columns:1fr;margin-bottom:-10px}.hero-cats-spacer{height:30px}}
 
 /* ── SECTION HELPERS ─────────────────────────────── */
 .section{padding:5rem 1.5rem}
@@ -108,6 +127,10 @@ ul{list-style:none}
 /* reveal */
 .r{opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease}
 .r.on{opacity:1;transform:none}
+
+/* Anchor scroll offset so section headings clear the floating header */
+#about,#tours,#reviews,#contact,#popular{scroll-margin-top:140px}
+@media(max-width:820px){#about,#tours,#reviews,#contact,#popular{scroll-margin-top:100px}}
 
 /* ── TOURS BOX (single panel, hover-reveal buttons) ──────────────── */
 .tours-section{background:var(--mist)}
@@ -136,7 +159,7 @@ ul{list-style:none}
 .tours-footer p{font-size:.8rem;color:var(--stone)}
 
 /* ── ABOUT (centered, single column) ─────────────── */
-.about-section{background:#fff;text-align:center}
+.about-section{background:#fff;text-align:center;padding-top:6rem;padding-bottom:6rem}
 .about-inner{max-width:680px;margin:0 auto;display:flex;flex-direction:column;align-items:center}
 .about-lead{font-size:.92rem;color:var(--stone);line-height:1.9;max-width:58ch}
 .about-facts{display:flex;flex-wrap:wrap;justify-content:center;gap:1.1rem 1.6rem;margin-top:1.85rem}
@@ -144,7 +167,12 @@ ul{list-style:none}
 .about-fact-dot{width:8px;height:8px;border-radius:50%;background:var(--orange);flex-shrink:0}
 
 /* ── REVIEWS ─────────────────────────────────────── */
-.reviews-section{background:var(--mist)}
+.reviews-section{background:var(--blue-pale);border-top:1px solid var(--border);padding-top:5rem;padding-bottom:5rem}
+.reviews-section .section-inner{max-width:1200px;margin:0 auto}
+.reviews-heading{font-family:'Playfair Display',serif;text-align:center;font-size:clamp(1.8rem,3.5vw,2.4rem);color:var(--blue);margin-bottom:.4rem;font-weight:700;line-height:1.15}
+.reviews-heading::after{content:'';display:block;width:36px;height:2px;background:var(--orange);margin:.9rem auto 0;border-radius:2px}
+.reviews-eyebrow{text-align:center;font-size:.7rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--orange);margin-bottom:.6rem}
+.reviews-lead{text-align:center;color:var(--stone);font-size:.9rem;max-width:52ch;margin:1.2rem auto 2.5rem;line-height:1.8}
 .reviews-grid{display:grid;gap:1rem}
 .reviews-grid:not(:empty){margin-bottom:2.5rem}
 @media(min-width:640px){.reviews-grid{grid-template-columns:repeat(2,1fr)}}
@@ -225,10 +253,11 @@ footer{background:var(--blue-deep);padding:2rem 1.5rem}
         <img src="images/logo.png" alt="Upupa Travel" class="logo-full"/>
     </a>
 
-    <div class="nav-links" id="nav-links" style="display:none"><!-- shown on desktop via JS -->
+    <div class="nav-links" id="nav-links">
       <a href="#" class="nav-a" data-i18n="nav_home">Home</a>
       <a href="#about" class="nav-a" data-i18n="nav_about">About</a>
       <a href="#tours" class="nav-a" data-i18n="nav_tours">Tours</a>
+      <a href="gallery.html" class="nav-a" data-i18n="nav_gallery">Gallery</a>
       <a href="#reviews" class="nav-a" data-i18n="nav_reviews">Reviews</a>
       <a href="#contact" class="nav-a" data-i18n="nav_contact">Contact</a>
       <a href="#contact" class="nav-cta" data-i18n="nav_cta">Book a Call</a>
@@ -248,6 +277,7 @@ footer{background:var(--blue-deep);padding:2rem 1.5rem}
     <a href="#" class="nav-a" onclick="closeMobile()" data-i18n="nav_home">Home</a>
     <a href="#about" class="nav-a" onclick="closeMobile()" data-i18n="nav_about">About</a>
     <a href="#tours" class="nav-a" onclick="closeMobile()" data-i18n="nav_tours">Tours</a>
+    <a href="gallery.html" class="nav-a" onclick="closeMobile()" data-i18n="nav_gallery">Gallery</a>
     <a href="#reviews" class="nav-a" onclick="closeMobile()" data-i18n="nav_reviews">Reviews</a>
     <a href="#contact" class="nav-a" onclick="closeMobile()" data-i18n="nav_contact">Contact</a>
     <a href="#contact" class="nav-cta" onclick="closeMobile()" data-i18n="nav_cta">Book a Call</a>
@@ -263,27 +293,75 @@ footer{background:var(--blue-deep);padding:2rem 1.5rem}
 <section class="hero">
   <div class="hero-bg"></div>
   <div class="hero-photo" id="hero-photo">
-    <!-- 📷 Add/replace as many slides as you like — just drop the image files next to index.html
-         and list their filenames here. The slideshow auto-detects how many there are. -->
-    <img class="hero-slide" src="images/ararat1.jpg" alt="Armenia"/>
-    <img class="hero-slide" src="images/vanq.jpg" alt="Armenia"/>
+    <!-- 📷 Slideshow images — drop any .jpg into /images and list here. -->
+    <img class="hero-slide" src="images/ararat1.jpg" alt="Mount Ararat"/>
+    <img class="hero-slide" src="images/ararat.jpg" alt="Ararat valley"/>
+    <img class="hero-slide" src="images/vanq.jpg" alt="Armenian monastery"/>
+    <img class="hero-slide" src="images/cascade.jpg" alt="Yerevan Cascade"/>
   </div>
   <div class="hero-vignette"></div>
   <div class="hero-dots" id="hero-dots"></div>
 
   <div class="hero-body">
-    <div class="hero-tag" data-i18n="hero_tag">Private Guide Service · Yerevan, Armenia</div>
-    <h1 class="hero-h1" data-i18n-html="hero_h1">Discover <em>Armenia</em> Your Way</h1>
-    <p class="hero-sub" data-i18n="hero_sub">Handcrafted private tours across ancient monasteries, volcanic highlands, and vine-draped valleys — designed by locals who know every hidden road.</p>
-    <div class="hero-actions">
-      <a href="#tours" class="btn-primary">
-        <span data-i18n="hero_btn1">Tour Packages</span>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </a>
-      <a href="#contact" class="btn-secondary" data-i18n="hero_btn2">Contact Us</a>
+    <div class="hero-tagline" data-i18n="hero_tagline">Upupa Travel *some writing here*</div>
+  </div>
+
+  <!-- Hyur-style category cards overlap the bottom of the hero -->
+  <div class="hero-cats">
+    <div class="hero-cat">
+      <div class="hero-cat-head">
+        <div class="hero-cat-title" data-i18n="cat_day_title">Day Tours</div>
+        <div class="hero-cat-sub" data-i18n="cat_day_sub">One-day private trips</div>
+      </div>
+      <div class="hero-cat-list">
+        <a href="tour_detail.html?package=garni-geghard-symphony-of-stones">Garni & Geghard</a>
+        <a href="tour_detail.html?package=khor-virap-areni-noravank">Khor Virap & Noravank</a>
+        <a href="tour_detail.html?package=lake-sevan-dilijan-escape">Sevan & Dilijan</a>
+      </div>
+      <div class="hero-cat-img" style="background-image:url('images/ararat.jpg')"></div>
+    </div>
+
+    <div class="hero-cat">
+      <div class="hero-cat-head">
+        <div class="hero-cat-title" data-i18n="cat_multi_title">Multi-Day Tours</div>
+        <div class="hero-cat-sub" data-i18n="cat_multi_sub">Explore Armenia in depth</div>
+      </div>
+      <div class="hero-cat-list">
+        <a href="tour_detail.html?package=classic-armenia-in-5-days">Classic Armenia · 5 Days</a>
+        <a href="tour_detail.html?package=northern-armenia-heritage-trail">Northern Heritage Trail</a>
+        <a href="tour_detail.html?package=tatev-syunik-expedition">Tatev & Syunik</a>
+      </div>
+      <div class="hero-cat-img" style="background-image:url('images/vanq.jpg')"></div>
+    </div>
+
+    <div class="hero-cat">
+      <div class="hero-cat-head">
+        <div class="hero-cat-title" data-i18n="cat_custom_title">Custom Tours</div>
+        <div class="hero-cat-sub" data-i18n="cat_custom_sub">Built around your dates</div>
+      </div>
+      <div class="hero-cat-list">
+        <a href="#contact" data-i18n="cat_custom_1">Plan your own route</a>
+        <a href="#contact" data-i18n="cat_custom_2">Family & private groups</a>
+        <a href="#contact" data-i18n="cat_custom_3">Special interests</a>
+      </div>
+      <div class="hero-cat-img" style="background-image:url('images/cascade.jpg')"></div>
+    </div>
+
+    <div class="hero-cat">
+      <div class="hero-cat-head">
+        <div class="hero-cat-title" data-i18n="cat_trans_title">Transfers</div>
+        <div class="hero-cat-sub" data-i18n="cat_trans_sub">Private drivers</div>
+      </div>
+      <div class="hero-cat-list">
+        <a href="#contact" data-i18n="cat_trans_1">Airport transfers</a>
+        <a href="#contact" data-i18n="cat_trans_2">Hourly rental</a>
+        <a href="#contact" data-i18n="cat_trans_3">Intercity rides</a>
+      </div>
+      <div class="hero-cat-img" style="background-image:url('images/ararat1.jpg')"></div>
     </div>
   </div>
 </section>
+<div class="hero-cats-spacer"></div>
 
 <!-- TOURS ────────────────────────────────────────── -->
 <section id="tours" class="section tours-section">
@@ -383,6 +461,9 @@ footer{background:var(--blue-deep);padding:2rem 1.5rem}
 <!-- REVIEWS ──────────────────────────────────────── -->
 <section id="reviews" class="section reviews-section">
   <div class="section-inner">
+    <div class="reviews-eyebrow" data-i18n="reviews_eyebrow">Traveller Stories</div>
+    <h2 class="reviews-heading" data-i18n="reviews_title">What Our Guests Say</h2>
+    <p class="reviews-lead" data-i18n="reviews_lead">Real experiences from real travellers. Read them, then add yours.</p>
     <!-- Newly submitted reviews render here (hidden until the first one is posted) -->
     <div class="reviews-grid r" id="reviews-grid"></div>
 
@@ -467,7 +548,7 @@ footer{background:var(--blue-deep);padding:2rem 1.5rem}
       <!-- 📝 EDIT contact details -->
       <div class="contact-direct">
         <div class="contact-direct-label" data-i18n="contact_direct_label">Or reach us directly</div>
-        <a href="mailto:hello@upupatravel.com">hello@upupatravel.com</a>
+        <a href="/cdn-cgi/l/email-protection#d2bab7bebebd92a7a2a7a2b3a6a0b3a4b7befcb1bdbf"><span class="__cf_email__" data-cfemail="4b232e2727240b3e3b3e3b2a3f392a3d2e2765282426">[email&#160;protected]</span></a>
         <a href="https://wa.me/37400000000">WhatsApp: +374 XX XXX XXX</a>
       </div>
     </div>
@@ -537,15 +618,16 @@ footer{background:var(--blue-deep);padding:2rem 1.5rem}
   </div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* ── NAV ──────────────────────────────────────── */
 const navEl = document.getElementById('nav');
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('nav-links');
 
 function setDesktopLinks(){
-  navLinks.style.display = window.innerWidth >= 768 ? 'flex' : 'none';
-  hamburger.style.display = window.innerWidth >= 768 ? 'none' : 'block';
+  const desktop = window.innerWidth >= 820;
+  navLinks.style.display = desktop ? 'flex' : 'none';
+  hamburger.style.display = desktop ? 'none' : 'block';
 }
 setDesktopLinks();
 window.addEventListener('resize', setDesktopLinks);
@@ -705,11 +787,14 @@ loadSavedReviews();
 /* ── I18N ──────────────────────────────────────── */
 const translations = {
   en: {
-    nav_home:"Home", nav_about:"About", nav_tours:"Tours", nav_reviews:"Reviews", nav_contact:"Contact", nav_cta:"Book a Call",
-    hero_tag:"Private Guide Service · Yerevan, Armenia",
-    hero_h1:"Discover <em>Armenia</em> Your Way",
-    hero_sub:"Handcrafted private tours across ancient monasteries, volcanic highlands, and vine-draped valleys — designed by locals who know every hidden road.",
-    hero_btn1:"Tour Packages", hero_btn2:"Contact Us",
+    nav_home:"Home", nav_about:"About", nav_tours:"Tours", nav_gallery:"Gallery", nav_reviews:"Reviews", nav_contact:"Contact", nav_cta:"Book a Call",
+    hero_tagline:"Upupa Travel — *some writing here*",
+    cat_day_title:"Day Tours", cat_day_sub:"One-day private trips",
+    cat_multi_title:"Multi-Day Tours", cat_multi_sub:"Explore Armenia in depth",
+    cat_custom_title:"Custom Tours", cat_custom_sub:"Built around your dates",
+    cat_custom_1:"Plan your own route", cat_custom_2:"Family & private groups", cat_custom_3:"Special interests",
+    cat_trans_title:"Transfers", cat_trans_sub:"Private drivers",
+    cat_trans_1:"Airport transfers", cat_trans_2:"Hourly rental", cat_trans_3:"Intercity rides",
     about_eyebrow:"Who We Are", about_title:"About Upupa Travel",
     about_lead:"Upupa Travel is a private guide service based in Yerevan. We design personal day trips and multi-day journeys to Armenia's ancient monasteries, volcanic highlands, and hidden valleys — planned around you, and led by guides who grew up here.",
     about_fact1:"Local, native guides", about_fact2:"Small, private groups", about_fact3:"Custom-built routes",
@@ -744,11 +829,14 @@ const translations = {
     footer_ig:"Instagram", footer_ta:"TripAdvisor", footer_fb:"Facebook"
   },
   ru: {
-    nav_home:"Главная", nav_about:"О нас", nav_tours:"Туры", nav_reviews:"Отзывы", nav_contact:"Контакты", nav_cta:"Заказать звонок",
-    hero_tag:"Частный гид-сервис · Ереван, Армения",
-    hero_h1:"Откройте <em>Армению</em> по-своему",
-    hero_sub:"Авторские частные туры к древним монастырям, вулканическим плато и виноградным долинам — маршруты, которые знают только местные.",
-    hero_btn1:"Туристические пакеты", hero_btn2:"Связаться с нами",
+    nav_home:"Главная", nav_about:"О нас", nav_tours:"Туры", nav_gallery:"Галерея", nav_reviews:"Отзывы", nav_contact:"Контакты", nav_cta:"Заказать звонок",
+    hero_tagline:"Upupa Travel — двери в армянское гостеприимство",
+    cat_day_title:"Однодневные туры", cat_day_sub:"Частные поездки на один день",
+    cat_multi_title:"Многодневные туры", cat_multi_sub:"Армения во всей глубине",
+    cat_custom_title:"Индивидуальные туры", cat_custom_sub:"Под ваши даты",
+    cat_custom_1:"Спланируйте свой маршрут", cat_custom_2:"Семьи и частные группы", cat_custom_3:"Особые интересы",
+    cat_trans_title:"Трансферы", cat_trans_sub:"Частные водители",
+    cat_trans_1:"Трансфер из аэропорта", cat_trans_2:"Почасовая аренда", cat_trans_3:"Междугородние поездки",
     about_eyebrow:"Кто мы", about_title:"О компании Upupa Travel",
     about_lead:"Upupa Travel — частный гид-сервис из Еревана. Мы разрабатываем индивидуальные однодневные и многодневные поездки к древним монастырям Армении, вулканическим плато и скрытым долинам — маршрут подстраивается под вас, а ведут его гиды, которые здесь выросли.",
     about_fact1:"Местные гиды-носители культуры", about_fact2:"Небольшие частные группы", about_fact3:"Маршруты под вас",
@@ -783,11 +871,14 @@ const translations = {
     footer_ig:"Instagram", footer_ta:"TripAdvisor", footer_fb:"Facebook"
   },
   hy: {
-    nav_home:"Գլխավոր", nav_about:"Մեր մասին", nav_tours:"Տուրեր", nav_reviews:"Կարծիքներ", nav_contact:"Կապ", nav_cta:"Պատվիրել զանգ",
-    hero_tag:"Մասնավոր գիդի ծառայություն · Երևան, Հայաստան",
-    hero_h1:"Բացահայտեք <em>Հայաստանը</em> Ձեր ձևով",
-    hero_sub:"Անհատական մասնավոր տուրեր դեպի հին վանքեր, հրաբխային բարձունքներ և խաղողի հովիտներ՝ նախագծված տեղացիների կողմից, ովքեր գիտեն ամեն թաքնված ճանապարհ:",
-    hero_btn1:"Տուրիստական փաթեթներ", hero_btn2:"Կապվեք մեզ հետ",
+    nav_home:"Գլխավոր", nav_about:"Մեր մասին", nav_tours:"Տուրեր", nav_gallery:"Պատկերասրահ", nav_reviews:"Կարծիքներ", nav_contact:"Կապ", nav_cta:"Պատվիրել զանգ",
+    hero_tagline:"Upupa Travel — Հայկական հյուրընկալության դռները",
+    cat_day_title:"Մեկօրյա տուրեր", cat_day_sub:"Մասնավոր մեկօրյա ուղևորություններ",
+    cat_multi_title:"Բազմօրյա տուրեր", cat_multi_sub:"Ամբողջական Հայաստան",
+    cat_custom_title:"Անհատական տուրեր", cat_custom_sub:"Ձեր ամսաթվերով",
+    cat_custom_1:"Ստեղծեք ձեր երթուղին", cat_custom_2:"Ընտանիք և մասնավոր խմբեր", cat_custom_3:"Հատուկ հետաքրքրություններ",
+    cat_trans_title:"Տրանսֆերներ", cat_trans_sub:"Մասնավոր վարորդներ",
+    cat_trans_1:"Օդանավակայանի տրանսֆեր", cat_trans_2:"Ժամային վարձույթ", cat_trans_3:"Միջքաղաքային ուղևորություններ",
     about_eyebrow:"Ովքե՞ր ենք մենք", about_title:"Upupa Travel-ի մասին",
     about_lead:"Upupa Travel-ը մասնավոր գիդի ծառայություն է՝ հիմնված Երևանում: Մենք նախագծում ենք անհատական մեկօրյա և բազմօրյա ուղևորություններ դեպի Հայաստանի հին վանքեր, հրաբխային բարձունքներ և թաքնված հովիտներ՝ հարմարեցված ձեզ համար և վարվող գիդերի կողմից, ովքեր մեծացել են այստեղ:",
     about_fact1:"Տեղացի գիդեր", about_fact2:"Փոքր, մասնավոր խմբեր", about_fact3:"Ձեզ համար կազմված երթուղիներ",
