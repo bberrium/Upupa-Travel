@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@600;700&amp;family=Manrope:wght@400;500;600&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        try {
+            tailwind.config = {
+                darkMode: "class",
+                theme: {
+                    extend: {
+                        "colors": {
+                            "on-tertiary": "#ffffff",
+                            "on-primary": "#ffffff",
+                            "surface-dim": "#dadadc",
+                            "inverse-on-surface": "#f0f0f3",
+                            "surface-tint": "#335ca9",
+                            "on-tertiary-fixed": "#410007",
+                            "secondary": "#9e4304",
+                            "tertiary": "#730014",
+                            "border-muted": "#E2E8F0",
+                            "tertiary-fixed": "#ffdad8",
+                            "surface-container-lowest": "#ffffff",
+                            "primary": "#003376",
+                            "on-secondary": "#ffffff",
+                            "secondary-fixed": "#ffdbcb",
+                            "primary-fixed-dim": "#aec6ff",
+                            "inverse-surface": "#2f3133",
+                            "on-surface": "#1a1c1e",
+                            "error-container": "#ffdad6",
+                            "primary-container": "#1c4a96",
+                            "on-primary-fixed": "#001a43",
+                            "inverse-primary": "#aec6ff",
+                            "secondary-container": "#ff8d4e",
+                            "on-secondary-fixed-variant": "#793100",
+                            "secondary-fixed-dim": "#ffb692",
+                            "surface-container-low": "#f3f3f6",
+                            "on-tertiary-container": "#ffa6a4",
+                            "on-tertiary-fixed-variant": "#92001c",
+                            "on-primary-fixed-variant": "#124490",
+                            "tertiary-fixed-dim": "#ffb3b1",
+                            "on-primary-container": "#a1bdff",
+                            "on-background": "#1a1c1e",
+                            "ocean-blue": "#2E6FD9",
+                            "outline": "#737782",
+                            "error": "#ba1a1a",
+                            "on-error-container": "#93000a",
+                            "on-error": "#ffffff",
+                            "on-surface-variant": "#434751",
+                            "on-secondary-fixed": "#341100",
+                            "on-secondary-container": "#6d2b00",
+                            "surface-container-high": "#e8e8ea",
+                            "primary-fixed": "#d8e2ff",
+                            "background": "#f9f9fc",
+                            "surface-bright": "#f9f9fc",
+                            "surface-variant": "#e2e2e5",
+                            "tertiary-container": "#9e001f",
+                            "surface-container": "#eeeef0",
+                            "surface": "#f9f9fc",
+                            "surface-container-highest": "#e2e2e5",
+                            "surface-alt": "#F8FAFC",
+                            "outline-variant": "#c3c6d3"
+                        },
+                        "borderRadius": {
+                            "DEFAULT": "0.125rem",
+                            "lg": "0.25rem",
+                            "xl": "0.5rem",
+                            "full": "0.75rem"
+                        },
+                        "spacing": {
+                            "stack-sm": "8px",
+                            "margin-mobile": "20px",
+                            "stack-md": "16px",
+                            "margin-desktop": "64px",
+                            "gutter": "24px",
+                            "stack-lg": "32px",
+                            "section-padding": "120px",
+                            "container-max": "1280px"
+                        },
+                        "fontFamily": {
+                            "headline-md": ["\"Source Serif 4\""],
+                            "caption": ["Manrope"],
+                            "body-md": ["Manrope"],
+                            "display-lg-mobile": ["\"Source Serif 4\""],
+                            "headline-sm": ["\"Source Serif 4\""],
+                            "body-lg": ["Manrope"],
+                            "label-md": ["Manrope"],
+                            "display-lg": ["\"Source Serif 4\""]
+                        },
+                        "fontSize": {
+                            "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                            "caption": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                            "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                            "display-lg-mobile": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                            "headline-sm": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                            "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                            "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                            "display-lg": ["56px", {"lineHeight": "64px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                        }
+                    },
+                },
+            }
+        } catch (_e) {}
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden">
+
+    <!-- Top Navigation Bar -->
+    <nav class="fixed top-0 w-full z-50 shadow-sm transition-all duration-200 ease-in-out backdrop-blur-xl bg-white/30 dark:bg-inverse-surface/40">
+        <div class="flex justify-between items-center px-margin-desktop py-4 max-w-container-max mx-auto">
+            <div class="flex items-center gap-4">
+                <!-- LOGO (Matches brand identity) -->
+                <img src="https://lh3.googleusercontent.com/aida/AP1WRLvK0IgnseMkb6Qd5AANMt714A6GbjFXTPBs7Krtk2U9JQiiyb1pXIb7GnLBnmrgZnofeKyY7O6OCEA0JsqaMAv6MwlSiFdKIjmMbo3-UtQPCF6ojn8o8PCMjk8rnA02Y4muRgXh4KnSu3bMiRhMjphJZNQDduQq0RkG5wIOZnuUuRfudkwJk0MteovcMYomzNJgV3gpmvYw5NqMB3AQP19V8EpyScEeh0SBL_Ckp6oEivKB9ajtrjDREMI" alt="Upupa Travel Logo" class="h-24 w-auto object-contain">
+                <span class="font-display-lg text-headline-sm text-primary dark:text-primary-fixed-dim tracking-tight">UPUPA TRAVEL</span>
+            </div>
+            <div class="hidden md:flex items-center gap-8">
+                <a class="text-on-surface-variant dark:text-outline-variant font-body-md text-body-md hover:text-ocean-blue transition-colors py-1" href="#">HOME</a>
+                <a class="text-on-surface-variant dark:text-outline-variant font-body-md text-body-md hover:text-ocean-blue transition-colors py-1" href="#">ABOUT</a>
+                <a class="text-primary dark:text-primary-fixed-dim font-bold border-b-2 border-primary font-body-md text-body-md py-1" href="#">TOURS</a>
+                <a class="text-on-surface-variant dark:text-outline-variant font-body-md text-body-md hover:text-ocean-blue transition-colors py-1" href="#">GALLERY</a>
+                <a class="text-on-surface-variant dark:text-outline-variant font-body-md text-body-md hover:text-ocean-blue transition-colors py-1" href="#">REVIEWS</a>
+                <a class="text-on-surface-variant dark:text-outline-variant font-body-md text-body-md hover:text-ocean-blue transition-colors py-1" href="#">CONTACT</a>
+            </div>
+            <div class="flex items-center gap-4">
+                <button class="bg-secondary text-on-secondary px-6 py-2 font-label-md text-label-md rounded-lg hover:bg-secondary-container transition-all">Book a Call</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-20">
+        <!-- Hero Section -->
+        <header class="relative w-full h-[70vh] flex items-end">
+            <div class="absolute inset-0 z-0">
+                <div class="absolute inset-0 bg-gradient-to-t from-on-background/80 via-transparent to-transparent z-10"></div>
+                <!-- 1. HERO BACKGROUND IMAGE -->
+                <img src="{{HERO_IMAGE_URL}}" class="w-full h-full object-cover" alt="{{TOUR_TITLE}} Background">
+            </div>
+            <div class="relative z-20 w-full max-w-container-max mx-auto px-margin-desktop pb-section-padding">
+                <div class="max-w-3xl">
+                    <!-- 2. TOUR CATEGORY TAG -->
+                    <span class="inline-block bg-secondary text-on-secondary px-3 py-1 mb-stack-md font-label-md text-label-md rounded">{{TOUR_CATEGORY}}</span>
+                    
+                    <!-- 3. TOUR NAME -->
+                    <h1 class="font-display-lg text-display-lg text-white mb-stack-sm">{{TOUR_TITLE}}</h1>
+                    
+                    <!-- 4. SHORT DESCRIPTION -->
+                    <p class="font-body-lg text-body-lg text-surface-container-low mb-stack-lg">{{TOUR_SUBTITLE}}</p>
+                    
+                    <div class="flex items-center gap-4 text-white">
+                        <!-- 5. PRICING -->
+                        <span class="font-headline-sm text-headline-sm">From ${{PRICE_PER_PERSON}}/person</span>
+                        <div class="h-4 w-px bg-white/30"></div>
+                        <div class="flex items-center gap-1">
+                            <span class="material-symbols-outlined text-secondary-container">schedule</span>
+                            <!-- 6. TOTAL DURATION -->
+                            <span class="font-label-md text-label-md">{{TOUR_DURATION_HOURS}} Hours</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content Grid -->
+        <section class="max-w-container-max mx-auto px-margin-desktop py-section-padding">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+                
+                <!-- Main Content Column -->
+                <div class="md:col-span-8 space-y-stack-lg">
+                    
+                    <!-- Overview -->
+                    <div class="bg-surface-container-lowest p-stack-lg border border-border-muted rounded-xl">
+                        <h2 class="font-headline-md text-headline-md text-primary mb-stack-md">Overview</h2>
+                        <!-- 7. MAIN TOUR OVERVIEW -->
+                        <p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+                            {{TOUR_OVERVIEW_PARAGRAPH}}
+                        </p>
+                    </div>
+
+                    <!-- Itinerary -->
+                    <div class="space-y-stack-md">
+                        <h2 class="font-headline-md text-headline-md text-primary">Your Journey</h2>
+                        <div class="relative itinerary-line space-y-12 pl-stack-lg py-4">
+                            
+                            <!-- ITINERARY NODE TEMPLATE (Copy/Paste this block for more stops) -->
+                            <!-- STOP 1 -->
+                            <div class="relative itinerary-node">
+                                <div class="absolute -left-stack-lg mt-1 w-4 h-4 rounded-full bg-secondary border-4 border-background"></div>
+                                <div class="flex flex-col md:flex-row gap-gutter">
+                                    <div class="md:w-24 shrink-0">
+                                        <span class="font-label-md text-label-md text-secondary block">{{STOP_1_TIME}}</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-headline-sm text-headline-sm mb-2">{{STOP_1_TITLE}}</h3>
+                                        <p class="font-body-md text-body-md text-on-surface-variant">{{STOP_1_DESCRIPTION}}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- STOP 2 (Example with an optional Inline Image) -->
+                            <div class="relative itinerary-node">
+                                <div class="absolute -left-stack-lg mt-1 w-4 h-4 rounded-full bg-secondary border-4 border-background"></div>
+                                <div class="flex flex-col md:flex-row gap-gutter">
+                                    <div class="md:w-24 shrink-0">
+                                        <span class="font-label-md text-label-md text-secondary block">{{STOP_2_TIME}}</span>
+                                    </div>
+                                    <div class="flex-1">
+                                        <h3 class="font-headline-sm text-headline-sm mb-2">{{STOP_2_TITLE}}</h3>
+                                        <p class="font-body-md text-body-md text-on-surface-variant mb-4">{{STOP_2_DESCRIPTION}}</p>
+                                        <!-- Optional stop image: delete or keep as needed -->
+                                        <div class="w-full aspect-video overflow-hidden rounded-lg">
+                                            <img src="{{STOP_2_IMAGE_URL}}" class="w-full h-full object-cover" alt="{{STOP_2_TITLE}}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- STOP 3 -->
+                            <div class="relative itinerary-node">
+                                <div class="absolute -left-stack-lg mt-1 w-4 h-4 rounded-full bg-secondary border-4 border-background"></div>
+                                <div class="flex flex-col md:flex-row gap-gutter">
+                                    <div class="md:w-24 shrink-0">
+                                        <span class="font-label-md text-label-md text-secondary block">{{STOP_3_TIME}}</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-headline-sm text-headline-sm mb-2">{{STOP_3_TITLE}}</h3>
+                                        <p class="font-body-md text-body-md text-on-surface-variant">{{STOP_3_DESCRIPTION}}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- STOP 4 -->
+                            <div class="relative itinerary-node">
+                                <div class="absolute -left-stack-lg mt-1 w-4 h-4 rounded-full bg-secondary border-4 border-background"></div>
+                                <div class="flex flex-col md:flex-row gap-gutter">
+                                    <div class="md:w-24 shrink-0">
+                                        <span class="font-label-md text-label-md text-secondary block">{{STOP_4_TIME}}</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-headline-sm text-headline-sm mb-2">{{STOP_4_TITLE}}</h3>
+                                        <p class="font-body-md text-body-md text-on-surface-variant">{{STOP_4_DESCRIPTION}}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- END OF ITINERARY NODES -->
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar Column -->
+                <aside class="md:col-span-4 space-y-stack-lg">
+                    
+                    <!-- Enquiry Form -->
+                    <div class="bg-primary text-white p-stack-lg rounded-xl shadow-xl sticky top-24">
+                        <h3 class="font-headline-sm text-headline-sm mb-stack-md">Quick Enquiry</h3>
+                        <form class="space-y-4">
+                            <div>
+                                <label class="block font-label-md text-label-md mb-1 opacity-80">FULL NAME</label>
+                                <input type="text" class="w-full bg-white/10 border-white/20 rounded px-4 py-2 focus:ring-secondary focus:border-secondary text-white placeholder-white/40" placeholder="John Doe">
+                            </div>
+                            <div>
+                                <label class="block font-label-md text-label-md mb-1 opacity-80">EMAIL ADDRESS</label>
+                                <input type="email" class="w-full bg-white/10 border-white/20 rounded px-4 py-2 focus:ring-secondary focus:border-secondary text-white placeholder-white/40" placeholder="john@example.com">
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block font-label-md text-label-md mb-1 opacity-80">GUESTS</label>
+                                    <select class="w-full bg-white/10 border-white/20 rounded px-4 py-2 focus:ring-secondary focus:border-secondary text-white">
+                                        <option class="text-on-surface">1-2</option>
+                                        <option class="text-on-surface">3-4</option>
+                                        <option class="text-on-surface">5+</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block font-label-md text-label-md mb-1 opacity-80">DATE</label>
+                                    <input type="date" class="w-full bg-white/10 border-white/20 rounded px-4 py-2 focus:ring-secondary focus:border-secondary text-white">
+                                </div>
+                            </div>
+                            <button type="submit" class="w-full bg-secondary text-on-secondary font-label-md text-label-md py-4 rounded-lg mt-4 hover:bg-secondary-container transition-all">CHECK AVAILABILITY</button>
+                        </form>
+                    </div>
+
+                    <!-- What's Included -->
+                    <div class="bg-surface-container-low p-stack-lg border border-border-muted rounded-xl">
+                        <h3 class="font-headline-sm text-headline-sm text-primary mb-stack-md">What's Included</h3>
+                        <ul class="space-y-3">
+                            <!-- Copy/Paste these list items to customize exclusions/inclusions -->
+                            <li class="flex items-start gap-3">
+                                <span class="material-symbols-outlined text-secondary text-lg">check_circle</span>
+                                <span class="font-body-md text-body-md">{{INCLUDED_ITEM_1}}</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="material-symbols-outlined text-secondary text-lg">check_circle</span>
+                                <span class="font-body-md text-body-md">{{INCLUDED_ITEM_2}}</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="material-symbols-outlined text-secondary text-lg">check_circle</span>
+                                <span class="font-body-md text-body-md">{{INCLUDED_ITEM_3}}</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="material-symbols-outlined text-secondary text-lg">check_circle</span>
+                                <span class="font-body-md text-body-md">{{INCLUDED_ITEM_4}}</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="material-symbols-outlined text-secondary text-lg">check_circle</span>
+                                <span class="font-body-md text-body-md">{{INCLUDED_ITEM_5}}</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Know Before You Go -->
+                    <div class="bg-surface-container p-stack-lg rounded-xl">
+                        <h3 class="font-headline-sm text-headline-sm text-primary mb-stack-md">Know Before You Go</h3>
+                        <ul class="space-y-4">
+                            <!-- Detail 1 (e.g. Footwear/Prep) -->
+                            <li class="flex gap-4">
+                                <span class="material-symbols-outlined text-primary/60">{{DETAIL_1_ICON}}</span>
+                                <div class="font-body-md text-body-md">
+                                    <strong class="block">{{DETAIL_1_TITLE}}</strong>
+                                    {{DETAIL_1_DESCRIPTION}}
+                                </div>
+                            </li>
+                            <!-- Detail 2 (e.g. Climate/Sunscreen) -->
+                            <li class="flex gap-4">
+                                <span class="material-symbols-outlined text-primary/60">{{DETAIL_2_ICON}}</span>
+                                <div class="font-body-md text-body-md">
+                                    <strong class="block">{{DETAIL_2_TITLE}}</strong>
+                                    {{DETAIL_2_DESCRIPTION}}
+                                </div>
+                            </li>
+                            <!-- Detail 3 (e.g. Dress codes/Etiquette) -->
+                            <li class="flex gap-4">
+                                <span class="material-symbols-outlined text-primary/60">{{DETAIL_3_ICON}}</span>
+                                <div class="font-body-md text-body-md">
+                                    <strong class="block">{{DETAIL_3_TITLE}}</strong>
+                                    {{DETAIL_3_DESCRIPTION}}
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                </aside>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full bg-on-background dark:bg-surface-dim">
+        <div class="w-full px-margin-desktop py-stack-lg flex flex-col md:flex-row justify-between items-center gap-4 max-w-container-max mx-auto">
+            <div class="font-display-lg text-headline-sm text-surface-container-lowest">Upupa Travel</div>
+            <div class="flex flex-wrap justify-center gap-6">
+                <a href="#" class="text-surface-container-high font-caption text-caption hover:text-secondary-container transition-colors opacity-90 hover:opacity-100">Privacy Policy</a>
+                <a href="#" class="text-surface-container-high font-caption text-caption hover:text-secondary-container transition-colors opacity-90 hover:opacity-100">Terms of Service</a>
+                <a href="#" class="text-surface-container-high font-caption text-caption hover:text-secondary-container transition-colors opacity-90 hover:opacity-100">FAQ</a>
+                <a href="#" class="text-surface-container-high font-caption text-caption hover:text-secondary-container transition-colors opacity-90 hover:opacity-100">Sustainable Travel</a>
+            </div>
+            <p class="text-surface-container-high font-caption text-caption opacity-90">© 2026 Upupa Travel Private Guides. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Simple scroll behavior for header opacity
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('bg-white/90', 'dark:bg-inverse-surface/90');
+                nav.classList.remove('bg-white/30', 'dark:bg-inverse-surface/40');
+            } else {
+                nav.classList.add('bg-white/30', 'dark:bg-inverse-surface/40');
+                nav.classList.remove('bg-white/90', 'dark:bg-inverse-surface/90');
+            }
+        });
+    </script>
+</body>
+</html>

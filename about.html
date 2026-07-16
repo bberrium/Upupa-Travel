@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>About Us — Upupa Travel</title>
+<meta name="description" content="Local, native guides sharing the soul of Armenia through personal, unhurried journeys."/>
+<link rel="icon" type="image/png" href="images/logo.png"/>
+<meta name="theme-color" content="#1c4a96"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,700;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Base tokens and reset (matches your existing site) */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'Inter','Helvetica Neue',Arial,sans-serif;color:#111;background:#fff;-webkit-font-smoothing:antialiased;line-height:1.6}
+a{text-decoration:none;color:inherit}
+img{display:block;max-width:100%}
+
+:root{
+  --blue:#2E6FD9; --blue-dark:#2459b3; --blue-deep:#1c4a96; --blue-pale:#eef4fd;
+  --orange:#F38345; --ink:#111; --stone:#888; --mist:#ffffff; --border:#ececec; --radius:10px;
+}
+
+/* NAV */
+#nav{position:fixed;top:0;left:0;right:0;z-index:300;background:rgba(255,255,255,.98);backdrop-filter:blur(10px);box-shadow:0 1px 0 var(--border);transition:box-shadow .3s}
+#nav.scrolled-shadow{box-shadow:0 2px 14px rgba(0,0,0,.06)}
+.nav-inner{max-width:1200px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:120px}
+.logo{display:flex;align-items:center;gap:.75rem}
+.logo-full{height:120px;width:auto;max-height:120px;display:block}
+.nav-links{display:flex;align-items:center;gap:1.75rem}
+.nav-a{font-size:.9rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);transition:color .2s;position:relative}
+.nav-a::after{content:'';position:absolute;bottom:-3px;left:0;right:0;height:1px;background:var(--orange);transform:scaleX(0);transform-origin:left;transition:transform .25s}
+.nav-a:hover, .nav-a.current{color:var(--orange)}
+.nav-a:hover::after, .nav-a.current::after{transform:scaleX(1)}
+.nav-cta{font-size:.9rem;font-weight:500;letter-spacing:.05em;color:#fff;background:var(--orange);border:none;border-radius:6px;padding:.45rem 1rem;transition:background .2s}
+.nav-cta:hover{background:#d96a28}
+#hamburger{display:none;background:none;border:none;padding:.3rem;color:var(--blue)}
+#mobile-nav{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(255,255,255,.98);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:1rem 1.5rem;flex-direction:column;gap:.25rem}
+#mobile-nav.open{display:flex}
+#mobile-nav .nav-a{color:var(--blue);padding:.6rem 0;border-bottom:1px solid var(--border);font-size:.85rem}
+#mobile-nav .nav-a:last-of-type{border-bottom:none}
+#mobile-nav .nav-cta{margin-top:.75rem;text-align:center;display:block;padding:.65rem 1rem}
+
+/* ABOUT SPECIFIC STYLES */
+.about-hero{position:relative;height:70vh;min-height:500px;display:flex;align-items:center;justify-content:center;text-align:center;padding:0 1.5rem;margin-top:120px}
+.about-hero-bg{position:absolute;inset:0;background:linear-gradient(180deg, rgba(10,20,35,0.4) 0%, rgba(10,20,35,0.6) 100%)}
+.about-hero-bg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-1}
+.about-hero-content{position:relative;z-index:1;max-width:800px;color:#fff}
+.about-title{font-family:'Lora',serif;font-size:clamp(2.5rem,5vw,4rem);font-weight:700;margin-bottom:1rem;text-shadow:0 2px 10px rgba(0,0,0,0.3)}
+.about-subtitle{font-size:1.1rem;opacity:0.9;line-height:1.6}
+
+.section{padding:6rem 1.5rem}
+.section-inner{max-width:1200px;margin:0 auto}
+
+/* Mission */
+.mission-text{max-width:800px;margin:0 auto;text-align:center}
+.mission-heading{font-family:'Lora',serif;font-size:clamp(1.5rem,3vw,2.2rem);color:var(--blue);font-style:italic;margin-bottom:2rem}
+.mission-text p{font-size:1.05rem;color:var(--stone);line-height:1.8;margin-bottom:1.5rem}
+
+/* Why Us Grid */
+.eyebrow{font-size:.7rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--orange);margin-bottom:.6rem;display:block;text-align:center}
+.why-title{font-family:'Lora',serif;font-size:2.2rem;color:var(--blue);text-align:center;margin-bottom:3.5rem}
+.why-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));gap:2rem}
+.why-card{background:var(--blue-pale);padding:2.5rem;border-radius:var(--radius);border:1px solid var(--border);transition:transform 0.3s, border-color 0.3s}
+.why-card:hover{transform:translateY(-5px);border-color:var(--blue)}
+.why-icon{width:50px;height:50px;background:var(--orange);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem}
+.why-card h3{font-family:'Lora',serif;font-size:1.3rem;color:var(--blue);margin-bottom:1rem}
+.why-card p{font-size:0.9rem;color:var(--stone);line-height:1.7}
+
+/* Team */
+.team-section{background:var(--mist);border-top:1px solid var(--border)}
+.team-header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;margin-bottom:3.5rem}
+.team-lead{max-width:400px;color:var(--stone);font-size:0.95rem;line-height:1.7}
+.team-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:2rem;max-width:900px;margin:0 auto}
+.team-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:2.5rem 1.5rem;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,0.04)}
+.team-avatar{width:120px;height:120px;background:var(--border);border-radius:50%;margin:0 auto 1.5rem;display:flex;align-items:center;justify-content:center;color:var(--stone)}
+.team-card h4{font-family:'Lora',serif;font-size:1.3rem;color:var(--blue);margin-bottom:0.3rem}
+.team-role{font-size:0.75rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--orange);margin-bottom:1rem}
+.team-card p{font-size:0.85rem;color:var(--stone);line-height:1.6}
+
+/* CTA */
+.cta-section{background:var(--blue-deep);color:#fff;text-align:center;padding:5rem 1.5rem}
+.cta-title{font-family:'Lora',serif;font-size:2.5rem;margin-bottom:1rem}
+.cta-text{color:rgba(255,255,255,0.8);max-width:600px;margin:0 auto 2.5rem;line-height:1.7}
+.btn-primary{display:inline-flex;align-items:center;gap:.5rem;background:var(--orange);color:#fff;border-radius:7px;padding:.8rem 1.8rem;font-size:.9rem;font-weight:500;transition:background .2s}
+.btn-primary:hover{background:#d96a28}
+.btn-outline{display:inline-flex;align-items:center;gap:.5rem;background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:7px;padding:.8rem 1.8rem;font-size:.9rem;font-weight:500;transition:background .2s, border-color .2s}
+.btn-outline:hover{background:rgba(255,255,255,0.1);border-color:#fff}
+.cta-buttons{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+
+/* Footer */
+footer{background:var(--blue-deep);padding:2rem 1.5rem;border-top:1px solid rgba(255,255,255,0.1)}
+.footer-inner{max-width:1200px;margin:0 auto;display:flex;flex-direction:column;gap:1rem}
+@media(min-width:640px){.footer-inner{flex-direction:row;align-items:center;justify-content:space-between}}
+.footer-brand{font-family:'Lora',serif;font-size:.85rem;font-weight:700;color:rgba(255,255,255,.7);letter-spacing:.05em}
+.footer-meta{font-size:.65rem;color:rgba(255,255,255,.3)}
+.footer-links{display:flex;gap:1.25rem}
+.footer-links a{font-size:.7rem;color:rgba(255,255,255,.4);transition:color .2s}
+.footer-links a:hover{color:var(--orange)}
+
+@media(max-width:768px){
+  .team-header {flex-direction:column; align-items:flex-start; gap:1.5rem;}
+  .team-lead {max-width:100%;}
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo"><img src="images/logo.png" alt="Upupa Travel" class="logo-full"/></a>
+    <div class="nav-links" id="nav-links" style="display:none">
+      <a href="index.html" class="nav-a">Home</a>
+      <a href="about.html" class="nav-a current">About</a>
+      <a href="tours.html" class="nav-a">Tours</a>
+      <a href="gallery.html" class="nav-a">Gallery</a>
+      <a href="index.html#reviews" class="nav-a">Reviews</a>
+      <a href="index.html#contact" class="nav-a">Contact</a>
+      <a href="index.html#contact" class="nav-cta">Book a Call</a>
+    </div>
+    <button id="hamburger" onclick="toggleMobile()" aria-label="Menu">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+  <div id="mobile-nav">
+    <a href="index.html" class="nav-a">Home</a>
+    <a href="about.html" class="nav-a current">About</a>
+    <a href="tours.html" class="nav-a">Tours</a>
+    <a href="gallery.html" class="nav-a">Gallery</a>
+    <a href="index.html#reviews" class="nav-a">Reviews</a>
+    <a href="index.html#contact" class="nav-a">Contact</a>
+    <a href="index.html#contact" class="nav-cta">Book a Call</a>
+  </div>
+</nav>
+
+<section class="about-hero">
+  <div class="about-hero-bg">
+    <img src="images/ararat1.jpg" alt="Armenian Highlands"/>
+  </div>
+  <div class="about-hero-content">
+    <h1 class="about-title">Our Story</h1>
+    <p class="about-subtitle">Local, native guides sharing the soul of Armenia through personal, unhurried journeys.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-inner mission-text">
+    <h2 class="mission-heading">Built around your pace — not a bus schedule.</h2>
+    <p>Upupa Travel was born from a simple belief: the best way to see a country is through the eyes of those who call it home. We moved away from the rigid structures of mass tourism to create a private guide service based in Yerevan that prioritizes depth over checklist-ticking.</p>
+    <p>Our philosophy centers on flexibility. Whether it's stopping for a spontaneous coffee in a mountain village or lingering an extra hour at a cliffside monastery to catch the perfect light, we ensure your journey is as unique as your interests.</p>
+  </div>
+</section>
+
+<section class="section team-section" style="background: #fff; border-top: none;">
+  <div class="section-inner">
+    <span class="eyebrow">Why Upupa</span>
+    <h2 class="why-title">Crafting Better Memories</h2>
+    
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+        </div>
+        <h3>Local Expertise</h3>
+        <p>Our guides didn't just study history; they grew up amidst it. We share the legends, the secret spots, and the local perspectives that textbooks miss.</p>
+      </div>
+
+      <div class="why-card">
+        <div class="why-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <h3>Private & Custom</h3>
+        <p>No strangers, no fixed routes. We build itineraries around your dates, your fitness level, and your specific interests—from ancient wine to volcanic trekking.</p>
+      </div>
+
+      <div class="why-card">
+        <div class="why-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/></svg>
+        </div>
+        <h3>Hidden Gems</h3>
+        <p>We take pride in showing you the Armenia that exists beyond the postcards—hidden valleys, village artisans, and monasteries most tourists never find.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section team-section">
+  <div class="section-inner">
+    <div class="team-header">
+      <div>
+        <span class="eyebrow" style="text-align: left;">The Faces Behind the Journeys</span>
+        <h2 class="why-title" style="margin-bottom: 0; text-align: left;">Meet Your Guides</h2>
+      </div>
+      <p class="team-lead">Our team is small, dedicated, and deeply passionate about Armenian hospitality. We aren't just drivers; we are storytellers.</p>
+    </div>
+
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-avatar">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <h4>Aram Khachatryan</h4>
+        <div class="team-role">Head Guide / Founder</div>
+        <p>Passionate about sharing the hidden stories of Armenia's history and leading hiking trails through the Syunik mountains.</p>
+      </div>
+
+      <div class="team-card">
+        <div class="team-avatar">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <h4>Ani Hovhannisyan</h4>
+        <div class="team-role">Cultural Expert</div>
+        <p>Specializes in Armenia's rich winemaking heritage and local gastronomy. Knows every village bakery off the main highway.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <div class="section-inner">
+    <h2 class="cta-title">Ready to explore Armenia?</h2>
+    <p class="cta-text">Start planning your custom itinerary today. We reply within hours with availability and recommendations tailored to you.</p>
+    <div class="cta-buttons">
+      <a href="tours.html" class="btn-primary">View All Tours</a>
+      <a href="index.html#contact" class="btn-outline">Custom Request</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">UPUPA TRAVEL</div>
+      <div class="footer-meta" style="margin-top:.3rem">© 2026 · Yerevan, Armenia</div>
+    </div>
+    <div class="footer-links">
+      <a href="#">Instagram</a>
+      <a href="#">TripAdvisor</a>
+      <a href="#">Facebook</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+const navEl = document.getElementById('nav');
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('nav-links');
+function setDesktopLinks(){
+  navLinks.style.display = window.innerWidth >= 768 ? 'flex' : 'none';
+  hamburger.style.display = window.innerWidth >= 768 ? 'none' : 'block';
+}
+setDesktopLinks();
+window.addEventListener('resize', setDesktopLinks);
+window.addEventListener('scroll', () => navEl.classList.toggle('scrolled-shadow', window.scrollY > 40), {passive:true});
+function toggleMobile(){ document.getElementById('mobile-nav').classList.toggle('open'); }
+function closeMobile(){ document.getElementById('mobile-nav').classList.remove('open'); }
+</script>
+</body>
+</html>

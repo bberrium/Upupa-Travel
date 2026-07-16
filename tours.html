@@ -4,6 +4,9 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Tour Packages — Upupa Travel</title>
+<meta name="description" content="Browse Upupa Travel's private tour packages in Armenia — day tours, multi-day expeditions and custom itineraries led by local guides."/>
+<link rel="icon" type="image/png" href="images/logo.png"/>
+<meta name="theme-color" content="#1c4a96"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,700;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -111,8 +114,8 @@ ul{list-style:none}
 .cta-strip{background:var(--blue-pale);padding:3.5rem 1.5rem;text-align:center}
 .cta-strip h3{font-family:'Lora',serif;font-size:1.5rem;color:var(--blue);margin-bottom:.6rem}
 .cta-strip p{font-size:.85rem;color:var(--stone);margin-bottom:1.5rem}
-.btn-primary{display:inline-flex;align-items:center;gap:.5rem;background:var(--orange);color:#fff;border:none;border-radius:7px;padding:.7rem 1.5rem;font-size:.83rem;font-weight:500}
-.btn-primary:hover{background:#d96a28}
+.btn-primary{display:inline-flex;align-items:center;gap:.5rem;background:var(--orange);color:#fff;border:none;border-radius:7px;padding:.7rem 1.5rem;font-size:.83rem;font-weight:500;transition:background .2s,transform .15s,box-shadow .2s;box-shadow:0 6px 16px rgba(243,131,69,.28)}
+.btn-primary:hover{background:#d96a28;transform:translateY(-1px);box-shadow:0 8px 20px rgba(243,131,69,.36)}
 
 /* FOOTER */
 footer{background:var(--blue-deep);padding:2rem 1.5rem}
@@ -276,6 +279,42 @@ function closeMobile(){ document.getElementById('mobile-nav').classList.remove('
    `category` — one of: day / weekend / multi / value (used by the filter tabs above)
 */
 const packages = [
+  {
+    slug: "holy-echmiadzin-zvartnots",
+    title: "Holy Echmiadzin & Zvartnots",
+    duration: "Day Trip",
+    nights: 0,
+    category: "day",
+    image: "pkg-echmiadzin.jpg",
+    desc: "The spiritual heart of Armenia, featuring the world's oldest state-built cathedral and the 7th-century architectural masterpiece of Zvartnots.",
+    features: [
+      {label:"Private transport", yes:true},
+      {label:"English/Russian guide", yes:true},
+      {label:"Hotel pickup", yes:true},
+      {label:"Lunch included", yes:false},
+      {label:"Hotel accommodation", yes:false}
+    ],
+    price: "28,000 AMD",
+    priceNote: "per person"
+  },
+  {
+    slug: "amberd-fortress-aragats",
+    title: "Amberd Fortress & Mount Aragats",
+    duration: "Day Trip",
+    nights: 0,
+    category: "day",
+    image: "pkg-amberd.jpg",
+    desc: "Explore an 11th-century fortress on the slopes of Armenia's highest mountain, and walk through the giant stone letters of the Alphabet Monument.",
+    features: [
+      {label:"Private transport", yes:true},
+      {label:"English/Russian guide", yes:true},
+      {label:"Hotel pickup", yes:true},
+      {label:"Lunch included", yes:false},
+      {label:"Hotel accommodation", yes:false}
+    ],
+    price: "32,000 AMD",
+    priceNote: "per person"
+  },
   {
     slug: "garni-geghard-symphony-of-stones",
     title: "Garni, Geghard & Symphony of Stones",

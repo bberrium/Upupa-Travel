@@ -4,6 +4,9 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Tour Package — Upupa Travel</title>
+<meta name="description" content="Tour details, itinerary and booking for Upupa Travel's private Armenia tours."/>
+<link rel="icon" type="image/png" href="images/logo.png"/>
+<meta name="theme-color" content="#1c4a96"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,700;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -107,8 +110,8 @@ ul{list-style:none}
 .cta-strip{background:var(--blue-pale);padding:3.5rem 1.5rem;text-align:center}
 .cta-strip h3{font-family:'Lora',serif;font-size:1.5rem;color:var(--blue);margin-bottom:.6rem}
 .cta-strip p{font-size:.85rem;color:var(--stone);margin-bottom:1.5rem}
-.btn-primary{display:inline-flex;align-items:center;gap:.5rem;background:var(--orange);color:#fff;border:none;border-radius:7px;padding:.7rem 1.5rem;font-size:.83rem;font-weight:500}
-.btn-primary:hover{background:#d96a28}
+.btn-primary{display:inline-flex;align-items:center;gap:.5rem;background:var(--orange);color:#fff;border:none;border-radius:7px;padding:.7rem 1.5rem;font-size:.83rem;font-weight:500;transition:background .2s,transform .15s,box-shadow .2s;box-shadow:0 6px 16px rgba(243,131,69,.28)}
+.btn-primary:hover{background:#d96a28;transform:translateY(-1px);box-shadow:0 8px 20px rgba(243,131,69,.36)}
 
 footer{background:var(--blue-deep);padding:2rem 1.5rem}
 .footer-inner{max-width:1200px;margin:0 auto;display:flex;flex-direction:column;gap:1rem}
@@ -196,6 +199,38 @@ function closeMobile(){ document.getElementById('mobile-nav').classList.remove('
    trips — leave it as [] for day trips (the hotel field hides itself).
 */
 const packages = {
+
+  "holy-echmiadzin-zvartnots": {
+    title: "Holy Echmiadzin & Zvartnots Temple",
+    duration: "Day Trip", nights: 0,
+    image: "pkg-echmiadzin.jpg",
+    tags: ["Day Trip", "Private Tour", "Architecture & Religion"],
+    desc: "A half-day journey to the 'Vatican' of the Armenian Apostolic Church, featuring the oldest state-built church in the world, followed by the majestic ruins of Zvartnots Temple.",
+    itinerary: [
+      {title:"Echmiadzin Cathedral & Churches", text:"Drive to the city of Vagharshapat to visit the Mother See of Holy Etchmiadzin, originally built in 301 AD. You'll also visit the nearby churches of St. Hripsime and St. Gayane."},
+      {title:"Zvartnots Temple Ruins", text:"On the way back to Yerevan, stop at the 7th-century ruins of Zvartnots, a UNESCO World Heritage site known for its unique circular architecture and views of Mount Ararat."}
+    ],
+    includes: ["Private transport & driver","English or Russian speaking guide","Hotel pickup & drop-off","All entrance fees"],
+    excludes: ["Lunch","Personal expenses","Travel insurance"],
+    basePrice: 28000,
+    hotelOptions: []
+  },
+  "amberd-fortress-aragats": {
+    title: "Amberd Fortress & Mount Aragats",
+    duration: "Day Trip", nights: 0,
+    image: "pkg-amberd.jpg",
+    tags: ["Day Trip", "Private Tour", "Mountains & History"],
+    desc: "Head up the slopes of Mount Aragats—Armenia's highest peak—to explore an 11th-century fortress, followed by a walk through the giant stone letters of the Armenian Alphabet Monument.",
+    itinerary: [
+      {title:"Armenian Alphabet Monument", text:"Depart Yerevan for the slopes of Aragats, stopping first at the Alphabet Monument, where 39 giant stone letters celebrate the creation of the Armenian script in 405 AD."},
+      {title:"Amberd Fortress", text:"Continue winding up the mountain to Amberd, a rugged 11th-century fortress and church perched on a dramatic promontory between two deep river gorges."}
+    ],
+    includes: ["Private transport & driver","English or Russian speaking guide","Hotel pickup & drop-off","Entrance fees"],
+    excludes: ["Lunch","Personal expenses","Travel insurance"],
+    basePrice: 32000,
+    hotelOptions: []
+  },
+  
   "garni-geghard-symphony-of-stones": {
     title: "Garni, Geghard & Symphony of Stones",
     duration: "Day Trip", nights: 0,

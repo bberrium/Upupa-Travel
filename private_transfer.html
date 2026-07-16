@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@600;700&amp;family=Manrope:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.5);
+        }
+        .shimmer-hover:hover {
+            background: linear-gradient(110deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container": "#eeeef0",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-container": "#ffa6a4",
+                        "surface-container-highest": "#e2e2e5",
+                        "on-background": "#1a1c1e",
+                        "inverse-primary": "#aec6ff",
+                        "primary-fixed-dim": "#aec6ff",
+                        "secondary-fixed": "#ffdbcb",
+                        "on-secondary": "#ffffff",
+                        "primary": "#003376",
+                        "on-error-container": "#93000a",
+                        "tertiary": "#730014",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed-variant": "#92001c",
+                        "background": "#f9f9fc",
+                        "surface-variant": "#e2e2e5",
+                        "on-tertiary": "#ffffff",
+                        "outline-variant": "#c3c6d3",
+                        "on-secondary-fixed-variant": "#793100",
+                        "border-muted": "#E2E8F0",
+                        "primary-fixed": "#d8e2ff",
+                        "on-primary-fixed-variant": "#124490",
+                        "surface-container-high": "#e8e8ea",
+                        "inverse-on-surface": "#f0f0f3",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-alt": "#F8FAFC",
+                        "tertiary-container": "#9e001f",
+                        "tertiary-fixed-dim": "#ffb3b1",
+                        "secondary-fixed-dim": "#ffb692",
+                        "ocean-blue": "#2E6FD9",
+                        "on-surface-variant": "#434751",
+                        "surface-dim": "#dadadc",
+                        "on-tertiary-fixed": "#410007",
+                        "surface-bright": "#f9f9fc",
+                        "primary-container": "#1c4a96",
+                        "surface-tint": "#335ca9",
+                        "outline": "#737782",
+                        "on-surface": "#1a1c1e",
+                        "on-primary-fixed": "#001a43",
+                        "tertiary-fixed": "#ffdad8",
+                        "secondary-container": "#ff8d4e",
+                        "surface": "#f9f9fc",
+                        "on-secondary-fixed": "#341100",
+                        "inverse-surface": "#2f3133",
+                        "on-secondary-container": "#6d2b00",
+                        "surface-container-low": "#f3f3f6",
+                        "secondary": "#9e4304",
+                        "error-container": "#ffdad6",
+                        "on-primary-container": "#a1bdff",
+                        "on-error": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin-desktop": "64px",
+                        "section-padding": "120px",
+                        "gutter": "24px",
+                        "container-max": "1280px",
+                        "stack-sm": "8px",
+                        "stack-md": "16px",
+                        "stack-lg": "32px",
+                        "margin-mobile": "20px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["\"Source Serif 4\""],
+                        "headline-sm": ["\"Source Serif 4\""],
+                        "caption": ["Manrope"],
+                        "body-lg": ["Manrope"],
+                        "label-md": ["Manrope"],
+                        "headline-md": ["\"Source Serif 4\""],
+                        "body-md": ["Manrope"],
+                        "display-lg-mobile": ["\"Source Serif 4\""]
+                    },
+                    "fontSize": {
+                        "display-lg": ["56px", {"lineHeight": "64px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-sm": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "caption": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "display-lg-mobile": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 shadow-sm">
+<nav class="flex justify-between items-center h-20 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<div class="font-display-lg text-headline-sm font-bold text-primary">Upupa Travel</div>
+<div class="hidden md:flex items-center gap-stack-lg">
+<a class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant hover:text-secondary transition-all duration-300" href="#">Tours</a>
+<a class="font-label-md text-label-md uppercase tracking-wider text-secondary font-bold border-b-2 border-secondary" href="#">Transfers</a>
+<a class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant hover:text-secondary transition-all duration-300" href="#">About Us</a>
+<a class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant hover:text-secondary transition-all duration-300" href="#">Destinations</a>
+<a class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant hover:text-secondary transition-all duration-300" href="#">Contact</a>
+</div>
+<div class="flex items-center gap-stack-md">
+<span class="material-symbols-outlined text-primary cursor-pointer">language</span>
+<button class="bg-secondary text-on-secondary px-6 py-2 font-label-md text-label-md uppercase tracking-wider scale-95 active:opacity-80 transition-transform">
+                    Book Now
+                </button>
+</div>
+</nav>
+</header>
+<main class="pt-20">
+<!-- Hero Section -->
+<section class="relative h-[80vh] flex items-center overflow-hidden">
+<div class="absolute inset-0 z-0">
+<div class="w-full h-full bg-cover bg-center" data-alt="A high-end black premium sedan driving along a winding scenic mountain road in the Armenian highlands during the golden hour. The soft evening sun casts long shadows and highlights the sleek metallic finish of the car. The surrounding landscape features rugged peaks and lush greenery, reflecting a professional and adventurous travel aesthetic." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBf1ZKfrvRTALSbpxvVbly4HcDy2LkRouQmdhtkS9B8UXfdLuPk8JxF7nyfC0byqkdyd1pyokWnITyRKZlw8WglhHNBfodS9-PAzZPwxuUpQqEo9Khh3OTm8ZLtPusnFLcLy-dwh1VMf1t-WsKDPPFn9HBO9V4V1k_PA4NmVHLeebWHnNeYE3icDtOY9Lj4v1yE9yjimZrXvOFF6YEXeZg7gwQdiNk7jbAqJSoVovF9Qbbg5hon65LC')"></div>
+<div class="absolute inset-0 bg-gradient-to-r from-primary/60 to-transparent"></div>
+</div>
+<div class="relative z-10 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto w-full">
+<div class="max-w-2xl text-white">
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg mb-stack-md">Seamless Private Transfers</h1>
+<p class="font-body-lg text-body-lg opacity-90 mb-stack-lg">Reliable drivers and comfortable vehicles for your Armenian travels. Experience door-to-door service with local experts who value your safety and comfort.</p>
+<a class="inline-block bg-secondary text-on-secondary px-8 py-4 font-label-md text-label-md uppercase tracking-widest hover:bg-secondary-container transition-colors shadow-lg" href="#booking">
+                        Secure Your Ride
+                    </a>
+</div>
+</div>
+</section>
+<!-- Booking Form Section -->
+<section class="relative z-20 -mt-24 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto mb-section-padding" id="booking">
+<div class="glass-card p-8 md:p-12 shadow-2xl rounded-lg">
+<div class="grid grid-cols-1 lg:grid-cols-4 gap-gutter">
+<div class="lg:col-span-4 border-b border-outline-variant/30 pb-stack-md mb-stack-md">
+<h2 class="font-headline-md text-headline-md text-primary">Reserve Your Transfer</h2>
+</div>
+<div class="space-y-stack-sm">
+<label class="font-label-md text-label-md text-on-surface-variant">Pickup Location</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">location_on</span>
+<input class="w-full pl-10 pr-4 py-3 bg-surface-container-lowest border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" placeholder="e.g. Zvartnots Airport" type="text"/>
+</div>
+</div>
+<div class="space-y-stack-sm">
+<label class="font-label-md text-label-md text-on-surface-variant">Destination</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">flag</span>
+<input class="w-full pl-10 pr-4 py-3 bg-surface-container-lowest border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" placeholder="e.g. Yerevan Center" type="text"/>
+</div>
+</div>
+<div class="space-y-stack-sm">
+<label class="font-label-md text-label-md text-on-surface-variant">Date &amp; Time</label>
+<div class="flex gap-2">
+<input class="w-1/2 px-4 py-3 bg-surface-container-lowest border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" type="date"/>
+<input class="w-1/2 px-4 py-3 bg-surface-container-lowest border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" type="time"/>
+</div>
+</div>
+<div class="space-y-stack-sm">
+<label class="font-label-md text-label-md text-on-surface-variant">Passengers &amp; Luggage</label>
+<div class="flex gap-2">
+<select class="w-1/2 px-4 py-3 bg-surface-container-lowest border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all">
+<option>1-3 Pers.</option>
+<option>4-7 Pers.</option>
+<option>8+ Pers.</option>
+</select>
+<select class="w-1/2 px-4 py-3 bg-surface-container-lowest border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all">
+<option>1-2 Bags</option>
+<option>3-5 Bags</option>
+<option>6+ Bags</option>
+</select>
+</div>
+</div>
+<div class="lg:col-span-4 flex justify-end mt-stack-md">
+<button class="w-full md:w-auto bg-primary text-on-primary px-12 py-4 font-label-md text-label-md uppercase tracking-widest hover:opacity-90 transition-all flex items-center justify-center gap-2">
+                            Check Availability
+                            <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Service Grid: Bento Style -->
+<section class="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto mb-section-padding">
+<div class="text-center mb-stack-lg">
+<h2 class="font-headline-md text-headline-md text-primary mb-stack-sm">Tailored Transport Solutions</h2>
+<div class="h-1 w-20 bg-secondary mx-auto"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Airport Pickups -->
+<div class="group relative overflow-hidden bg-white border border-outline-variant/30 hover:border-secondary transition-all duration-500">
+<div class="aspect-video overflow-hidden">
+<div class="w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-700" data-alt="A professional chauffeur in a formal suit holding a personalized welcome sign inside the modern, bright arrivals terminal of Zvartnots International Airport. The background shows blurred travelers and architectural glass elements, creating a sense of professional greeting and premium arrival experience." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuArbELhCi9qKj24y--hmYCWCkf0-4A7LyWQ24kZZuXkIdrW9S3emy0oKKGPOb9stOamdgQ0keSmq1uvsaFyNz0fUlv_nduyWLrWiBd9uVp6AchCO9TOjSm1yN9J4WaZWOEHelIbU2RIh2oyASRQP5rurvJz4VE-LsY0hDVIP61us-nhhrDrDy8RcwSmbdG3dFYWJD2cxcjOk08RzLat6jhr96RDUr6xBuFosvCRWTw9Kiide84ODapT')"></div>
+</div>
+<div class="p-8">
+<div class="flex items-center gap-stack-sm mb-stack-sm text-secondary">
+<span class="material-symbols-outlined">flight_land</span>
+<span class="font-label-md text-label-md uppercase tracking-wider">Arrivals</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-primary mb-stack-sm">Airport Pickups</h3>
+<p class="text-on-surface-variant font-body-md">Meet &amp; greet at Zvartnots. We monitor your flight for delays to ensure a stress-free transition to your hotel.</p>
+</div>
+</div>
+<!-- Intercity Transfers -->
+<div class="group relative overflow-hidden bg-white border border-outline-variant/30 hover:border-secondary transition-all duration-500">
+<div class="aspect-video overflow-hidden">
+<div class="w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-700" data-alt="A wide-angle scenic view of a smooth asphalt road stretching towards the snow-capped Caucasus mountains near Lake Sevan. A high-quality silver minivan is seen traveling along the road, representing intercity transfers. The lighting is crisp and clear, emphasizing the beauty of the Armenian countryside." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDC4Zui1HwBn48gp4zOQW9ew1ru55Sz728fzbbgn8TSzKQ-SIwT_cuvXb666Ytd5om4QLnG9fwDR6H8-5AA9MbqdpdUapKE0ZG41NanhvN2PKR5uo2TL7zz_4uQbDvU8BtVm6gabOWnKUTROYY68OVXMi3Lv496X8qtSNw_IPmMZ9fXQ4I0HSV4SvYNbMWD6s8gtwKAwWmOMOhfB7SPzFVlK83gFGrPu3nqcK4Ascov_UE33-1ohOy8')"></div>
+</div>
+<div class="p-8">
+<div class="flex items-center gap-stack-sm mb-stack-sm text-secondary">
+<span class="material-symbols-outlined">distance</span>
+<span class="font-label-md text-label-md uppercase tracking-wider">Intercity</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-primary mb-stack-sm">Cross-Border &amp; Regional</h3>
+<p class="text-on-surface-variant font-body-md">Direct transfers from Yerevan to Tbilisi, Sevan, or Dilijan. Fixed pricing with no hidden surprises.</p>
+</div>
+</div>
+<!-- Hourly Rental -->
+<div class="group relative overflow-hidden bg-white border border-outline-variant/30 hover:border-secondary transition-all duration-500">
+<div class="aspect-video overflow-hidden">
+<div class="w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-700" data-alt="Close-up detail of a professional chauffeur's hand on a luxury leather steering wheel, with a blurred view of a sunny city street in Yerevan through the windshield. The image conveys a sense of personal service, control, and executive hourly rental convenience in an urban setting." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuATYrlVJUDzsyKUvNEaxrMWWO7eHAy_x_OZXz9Fe5eXFki_WxgZmBiDXJuk56l-zmFlOT6YRQCJ4sQJx93tWUYUhG5mIW-E4NjujRx9yXBKc_ILMAo4zqmDhovdvpATB8flKXtxi8OD0hP1PTKFc3Utm8jmeCY_q3aU0ndx6cSNjqw-3iQSwm4kwbg-Psn6LuDNyouayBjM_BQ9bk7VuWAbrB_uVHMhx67iAoi1y-0YsOLFUcIbauzs')"></div>
+</div>
+<div class="p-8">
+<div class="flex items-center gap-stack-sm mb-stack-sm text-secondary">
+<span class="material-symbols-outlined">schedule</span>
+<span class="font-label-md text-label-md uppercase tracking-wider">Flexible</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-primary mb-stack-sm">Hourly Driver Rental</h3>
+<p class="text-on-surface-variant font-body-md">Your personal driver on standby. Perfect for business meetings or customized sightseeing tours at your own pace.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Fleet Showcase -->
+<section class="bg-surface-container py-section-padding">
+<div class="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<div class="flex flex-col md:flex-row justify-between items-end mb-stack-lg gap-stack-md">
+<div class="max-w-xl">
+<h2 class="font-headline-md text-headline-md text-primary mb-stack-sm">Our Premium Fleet</h2>
+<p class="text-on-surface-variant font-body-md">Every vehicle is meticulously maintained, climate-controlled, and equipped with complimentary bottled water and Wi-Fi for your comfort.</p>
+</div>
+<div class="hidden md:flex gap-2">
+<button class="p-3 border border-outline text-primary hover:bg-primary hover:text-white transition-all">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="p-3 border border-outline text-primary hover:bg-primary hover:text-white transition-all">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<!-- Comfort Sedan -->
+<div class="flex flex-col md:flex-row bg-white overflow-hidden shadow-sm hover:shadow-xl transition-shadow group">
+<div class="md:w-1/2 h-64 md:h-auto overflow-hidden">
+<div class="w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-700" data-alt="A side profile shot of a pristine white luxury sedan parked in front of a modern architectural backdrop in Yerevan. The car is polished and gleaming under soft daylight, highlighting its elegant lines and comfortable interior space suitable for executive transfers." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA_9WaIoQTiDIZQg4JIpvhauOEH2ZzekSuoCl2cXU9SEgwVaSXl9lNDtxjLxXh1iC_TIx4S_GtygqEB-GY3z6Kdrtmhbw539S7-4Hga18YAAHhrrzLeA49To0edm_5cWSUfWVQiOwyJrpt83y_gqUdrFB7y8apRvLik9H2kSJoDCj_j1X30uTJKtZ-hsJFigXZDvV5kE48HcOPSw2ekYKOT14k9vcyOq1OBihRIJvu6MicCAKUPiDWf')"></div>
+</div>
+<div class="p-8 md:w-1/2 flex flex-col justify-center">
+<h3 class="font-headline-sm text-headline-sm text-primary mb-stack-sm">Comfort Sedan</h3>
+<ul class="space-y-stack-sm text-on-surface-variant mb-stack-md">
+<li class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-sm">check_circle</span>
+<span class="font-body-md">Up to 3 Passengers</span>
+</li>
+<li class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-sm">check_circle</span>
+<span class="font-body-md">2 Large Suitcases</span>
+</li>
+<li class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-sm">check_circle</span>
+<span class="font-body-md">Free Bottled Water &amp; Wi-Fi</span>
+</li>
+</ul>
+<div class="text-secondary font-headline-sm">From $45</div>
+</div>
+</div>
+<!-- Business Minivan -->
+<div class="flex flex-col md:flex-row bg-white overflow-hidden shadow-sm hover:shadow-xl transition-shadow group">
+<div class="md:w-1/2 h-64 md:h-auto overflow-hidden">
+<div class="w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-700" data-alt="A front-three-quarter view of a black Mercedes-Benz V-Class minivan positioned on a clean paved street. The vehicle looks professional and spacious, with tinted windows and a premium finish, ideal for small groups or families traveling together in comfort." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD3oJ53utV9p38nTwg9nP-2KqW1uZLWWOa0Pv8_CzUTg2GM5EEugHkcqgVNO7MnAD09SHPhi0uo8sXUn7sxzsyE1KBC80DbPm-EkcgAO-RLQIH8a1Slz0roykGL5QQBYI0X89PTDSeEqw18w_ZWUJXDsl0omBQF8VUNBkwSgrBAIvq93lYMDVHx3YUixBerodeCJeqIQxKokQhAI2cmGWrlNHVW7zL5oc1roosKgiOaPJdVxj_TvQ2Y')"></div>
+</div>
+<div class="p-8 md:w-1/2 flex flex-col justify-center">
+<h3 class="font-headline-sm text-headline-sm text-primary mb-stack-sm">Business Minivan</h3>
+<ul class="space-y-stack-sm text-on-surface-variant mb-stack-md">
+<li class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-sm">check_circle</span>
+<span class="font-body-md">Up to 7 Passengers</span>
+</li>
+<li class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-sm">check_circle</span>
+<span class="font-body-md">5-6 Large Suitcases</span>
+</li>
+<li class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-sm">check_circle</span>
+<span class="font-body-md">Spacious Cabin &amp; AC</span>
+</li>
+</ul>
+<div class="text-secondary font-headline-sm">From $85</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Trust Features -->
+<section class="py-section-padding px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto text-center">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter">
+<div class="space-y-stack-sm">
+<span class="material-symbols-outlined text-primary text-4xl">verified_user</span>
+<h4 class="font-headline-sm text-[20px] text-primary">Vetted Drivers</h4>
+<p class="text-on-surface-variant font-body-md">Professional, English-speaking local experts with years of experience.</p>
+</div>
+<div class="space-y-stack-sm">
+<span class="material-symbols-outlined text-primary text-4xl">payments</span>
+<h4 class="font-headline-sm text-[20px] text-primary">No Hidden Costs</h4>
+<p class="text-on-surface-variant font-body-md">Fixed transparent pricing inclusive of taxes, tolls, and parking.</p>
+</div>
+<div class="space-y-stack-sm">
+<span class="material-symbols-outlined text-primary text-4xl">event_available</span>
+<h4 class="font-headline-sm text-[20px] text-primary">Free Cancellation</h4>
+<p class="text-on-surface-variant font-body-md">Cancel for free up to 24 hours before your scheduled pickup.</p>
+</div>
+<div class="space-y-stack-sm">
+<span class="material-symbols-outlined text-primary text-4xl">support_agent</span>
+<h4 class="font-headline-sm text-[20px] text-primary">24/7 Support</h4>
+<p class="text-on-surface-variant font-body-md">Our dedicated team is always available to assist with your journey.</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest border-t border-outline-variant/50 w-full">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-margin-mobile md:px-margin-desktop py-section-padding max-w-container-max mx-auto">
+<div class="col-span-1 md:col-span-1">
+<div class="font-display-lg text-headline-sm font-bold text-primary mb-stack-md">Upupa Travel</div>
+<p class="text-on-surface-variant font-body-md mb-stack-md">Authentic Armenian experiences curated by local experts. Rugged adventures met with high-end hospitality.</p>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-primary cursor-pointer hover:text-secondary transition-colors">face_nod</span>
+<span class="material-symbols-outlined text-primary cursor-pointer hover:text-secondary transition-colors">share</span>
+<span class="material-symbols-outlined text-primary cursor-pointer hover:text-secondary transition-colors">camera</span>
+</div>
+</div>
+<div class="col-span-1">
+<h5 class="font-label-md text-label-md uppercase tracking-wider text-primary mb-stack-md">Company</h5>
+<ul class="space-y-2">
+<li><a class="text-on-surface-variant hover:text-secondary underline transition-all" href="#">About Us</a></li>
+<li><a class="text-on-surface-variant hover:text-secondary underline transition-all" href="#">Our Guides</a></li>
+<li><a class="text-on-surface-variant hover:text-secondary underline transition-all" href="#">Sustainability</a></li>
+<li><a class="text-on-surface-variant hover:text-secondary underline transition-all" href="#">Contact</a></li>
+</ul>
+</div>
+<div class="col-span-1">
+<h5 class="font-label-md text-label-md uppercase tracking-wider text-primary mb-stack-md">Help &amp; Support</h5>
+<ul class="space-y-2">
+<li><a class="text-on-surface-variant hover:text-secondary underline transition-all" href="#">FAQ</a></li>
+<li><a class="text-on-surface-variant hover:text-secondary underline transition-all" href="#">Privacy Policy</a></li>
+<li><a class="text-on-surface-variant hover:text-secondary underline transition-all" href="#">Terms of Service</a></li>
+<li><a class="text-on-surface-variant hover:text-secondary underline transition-all" href="#">Contact Support</a></li>
+</ul>
+</div>
+<div class="col-span-1">
+<h5 class="font-label-md text-label-md uppercase tracking-wider text-primary mb-stack-md">Newsletter</h5>
+<p class="text-on-surface-variant font-body-md mb-stack-md">Get travel tips and exclusive transfer offers.</p>
+<div class="flex">
+<input class="bg-surface border border-outline-variant px-4 py-2 w-full focus:outline-none focus:border-primary" placeholder="Your email" type="email"/>
+<button class="bg-primary text-white px-4 py-2 hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined">send</span>
+</button>
+</div>
+</div>
+</div>
+<div class="border-t border-outline-variant/30 py-8 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+<span class="text-on-surface-variant font-body-md">© 2024 Upupa Travel. All rights reserved.</span>
+<div class="flex gap-6">
+<span class="text-on-surface-variant text-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">language</span> English (US)
+                </span>
+<span class="text-on-surface-variant text-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">payments</span> USD ($)
+                </span>
+</div>
+</div>
+</footer>
+<script>
+        // Simple micro-interaction for form focus
+        document.querySelectorAll('input, select').forEach(el => {
+            el.addEventListener('focus', () => {
+                el.parentElement.classList.add('scale-[1.01]');
+            });
+            el.addEventListener('blur', () => {
+                el.parentElement.classList.remove('scale-[1.01]');
+            });
+        });
+
+        // Sticky header background shift on scroll
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('shadow-md');
+                header.classList.replace('bg-surface/80', 'bg-surface/95');
+            } else {
+                header.classList.remove('shadow-md');
+                header.classList.replace('bg-surface/95', 'bg-surface/80');
+            }
+        });
+    </script>
+</body></html>
