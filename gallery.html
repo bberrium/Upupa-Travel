@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Gallery — Upupa Travel</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,700;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;font-size:16px}
@@ -42,7 +42,7 @@ ul{list-style:none}
 /* Page header */
 .page-head{padding:11rem 1.5rem 2.5rem;max-width:1200px;margin:0 auto;text-align:center}
 .eyebrow{font-size:.7rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--orange);margin-bottom:.6rem}
-.page-title{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,2.8rem);font-weight:700;color:var(--blue);line-height:1.1}
+.page-title{font-family:'Lora',serif;font-size:clamp(2rem,4vw,2.8rem);font-weight:700;color:var(--blue);line-height:1.1}
 .page-rule{width:36px;height:2px;background:var(--orange);margin:1rem auto 1.2rem;border-radius:2px}
 .page-lead{font-size:.9rem;color:var(--stone);max-width:52ch;margin:0 auto;line-height:1.8}
 
@@ -59,7 +59,7 @@ ul{list-style:none}
 .g-item:hover img{transform:scale(1.05)}
 .g-item::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 55%,rgba(0,0,0,.55));opacity:0;transition:opacity .3s}
 .g-item:hover::after{opacity:1}
-.g-cap{position:absolute;left:0;right:0;bottom:0;padding:.85rem 1rem;color:#fff;font-family:'Playfair Display',serif;font-size:.95rem;opacity:0;transform:translateY(6px);transition:opacity .3s,transform .3s;z-index:1}
+.g-cap{position:absolute;left:0;right:0;bottom:0;padding:.85rem 1rem;color:#fff;font-family:'Lora',serif;font-size:.95rem;opacity:0;transform:translateY(6px);transition:opacity .3s,transform .3s;z-index:1}
 .g-item:hover .g-cap{opacity:1;transform:none}
 
 /* Lightbox */
@@ -77,7 +77,7 @@ ul{list-style:none}
 footer{background:var(--blue-deep);padding:2rem 1.5rem}
 .footer-inner{max-width:1200px;margin:0 auto;display:flex;flex-direction:column;gap:1rem}
 @media(min-width:640px){.footer-inner{flex-direction:row;align-items:center;justify-content:space-between}}
-.footer-brand{font-family:'Playfair Display',serif;font-size:.85rem;font-weight:700;color:rgba(255,255,255,.7);letter-spacing:.05em}
+.footer-brand{font-family:'Lora',serif;font-size:.85rem;font-weight:700;color:rgba(255,255,255,.7);letter-spacing:.05em}
 .footer-meta{font-size:.65rem;color:rgba(255,255,255,.3)}
 .footer-links{display:flex;gap:1.25rem}
 .footer-links a{font-size:.7rem;color:rgba(255,255,255,.4);transition:color .2s}
@@ -161,10 +161,10 @@ footer{background:var(--blue-deep);padding:2rem 1.5rem}
 <script>
 /* Photo set — swap or extend as needed. Uses your existing hero images + Unsplash for now. */
 const PHOTOS = [
-  {src:"images/ararat.jpg", cap:"Mount Ararat at dusk", cat:"landscapes"},
+  {src:"images/hp3.jpg", cap:"Highland valley", cat:"landscapes"},
   {src:"images/ararat1.jpg", cap:"Ararat valley", cat:"landscapes"},
   {src:"images/vanq.jpg", cap:"Ancient monastery", cat:"monasteries"},
-  {src:"images/cascade.jpg", cap:"Yerevan Cascade", cat:"cities"},
+  {src:"https://images.unsplash.com/photo-1595001354394-30a5db2b5a76?w=900&q=80", cap:"Yerevan Cascade", cat:"cities"},
   {src:"images/Hoopoe_1080.jpg", cap:"The hoopoe — our namesake", cat:"culture"},
   {src:"https://images.unsplash.com/photo-1600431521340-491eca880813?w=900&q=80", cap:"Geghard Monastery", cat:"monasteries"},
   {src:"https://images.unsplash.com/photo-1602940659805-770d1b3b9911?w=900&q=80", cap:"Khor Virap & Ararat", cat:"monasteries"},
