@@ -6,7 +6,7 @@ import tailwindcss from '@tailwindcss/vite';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://bberrium.github.io',
-  base: '/Upupa-Travel',
+  base: '/Upupa-Travel/',
   vite: {
     plugins: [tailwindcss()]
   }
