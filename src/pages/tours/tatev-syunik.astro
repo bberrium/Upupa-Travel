@@ -1,0 +1,88 @@
+---
+import TourLayout from "../../layouts/TourLayout.astro";
+import { TOURS } from "../../data/tours.js";
+
+const tour = TOURS.find((t) => t.slug === "tatev-syunik")!;
+
+const days = [
+  {
+    dayNumber: "01",
+    title: "Yerevan to Tatev",
+    subtitle: "The Wings of Tatev & the Southern Highlands",
+    stops: [
+      {
+        time: "08:30 AM",
+        title: "Departure from Yerevan",
+        desc: "A scenic drive south through the Vayots Dzor and Syunik provinces, with stops at roadside viewpoints along the way.",
+      },
+      {
+        time: "01:00 PM",
+        title: "The Wings of Tatev",
+        desc: "Board the world's longest reversible cable car (5.7 km) for a dramatic ride over the Vorotan River gorge to Tatev Monastery.",
+        image: "https://images.unsplash.com/photo-1591123720164-4c8d144c8f0e?w=1200&q=80",
+      },
+      {
+        time: "02:00 PM",
+        title: "Tatev Monastery",
+        desc: "One of Armenia's most important medieval monastic complexes, founded in the 9th century, once a major center of learning and manuscript production.",
+      },
+      {
+        time: "07:00 PM",
+        title: "Overnight in the Mountains",
+        desc: "Check in to a guesthouse in the Syunik highlands for a restful night surrounded by mountain scenery.",
+      },
+    ],
+  },
+  {
+    dayNumber: "02",
+    title: "Southern Armenia & Return",
+    subtitle: "Rugged Landscapes of Syunik",
+    stops: [
+      {
+        time: "09:00 AM",
+        title: "Devil's Bridge & Hot Springs",
+        desc: "Visit a natural rock bridge formed by mineral hot springs over the Vorotan River, with optional time to soak in the warm pools.",
+      },
+      {
+        time: "11:30 AM",
+        title: "Old Khndzoresk",
+        desc: "Explore a cave village carved into soft volcanic cliffs, inhabited until the mid-20th century, connected by a swinging pedestrian bridge across the gorge.",
+        image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1200&q=80",
+      },
+      {
+        time: "02:00 PM",
+        title: "Lunch & Drive Back to Yerevan",
+        desc: "A final regional lunch before the drive north, arriving back in Yerevan by early evening.",
+      },
+    ],
+  },
+];
+
+const included = [
+  "Private transportation in premium SUV",
+  "Expert English-speaking private guide",
+  "Tatev cable car tickets",
+  "1 night in a mountain guesthouse",
+  "Breakfast and one lunch per day",
+  "All entrance fees and local taxes",
+];
+
+const tips = [
+  { icon: "hiking", title: "Footwear", desc: "Sturdy walking shoes are essential for Khndzoresk's uneven cave paths and the swinging bridge." },
+  { icon: "thermostat", title: "Weather Prep", desc: "Mountain evenings in Syunik get cool even in summer — pack a warm layer for the overnight stay." },
+  { icon: "luggage", title: "Overnight Bag", desc: "Pack a small overnight bag separately so you're not hauling full luggage to the guesthouse." },
+];
+---
+
+<TourLayout
+  label={tour.label}
+  title={tour.title}
+  summary={tour.desc}
+  heroImage={tour.image}
+  duration={tour.duration}
+  languages={tour.languages}
+  pricing={tour.pricing}
+  days={days}
+  included={included}
+  tips={tips}
+/>

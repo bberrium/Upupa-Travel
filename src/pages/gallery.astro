@@ -1,0 +1,236 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { PHOTOS } from "../data/photos";
+---
+
+<BaseLayout title="Gallery — Upupa Travel" current="gallery" description="Photos from Upupa Travel's private tours across Armenia — monasteries, mountains, lakes and local culture.">
+  <header class="text-center max-w-3xl mx-auto pt-16 pb-10 px-margin-mobile md:px-margin-desktop">
+    <div class="text-secondary text-label-md font-label-md tracking-widest uppercase mb-2">Photo Gallery</div>
+    <h1 class="font-display-lg text-headline-md md:text-display-lg text-primary">Armenia Through Our Lens</h1>
+    <div class="w-9 h-0.5 bg-secondary mx-auto my-5 rounded-full"></div>
+    <p class="text-on-surface-variant text-body-md">Monasteries carved into cliffs, alpine lakes, vineyards, and the peaks of the Caucasus — moments from our tours across Armenia.</p>
+  </header>
+
+  <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pb-8 flex flex-wrap gap-2 justify-center" id="g-filters">
+    <button class="g-chip active" data-cat="all">All</button>
+    <button class="g-chip" data-cat="landscapes">Landscapes</button>
+    <button class="g-chip" data-cat="monasteries">Monasteries</button>
+    <button class="g-chip" data-cat="cities">Cities</button>
+    <button class="g-chip" data-cat="culture">Culture</button>
+  </div>
+
+  <section class="max-w-container-max mx-auto px-4 pb-24 g-grid" id="g-grid"></section>
+
+  <div id="lightbox">
+    <button class="lb-close" aria-label="Close">×</button>
+    <button class="lb-prev" aria-label="Previous">‹</button>
+    <img id="lb-img" src="" alt="" />
+    <button class="lb-next" aria-label="Next">›</button>
+    <div class="lb-cap" id="lb-cap"></div>
+  </div>
+</BaseLayout>
+
+<style>
+  .g-chip {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: #003376;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 999px;
+    padding: 0.5rem 1.05rem;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .g-chip:hover {
+    border-color: #003376;
+  }
+  .g-chip.active {
+    background: #9e4304;
+    border-color: #9e4304;
+    color: #fff;
+  }
+
+  .g-grid {
+    columns: 3 260px;
+    column-gap: 0.9rem;
+  }
+  :global(.g-item) {
+    break-inside: avoid;
+    margin: 0 0 0.9rem;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    background: #eef4fd;
+  }
+  :global(.g-item img) {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.5s ease;
+  }
+  :global(.g-item:hover img) {
+    transform: scale(1.05);
+  }
+  :global(.g-item::after) {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 55%, rgba(0, 0, 0, 0.55));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  :global(.g-item:hover::after) {
+    opacity: 1;
+  }
+  :global(.g-cap) {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 0.85rem 1rem;
+    color: #fff;
+    font-family: "Source Serif 4", serif;
+    font-size: 0.95rem;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.3s, transform 0.3s;
+    z-index: 1;
+  }
+  :global(.g-item:hover .g-cap) {
+    opacity: 1;
+    transform: none;
+  }
+
+  #lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 500;
+    background: rgba(0, 0, 0, 0.9);
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+  #lightbox.open {
+    display: flex;
+  }
+  #lightbox img {
+    max-width: 92vw;
+    max-height: 88vh;
+    border-radius: 8px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  }
+  #lightbox .lb-close,
+  #lightbox .lb-prev,
+  #lightbox .lb-next {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #fff;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+    cursor: pointer;
+  }
+  #lightbox .lb-close:hover,
+  #lightbox .lb-prev:hover,
+  #lightbox .lb-next:hover {
+    background: rgba(255, 255, 255, 0.24);
+  }
+  #lightbox .lb-close {
+    top: 1.5rem;
+    right: 1.5rem;
+  }
+  #lightbox .lb-prev {
+    left: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  #lightbox .lb-next {
+    right: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .lb-cap {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+  }
+</style>
+
+<script define:vars={{ PHOTOS }}>
+  const grid = document.getElementById("g-grid");
+  let visible = PHOTOS.slice();
+
+  function render() {
+    grid.innerHTML = "";
+    visible.forEach((p, i) => {
+      const el = document.createElement("div");
+      el.className = "g-item";
+      el.dataset.idx = i;
+      el.innerHTML = `<img src="${p.src}" alt="${p.cap}" loading="lazy"/><div class="g-cap">${p.cap}</div>`;
+      el.addEventListener("click", () => openLB(i));
+      grid.appendChild(el);
+    });
+  }
+
+  document.querySelectorAll(".g-chip").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".g-chip").forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+      const cat = btn.dataset.cat;
+      visible = cat === "all" ? PHOTOS.slice() : PHOTOS.filter((p) => p.cat === cat);
+      render();
+    });
+  });
+
+  let lbIdx = 0;
+  const lb = document.getElementById("lightbox");
+  const lbImg = document.getElementById("lb-img");
+  const lbCap = document.getElementById("lb-cap");
+  function openLB(i) {
+    lbIdx = i;
+    showLB();
+    lb.classList.add("open");
+  }
+  function closeLB() {
+    lb.classList.remove("open");
+  }
+  function stepLB(d) {
+    lbIdx = (lbIdx + d + visible.length) % visible.length;
+    showLB();
+  }
+  function showLB() {
+    const p = visible[lbIdx];
+    lbImg.src = p.src;
+    lbImg.alt = p.cap;
+    lbCap.textContent = p.cap;
+  }
+  lb.addEventListener("click", (e) => {
+    if (e.target === lb) closeLB();
+  });
+  document.querySelector(".lb-close").addEventListener("click", closeLB);
+  document.querySelector(".lb-prev").addEventListener("click", () => stepLB(-1));
+  document.querySelector(".lb-next").addEventListener("click", () => stepLB(1));
+  document.addEventListener("keydown", (e) => {
+    if (!lb.classList.contains("open")) return;
+    if (e.key === "Escape") closeLB();
+    if (e.key === "ArrowLeft") stepLB(-1);
+    if (e.key === "ArrowRight") stepLB(1);
+  });
+
+  render();
+</script>

@@ -1,0 +1,63 @@
+---
+import TourLayout from "../../layouts/TourLayout.astro";
+import { TOURS } from "../../data/tours.js";
+
+const tour = TOURS.find((t) => t.slug === "garni-geghard")!;
+
+const days = [
+  {
+    dayNumber: "01",
+    title: "Garni Temple, Symphony of Stones, Geghard Monastery, Lavash Baking",
+    subtitle: "Pre-Christian Roots & Volcanic Geology",
+    stops: [
+      {
+        time: "15-20 minutes",
+        title: "Charents' Arch",
+        desc: "A scenic viewpoint offering one of the most spectacular panoramic views of Mount Ararat. Built in 1957 and named after the famous Armenian poet Yeghishe Charents, the arch is a favorite spot for photographers and nature lovers.",
+        image: "https://armeniaplanet.com/Content/Img/Sight/monument/arch-of-charents/1.jpg",
+      },
+      {
+        time: "60 minutes",
+        title: "Geghard Monastery",
+        desc: "A UNESCO World Heritage Site and one of Armenia's most remarkable medieval monasteries. Founded in the 4th century by Saint Gregory the Illuminator, the monastery is famous for its churches carved directly into the surrounding cliffs. Its name, Geghard, means \"spear\", referring to the Holy Lance believed to have pierced the side of Jesus Christ. Surrounded by dramatic mountains, Geghard is a masterpiece of Armenian architecture and spirituality.",
+        image: "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkqHmX-eyncB-b4Cp0hnSgzqK2UiNr_leZsUaa6V2hq90zeWLS9f3x0Akdk0VtFztBtV9O49pLixF_NhuJ5vEt2DwBoDg1aZW2lcARwQkjqDJE8z-JbFwmg6m8TPupUUI0-BsTZ=s680-w680-h510-rw",
+      },
+      {
+        time: "40 minutes",
+        title: "Symphony of Stones (Garni Canyon)",
+        desc: "A breathtaking natural formation of hexagonal basalt columns created by ancient volcanic lava. Located in the Azat River Gorge, it is one of Armenia's most impressive geological landmarks.",
+        image: "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk_-boiRpSkwEeQZ0egSI9sW0NF9iThpKPowHtk5RdEqWDcnG8RvlfMz_YhxkJGXspLwzYq_JH0_gN8K_lsQqrQcfY-eVUtUr0RmbleZZ7XuqMPkahQM_86c2_TynZa097XSQRG=s680-w680-h510-rw",
+      },
+      {
+        time: "60 minutes",
+        title: "Garni Temple",
+        desc: "Armenia's only surviving pagan temple, built in the 1st century AD. This magnificent Greco-Roman monument offers breathtaking views over the Azat River Gorge and provides a unique glimpse into Armenia's pre-Christian history.",
+        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBPGZStthFDyzrxxwIGSM8PGTdkMMakoe-ww9qrT0GQdgcEMqEqC3wGeedbPF-cT8tNAKXoV5a2eqZ_Gnf-yUtiZY7VUtSPx1nIhBB_RxuQQWnoQp4l6nc-yoKqM56PB3ReQN_t-9KVKw4crAYyy_4s_j-UpFyyGBua2eehbIqUYvJFbA16tI6fDsagFwp40sLwDcWNtUH7I6TE-xSaWkI5d0M5KY4FlQP6H81C-8EGQQUtQRd7Z0q9",
+      },
+    ],
+  },
+];
+
+const included = [
+  "Elegant sedan",
+  "English and/or Russian speaking guide",
+  "Admission tickets",
+];
+
+const tips = [
+  { icon: "hiking", title: "Footwear", desc: "We recommend wearing comfortable walking shoes or sports shoes with good grip, as some paths are uneven, rocky, and may be slippery, especially after rain." },
+];
+---
+
+<TourLayout
+  label={tour.label}
+  title={tour.title}
+  summary={tour.desc}
+  heroImage={tour.image}
+  duration={tour.duration}
+  languages={tour.languages}
+  pricing={tour.pricing}
+  days={days}
+  included={included}
+  tips={tips}
+/>

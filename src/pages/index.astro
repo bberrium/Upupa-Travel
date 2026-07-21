@@ -1,0 +1,360 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { TOURS } from "../data/tours.js";
+---
+
+<BaseLayout title="Upupa Travel — Private Guides in Armenia" current="home">
+<!-- Hero Section -->
+<section class="relative h-[85vh] flex items-center overflow-hidden">
+<div class="absolute inset-0 z-0">
+<div class="absolute inset-0 bg-black/30 z-10"></div>
+<img alt="Magnificent view of Mt. Ararat at sunrise" class="w-full h-full object-cover scale-105" src="/images/ararat1.jpg">
+</div>
+<div class="relative z-20 w-full px-margin-desktop max-w-container-max mx-auto">
+<div class="max-w-3xl">
+<h1 class="text-white text-display-lg-mobile md:text-display-lg font-display-lg mb-stack-md leading-tight text-glow" data-t="hero_title">Travel boldly with Upupa</h1>
+<div class="flex flex-wrap gap-4">
+<a class="bg-secondary text-white px-8 py-4 rounded-lg font-bold hover:bg-secondary/90 transition-all flex items-center gap-2" href="#tours">
+<span data-t="hero_cta_explore" class="">Explore Tours</span> <span class="material-symbols-outlined">arrow_forward</span>
+</a>
+<a class="bg-white/10 backdrop-blur-md border border-white/20 text-white px-8 py-4 rounded-lg font-bold hover:bg-white/20 transition-all" data-t="hero_cta_story" href="#about">
+                            Our Story
+                        </a>
+</div>
+</div>
+</div>
+<!-- Category Quick-links -->
+<div class="absolute bottom-0 left-0 right-0 z-30 transform translate-y-1/2 hidden md:block">
+<div class="max-w-container-max mx-auto px-margin-desktop">
+<div class="grid grid-cols-4 gap-6">
+<!-- Box 1 -->
+<a class="block bg-surface shadow-xl rounded-xl border border-outline-variant hover:-translate-y-2 hover:scale-105 transition-all duration-300 cursor-pointer h-80 relative overflow-hidden group/card" href="#tours">
+<div class="relative z-20 h-full flex flex-col p-8">
+<h3 class="font-headline-md text-primary mb-2 text-[28px] leading-tight" data-t="cat_1_title">Day Tours</h3>
+<p class="text-on-surface-variant text-body-md" data-t="cat_1_desc">One-day private trips across Armenia.</p>
+<div class="mt-auto h-32 -mx-8 -mb-8 overflow-hidden">
+<img alt="Day Tours" class="w-full h-full object-cover transition-transform duration-500 group-hover/card:scale-110" src="/images/hp1.jpg">
+</div>
+</div>
+</a>
+<!-- Box 2 -->
+<a class="block bg-surface shadow-xl rounded-xl border border-outline-variant hover:-translate-y-2 hover:scale-105 transition-all duration-300 cursor-pointer h-80 relative overflow-hidden group/card" href="#tours">
+<div class="relative z-20 h-full flex flex-col p-8">
+<h3 class="font-headline-md text-primary mb-2 text-[28px] leading-tight" data-t="cat_2_title">Multi-Day</h3>
+<p class="text-on-surface-variant text-body-md" data-t="cat_2_desc">Explore heritage in depth over 2-4 days.</p>
+<div class="mt-auto h-32 -mx-8 -mb-8 overflow-hidden">
+<img alt="Multi-Day" class="w-full h-full object-cover transition-transform duration-500 group-hover/card:scale-110" src="/images/hp2.jpg">
+</div>
+</div>
+</a>
+<!-- Box 3 -->
+<a class="block bg-surface shadow-xl rounded-xl border border-outline-variant hover:-translate-y-2 hover:scale-105 transition-all duration-300 cursor-pointer h-80 relative overflow-hidden group/card" href="/custom-tour">
+<div class="relative z-20 h-full flex flex-col p-8">
+<h3 class="font-headline-md text-primary mb-2 text-[28px] leading-tight" data-t="cat_3_title">Custom</h3>
+<p class="text-on-surface-variant text-body-md" data-t="cat_3_desc">Routes built around your specific dates.</p>
+<div class="mt-auto h-32 -mx-8 -mb-8 overflow-hidden">
+<img alt="Custom" class="w-full h-full object-cover transition-transform duration-500 group-hover/card:scale-110" src="/images/hp3.jpg">
+</div>
+</div>
+</a>
+<!-- Box 4 -->
+<a class="block bg-surface shadow-xl rounded-xl border border-outline-variant hover:-translate-y-2 hover:scale-105 transition-all duration-300 cursor-pointer h-80 relative overflow-hidden group/card" href="/private-transfer">
+<div class="relative z-20 h-full flex flex-col p-8">
+<h3 class="font-headline-md text-primary mb-2 text-[28px] leading-tight" data-t="cat_4_title">Transfers</h3>
+<p class="text-on-surface-variant text-body-md" data-t="cat_4_desc">Private drivers &amp; airport shuttle services.</p>
+<div class="mt-auto h-32 -mx-8 -mb-8 overflow-hidden">
+<img alt="Transfers" class="w-full h-full object-cover transition-transform duration-500 group-hover/card:scale-110" src="/images/ararat1.jpg">
+</div>
+</div>
+</a>
+</div>
+</div>
+</div>
+</section>
+<!-- Tours & Packages Section -->
+<section class="py-section-padding px-margin-desktop max-w-container-max mx-auto mt-20" id="tours">
+<div class="text-center mb-16">
+<span class="text-secondary font-label-md text-label-md tracking-widest uppercase mb-2 block" data-t="tours_subtitle">Curated Experiences</span>
+<h2 class="text-headline-md font-headline-md text-primary mb-4" data-t="tours_title">Tours &amp; Packages</h2>
+<div class="w-12 h-1 bg-secondary mx-auto mb-6"></div>
+<p class="text-on-surface-variant max-w-2xl mx-auto text-body-md" data-t="tours_desc">Discover the heart of Armenia through our specialized language-inclusive routes.</p>
+</div>
+
+<!-- Search / Filter Bar -->
+<div class="bg-surface-container-low border border-border-muted rounded-lg p-6 mb-12 flex flex-wrap items-end gap-6 justify-center" id="tours-search">
+<div>
+<label class="block text-label-md font-label-md text-primary uppercase mb-2">People</label>
+<div class="flex items-center gap-2">
+<button type="button" id="ts-minus" class="w-9 h-9 border border-border-muted text-primary hover:bg-surface-container transition-colors" aria-label="Decrease">−</button>
+<input id="ts-people" type="number" min="1" max="19" value="2" class="w-14 text-center border border-border-muted rounded p-2 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />
+<button type="button" id="ts-plus" class="w-9 h-9 border border-border-muted text-primary hover:bg-surface-container transition-colors" aria-label="Increase">+</button>
+</div>
+</div>
+<div>
+<label class="block text-label-md font-label-md text-primary uppercase mb-2">Guide</label>
+<select id="ts-guide" class="border border-border-muted rounded p-2.5 min-w-[150px]">
+<option value="any">Any</option>
+<option value="guide">With guide</option>
+<option value="noGuide">Without guide</option>
+</select>
+</div>
+<div>
+<label class="block text-label-md font-label-md text-primary uppercase mb-2">Language</label>
+<select id="ts-lang" class="border border-border-muted rounded p-2.5 min-w-[150px]">
+<option value="any">Any</option>
+<option value="en">English</option>
+<option value="ru">Russian</option>
+<option value="am">Armenian</option>
+</select>
+</div>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter" id="tours-grid"></div>
+</section>
+
+<script define:vars={{ TOURS }}>
+  const LANG_NAMES = { en: "English", ru: "Russian", am: "Armenian" };
+
+  function priceFor(pricing, people, withGuide) {
+    if (!pricing) return null;
+    const table = withGuide ? pricing.guide : pricing.noGuide;
+    if (!table) return null;
+    if (people < 1 || people > table.maxPeople) return null;
+    if (people <= 10) return table[people];
+    return table[10] + (people - 10) * table.extraPerPerson;
+  }
+  function formatAMD(n) {
+    return n.toLocaleString("en-US") + " AMD";
+  }
+
+  const grid = document.getElementById("tours-grid");
+  const peopleInput = document.getElementById("ts-people");
+  const guideSelect = document.getElementById("ts-guide");
+  const langSelect = document.getElementById("ts-lang");
+  const minusBtn = document.getElementById("ts-minus");
+  const plusBtn = document.getElementById("ts-plus");
+
+  function render() {
+    const people = Math.max(1, Math.min(19, parseInt(peopleInput.value, 10) || 1));
+    const guideFilter = guideSelect.value;
+    const langFilter = langSelect.value;
+
+    const visible = TOURS.filter((t) => {
+      if (langFilter !== "any" && !t.languages.includes(langFilter)) return false;
+      if (guideFilter === "guide" && !t.pricing?.guide) return false;
+      if (guideFilter === "noGuide" && !t.pricing?.noGuide) return false;
+      return true;
+    });
+
+    grid.innerHTML = "";
+
+    if (visible.length === 0) {
+      grid.innerHTML = `<p class="col-span-full text-center text-on-surface-variant py-8">No tours match those filters yet — try different options.</p>`;
+      return;
+    }
+
+    visible.forEach((t) => {
+      const withGuide = guideFilter === "noGuide" ? false : true;
+      const total = priceFor(t.pricing, people, withGuide);
+      const personLabel = people === 1 ? "person" : "persons";
+      const priceLine = total
+        ? `Price for ${people} ${personLabel}: ${formatAMD(total)}`
+        : `Contact for price`;
+
+      const card = document.createElement("div");
+      card.className = "group bg-surface border border-border-muted rounded-lg overflow-hidden transition-all hover:shadow-lg flex flex-col";
+      card.innerHTML = `
+        <div class="h-64 overflow-hidden relative">
+          <div class="absolute top-4 left-4 z-10">
+            <span class="bg-secondary text-white text-caption px-3 py-1 rounded-full uppercase">${t.label}</span>
+          </div>
+          <img alt="${t.title}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" src="${t.image}">
+        </div>
+        <div class="p-6 flex flex-col flex-grow">
+          <h3 class="font-headline-sm text-primary mb-2">${t.title}</h3>
+          <p class="text-on-surface-variant text-body-md mb-4 flex-grow">${t.desc}</p>
+          <p class="text-primary font-label-md text-label-md mb-4">${priceLine}</p>
+          <a class="text-secondary font-bold flex items-center gap-1 group/btn hover:gap-3 transition-all" href="/tours/${t.slug}">
+            <span>See more</span> <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+          </a>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+  }
+
+  minusBtn.addEventListener("click", () => {
+    peopleInput.value = String(Math.max(1, parseInt(peopleInput.value, 10) - 1));
+    render();
+  });
+  plusBtn.addEventListener("click", () => {
+    peopleInput.value = String(Math.min(19, parseInt(peopleInput.value, 10) + 1));
+    render();
+  });
+  peopleInput.addEventListener("input", render);
+  guideSelect.addEventListener("change", render);
+  langSelect.addEventListener("change", render);
+
+  render();
+</script>
+<!-- About Section -->
+<section class="bg-primary text-white py-section-padding" id="about">
+<div class="max-w-container-max mx-auto px-margin-desktop">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-stack-lg items-center">
+<div class="relative group">
+<div class="absolute -inset-4 border border-white/20 rounded-lg group-hover:inset-0 transition-all duration-500"></div>
+<img alt="Upupa Travel local guide in action" class="rounded-lg shadow-2xl relative z-10" src="/images/vanq.jpg">
+</div>
+<div class="lg:pl-stack-lg">
+<span class="text-secondary-container font-label-md text-label-md tracking-widest uppercase mb-2 block" data-t="about_subtitle">Who We Are</span>
+<h2 class="text-headline-md font-headline-md mb-6" data-t="about_title">About Upupa Travel</h2>
+<p class="text-white/80 text-body-lg mb-8" data-t="about_desc">Upupa Travel is a private guide service based in Yerevan. We design personal day trips and multi-day journeys to Armenia's ancient monasteries, volcanic highlands, and hidden valleys — planned around you, and led by guides who grew up here. We provide services in English, Russian, and Armenian.</p>
+<div class="space-y-4">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-secondary-container">local_library</span>
+<span class="font-bold" data-t="about_feature_1">Local, native guides (EN, RU, AM)</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-secondary-container">groups</span>
+<span class="font-bold" data-t="about_feature_2">Small, private groups</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-secondary-container">map</span>
+<span class="font-bold" data-t="about_feature_3">Custom-built routes</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Reviews Section -->
+<section class="py-section-padding px-margin-desktop max-w-container-max mx-auto" id="reviews">
+<div class="text-center mb-16">
+<span class="text-secondary font-label-md text-label-md tracking-widest uppercase mb-2 block" data-t="reviews_subtitle">Testimonials</span>
+<h2 class="text-headline-md font-headline-md text-primary mb-4" data-t="reviews_title">What Our Guests Say</h2>
+<div class="w-12 h-1 bg-secondary mx-auto mb-6"></div>
+<p class="text-on-surface-variant max-w-2xl mx-auto text-body-md" data-t="reviews_desc">Real stories from travelers who explored Armenia with us.</p>
+</div>
+<!-- Share Experience CTA -->
+<div class="bg-primary rounded-2xl p-8 md:p-12 text-center relative overflow-hidden">
+<div class="absolute inset-0 bg-white/5 backdrop-blur-sm"></div>
+<div class="relative z-10">
+<h3 class="text-white font-headline-md mb-2" data-t="review_form_title">Share Your Experience</h3>
+<p class="text-white/80 max-w-xl mx-auto mb-8" data-t="review_form_desc">How was your journey? Your feedback helps us grow and helps others discover Armenia.</p>
+<form class="max-w-xl mx-auto text-left space-y-6">
+<div class="flex flex-col items-center gap-2 mb-4">
+<label class="text-white/90 text-label-md uppercase tracking-wider" data-t="label_rating">Your Rating</label>
+<div class="flex gap-1 text-secondary-container">
+<span class="material-symbols-outlined cursor-pointer hover:scale-110 transition-transform">star</span>
+<span class="material-symbols-outlined cursor-pointer hover:scale-110 transition-transform">star</span>
+<span class="material-symbols-outlined cursor-pointer hover:scale-110 transition-transform">star</span>
+<span class="material-symbols-outlined cursor-pointer hover:scale-110 transition-transform">star</span>
+<span class="material-symbols-outlined cursor-pointer hover:scale-110 transition-transform">star</span>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="flex flex-col gap-1.5">
+<label class="text-white/90 text-label-md uppercase tracking-wider" data-t="label_name">Your Name</label>
+<input class="bg-white/10 border-white/20 rounded-lg p-3 text-white placeholder:text-white/40 focus:ring-2 focus:ring-secondary-container outline-none" placeholder="Alex Johnson" type="text">
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="text-white/90 text-label-md uppercase tracking-wider" data-t="label_tour">Tour Taken</label>
+<select class="bg-white/10 border-white/20 rounded-lg p-3 text-white focus:ring-2 focus:ring-secondary-container outline-none appearance-none">
+<option class="text-on-surface" data-t="opt_select_tour">Select a tour...</option>
+<option class="text-on-surface">Garni &amp; Geghard</option>
+<option class="text-on-surface">Khor Virap &amp; Noravank</option>
+<option class="text-on-surface">Tatev Expedition</option>
+<option class="text-on-surface">Classic Armenia</option>
+<option class="text-on-surface">Custom Route</option>
+</select>
+</div>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="text-white/90 text-label-md uppercase tracking-wider" data-t="label_review">Your Review</label>
+<textarea class="bg-white/10 border-white/20 rounded-lg p-3 text-white placeholder:text-white/40 focus:ring-2 focus:ring-secondary-container outline-none" placeholder="Tell us about your favorite moments..." rows="4"></textarea>
+</div>
+<button class="w-full bg-secondary text-white py-4 rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-secondary/90 transition-all shadow-lg" type="submit">
+<span data-t="btn_submit_review" class="">Submit Review</span> <span class="material-symbols-outlined">send</span>
+</button>
+</form>
+</div>
+</div>
+</section>
+<!-- CTA / Inquiry Section -->
+<section class="bg-primary text-white py-section-padding" id="contact">
+<div class="max-w-container-max mx-auto px-margin-desktop">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-stack-lg">
+<div>
+<span class="text-secondary-container font-label-md text-label-md tracking-widest uppercase mb-2 block" data-t="contact_subtitle">Ready to Explore?</span>
+<h2 class="text-headline-md font-headline-md mb-6" data-t="contact_title">Let's plan your Armenia trip.</h2>
+<p class="text-white/80 text-body-lg mb-12" data-t="contact_desc">Tell us your dates, interests, and group size. We reply within hours with availability — then a small deposit locks your date instantly.</p>
+<div class="space-y-8">
+<div class="flex gap-6">
+<div class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center shrink-0 font-bold border border-white/20">1</div>
+<div>
+<h4 class="font-headline-sm mb-1" data-t="step_1_title">Send your enquiry</h4>
+<p class="text-white/60" data-t="step_1_desc">Takes 2 minutes. No account needed.</p>
+</div>
+</div>
+<div class="flex gap-6">
+<div class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center shrink-0 font-bold border border-white/20">2</div>
+<div>
+<h4 class="font-headline-sm mb-1" data-t="step_2_title">We confirm availability</h4>
+<p class="text-white/60" data-t="step_2_desc">Typically within a few hours.</p>
+</div>
+</div>
+<div class="flex gap-6">
+<div class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center shrink-0 font-bold border border-white/20">3</div>
+<div>
+<h4 class="font-headline-sm mb-1" data-t="step_3_title">Pay a deposit to lock your date</h4>
+<p class="text-white/60" data-t="step_3_desc">Secure and instant. Balance on the day.</p>
+</div>
+</div>
+</div>
+<div class="mt-16 pt-16 border-t border-white/10">
+<p class="text-caption text-secondary-container uppercase mb-4" data-t="contact_direct">Or reach us directly</p>
+<p class="text-body-lg mb-2"><a class="hover:text-secondary-container transition-colors" href="mailto:info@upupa-travel.am">info@upupa-travel.am</a></p>
+<p class="text-body-lg"><a class="hover:text-secondary-container transition-colors" href="tel:+37400000000">WhatsApp: +374 95 988 188</a></p>
+</div>
+</div>
+<!-- Inquiry Form -->
+<div class="bg-white text-on-surface p-8 rounded-2xl shadow-2xl self-start">
+<h3 class="font-headline-sm text-primary mb-6" data-t="form_title">Request a Tour or Custom Itinerary</h3>
+<form class="space-y-4">
+<div class="flex flex-col gap-1.5">
+<label class="text-label-md font-label-md text-primary uppercase" data-t="label_full_name">FULL NAME</label>
+<input class="border-muted rounded-lg p-3 w-full" placeholder="Jane Smith" type="text">
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="text-label-md font-label-md text-primary uppercase" data-t="label_whatsapp">EMAIL OR WHATSAPP</label>
+<input class="border-muted rounded-lg p-3 w-full" placeholder="email or +1..." type="text">
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="flex flex-col gap-1.5">
+<label class="text-label-md font-label-md text-primary uppercase" data-t="label_tour_sel">TOUR</label>
+<select class="border-muted rounded-lg p-3 w-full">
+<option data-t="opt_choose">Choose...</option>
+<option>Garni &amp; Geghard</option>
+<option>Classic Armenia</option>
+<option>Custom Route</option>
+</select>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="text-label-md font-label-md text-primary uppercase" data-t="label_date">DESIRED DATE</label>
+<input class="border-muted rounded-lg p-3 w-full" type="date">
+</div>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="text-label-md font-label-md text-primary uppercase" data-t="label_group_notes">GROUP SIZE &amp; NOTES</label>
+<textarea class="border-muted rounded-lg p-3 w-full" placeholder="How many people? Dietary needs, interests..." rows="3"></textarea>
+</div>
+<button class="w-full bg-secondary text-white py-4 rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-secondary/90 transition-all shadow-lg mt-4">
+<span data-t="btn_send_enquiry" class="">Send Enquiry</span> <span class="material-symbols-outlined">send</span>
+</button>
+<p class="text-center text-caption text-on-surface-variant mt-4" data-t="form_note">No payment now. We confirm availability first.</p>
+</form>
+</div>
+</div>
+</div>
+</section>
+</BaseLayout>

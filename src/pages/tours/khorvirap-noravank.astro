@@ -1,0 +1,69 @@
+---
+import TourLayout from "../../layouts/TourLayout.astro";
+import { TOURS } from "../../data/tours.js";
+
+const tour = TOURS.find((t) => t.slug === "khorvirap-noravank")!;
+
+const days = [
+  {
+    dayNumber: "01",
+    title: "Khor Virap, Areni & Noravank",
+    subtitle: "Ararat Views & the Vayots Dzor Wine Region",
+    stops: [
+      {
+        time: "09:00 AM",
+        title: "Departure from Yerevan",
+        desc: "Drive south across the Ararat plain, with Mount Ararat growing larger on the horizon the whole way.",
+      },
+      {
+        time: "10:00 AM",
+        title: "Khor Virap Monastery",
+        desc: "Perched on a hill at the foot of Ararat, this is Armenia's most photographed monastery — and the pit where Gregory the Illuminator was imprisoned for 13 years before converting the nation to Christianity.",
+        image: "https://images.pexels.com/photos/34146317/pexels-photo-34146317.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      },
+      {
+        time: "12:00 PM",
+        title: "Areni-1 Wine Cave",
+        desc: "Visit the site of the world's oldest known winery, where archaeologists found a 6,100-year-old wine-press. Nearby, taste local Areni reds at a family-run winery.",
+      },
+      {
+        time: "02:00 PM",
+        title: "Lunch in Areni Village",
+        desc: "A relaxed lunch of local specialties in the heart of Armenia's wine country.",
+      },
+      {
+        time: "03:30 PM",
+        title: "Noravank Monastery",
+        desc: "Set deep in a dramatic red-rock canyon, Noravank's 13th-century churches include a striking two-story mausoleum with a narrow, cantilevered staircase carved into the facade.",
+        image: "https://images.unsplash.com/photo-1543429257-1520c5024611?w=1200&q=80",
+      },
+    ],
+  },
+];
+
+const included = [
+  "Private transportation in premium SUV",
+  "Expert English-speaking private guide",
+  "Areni winery tasting",
+  "Lunch in Areni village",
+  "All entrance fees and local taxes",
+];
+
+const tips = [
+  { icon: "thermostat", title: "Weather Prep", desc: "Noravank's canyon can be windy — bring a light jacket even in summer." },
+  { icon: "hiking", title: "Footwear", desc: "The path up to Noravank's upper church is steep stone steps; flat, grippy shoes help." },
+];
+---
+
+<TourLayout
+  label={tour.label}
+  title={tour.title}
+  summary={tour.desc}
+  heroImage={tour.image}
+  duration={tour.duration}
+  languages={tour.languages}
+  pricing={tour.pricing}
+  days={days}
+  included={included}
+  tips={tips}
+/>

@@ -1,0 +1,231 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+
+export interface Stop {
+  time: string;
+  title: string;
+  desc: string;
+  image?: string;
+}
+export interface Day {
+  dayNumber: string; // "01", "02"
+  title: string;
+  subtitle: string;
+  stops: Stop[];
+}
+export interface Tip {
+  icon: string; // material-symbols-outlined icon name
+  title: string;
+  desc: string;
+}
+export interface PricingTable {
+  [count: number]: number;
+  extraPerPerson: number;
+  maxPeople: number;
+}
+export interface Pricing {
+  noGuide?: PricingTable;
+  guide?: PricingTable;
+}
+
+interface Props {
+  label: string; // e.g. "DAY TOUR"
+  title: string;
+  summary: string;
+  heroImage: string;
+  duration?: string; // e.g. "5-6 hours"
+  languages?: string[]; // e.g. ["en", "ru"]
+  pricing?: Pricing | null; // null/undefined => "Contact for price"
+  days: Day[];
+  included: string[];
+  tips: Tip[];
+}
+
+const { label, title, summary, heroImage, duration, languages = [], pricing = null, days, included, tips } = Astro.props;
+
+const LANG_NAMES: Record<string, string> = { en: "English", ru: "Russian", am: "Armenian" };
+---
+
+<BaseLayout title={`${title} — Upupa Travel`} description={summary} current="tours">
+  <!-- Hero -->
+  <section class="relative h-[80vh] min-h-[600px] flex items-end overflow-hidden">
+    <div class="absolute inset-0 z-0">
+      <img src={heroImage} class="w-full h-full object-cover" alt={title} />
+      <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/10"></div>
+    </div>
+    <div class="relative z-10 w-full max-w-container-max mx-auto px-margin-desktop pb-section-padding">
+      <div class="max-w-3xl">
+        <div class="flex items-center gap-3 mb-4 flex-wrap">
+          <span class="inline-block bg-secondary text-white px-3 py-1 text-label-md font-label-md">{label}</span>
+          {duration && <span class="text-white/80 text-label-md font-label-md">{duration}</span>}
+        </div>
+        <h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-white mb-stack-md leading-tight">{title}</h1>
+        <p class="font-body-lg text-body-lg text-white/90 mb-stack-lg">{summary}</p>
+        <div class="flex gap-4 w-full sm:w-auto">
+          <a href="/#contact" class="flex-1 sm:flex-none bg-secondary text-white px-8 py-4 font-label-md text-label-md hover:bg-on-secondary-fixed-variant transition-all uppercase tracking-widest text-center">Book Now</a>
+          <a href="#itinerary" class="flex-1 sm:flex-none border border-white text-white px-8 py-4 font-label-md text-label-md hover:bg-white hover:text-primary transition-all text-center uppercase tracking-widest">View Itinerary</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <section id="itinerary" class="py-section-padding px-margin-desktop max-w-container-max mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+      <!-- Itinerary -->
+      <div class="lg:col-span-8">
+        <div class="mb-stack-lg border-b border-border-muted pb-stack-sm">
+          <h2 class="font-headline-md text-headline-md text-primary">Detailed Itinerary</h2>
+        </div>
+
+        {days.map((day) => (
+          <div class="mb-16">
+            <div class="flex items-center gap-4 mb-stack-lg">
+              <div class="bg-primary text-white w-12 h-12 flex items-center justify-center font-headline-sm shrink-0">{day.dayNumber}</div>
+              <div>
+                <h3 class="font-headline-sm text-headline-sm">{day.title}</h3>
+                <p class="text-on-surface-variant font-label-md text-label-md">{day.subtitle}</p>
+              </div>
+            </div>
+
+            <div class="relative pl-8 border-l border-border-muted">
+              <div class="space-y-10">
+                {day.stops.map((stop) => (
+                  <div class="relative">
+                    <div class="absolute -left-[2.35rem] top-1 w-4 h-4 bg-secondary rounded-full"></div>
+                    <h4 class="font-label-md text-label-md text-secondary uppercase mb-2">{stop.time} — {stop.title}</h4>
+                    <p class="font-body-md text-body-md text-on-surface-variant mb-4">{stop.desc}</p>
+                    {stop.image && (
+                      <div class="aspect-video w-full overflow-hidden">
+                        <img src={stop.image} class="w-full h-full object-cover hover:scale-105 transition-transform duration-700" alt={stop.title} />
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <!-- Sidebar -->
+      <div class="lg:col-span-4 space-y-stack-lg">
+        <!-- Price Calculator -->
+        <div class="bg-primary p-stack-lg shadow-xl" id="price-calc" data-pricing={JSON.stringify(pricing)}>
+          <h3 class="font-headline-sm text-headline-sm text-white mb-stack-sm">Check Price</h3>
+          <p class="text-white/70 font-caption text-caption mb-stack-md">Price adjusts automatically for your group size.</p>
+
+          <div class="mb-4">
+            <label class="block font-label-md text-label-md text-white mb-2 uppercase">Number of People</label>
+            <div class="flex items-center gap-3">
+              <button type="button" id="pc-minus" class="w-10 h-10 bg-white/10 border border-white/20 text-white text-xl hover:bg-white/20 transition-colors" aria-label="Decrease">−</button>
+              <input id="pc-people" type="number" min="1" max="19" value="2" class="w-16 text-center bg-white/10 border border-white/20 text-white px-2 py-2 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />
+              <button type="button" id="pc-plus" class="w-10 h-10 bg-white/10 border border-white/20 text-white text-xl hover:bg-white/20 transition-colors" aria-label="Increase">+</button>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label class="block font-label-md text-label-md text-white mb-2 uppercase">Guide</label>
+            <select id="pc-guide" class="w-full bg-white/10 border border-white/20 text-white px-4 py-3 focus:ring-secondary focus:border-secondary">
+              <option value="guide" class="text-on-surface">With guide</option>
+              <option value="noGuide" class="text-on-surface">Without guide</option>
+            </select>
+          </div>
+
+          {languages.length > 0 && (
+            <div class="mb-5">
+              <p class="font-label-md text-label-md text-white mb-2 uppercase">Guide Language</p>
+              <div class="flex gap-2 flex-wrap">
+                {languages.map((l) => (
+                  <span class="bg-white/10 border border-white/20 text-white text-caption px-3 py-1 uppercase">{LANG_NAMES[l] ?? l}</span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div class="border-t border-white/20 pt-4">
+            <p class="text-white/70 text-caption font-caption uppercase tracking-wider mb-1" id="pc-label">Price for 2 persons</p>
+            <p class="text-white text-headline-sm font-headline-sm" id="pc-total">Contact for price</p>
+          </div>
+
+          <a href="/#contact" class="mt-5 block w-full bg-secondary text-white py-4 font-label-md text-label-md hover:bg-on-secondary-fixed-variant transition-colors uppercase tracking-widest text-center">Book Now</a>
+        </div>
+
+        <div class="bg-surface-container-low p-stack-lg border border-border-muted">
+          <h3 class="font-headline-sm text-headline-sm text-primary mb-stack-md">What's Included</h3>
+          <ul class="space-y-3">
+            {included.map((item) => (
+              <li class="flex items-start gap-3">
+                <span class="material-symbols-outlined text-secondary text-[20px]">check_circle</span>
+                <span class="font-body-md text-body-md text-on-surface-variant">{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="bg-surface-container-high p-stack-lg border border-border-muted">
+          <h3 class="font-headline-sm text-headline-sm text-primary mb-stack-md">Know Before You Go</h3>
+          <div class="space-y-4">
+            {tips.map((tip) => (
+              <div class="flex gap-4">
+                <div class="bg-surface-container-lowest p-2 h-fit">
+                  <span class="material-symbols-outlined text-primary">{tip.icon}</span>
+                </div>
+                <div>
+                  <h4 class="font-label-md text-label-md text-primary uppercase">{tip.title}</h4>
+                  <p class="font-body-md text-body-md text-on-surface-variant">{tip.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  function priceFor(pricing: any, people: number, withGuide: boolean): number | null {
+    if (!pricing) return null;
+    const table = withGuide ? pricing.guide : pricing.noGuide;
+    if (!table) return null;
+    if (people < 1 || people > table.maxPeople) return null;
+    if (people <= 10) return table[people];
+    return table[10] + (people - 10) * table.extraPerPerson;
+  }
+  function formatAMD(n: number): string {
+    return n.toLocaleString("en-US") + " AMD";
+  }
+
+  const calc = document.getElementById("price-calc");
+  if (calc) {
+    const pricing = JSON.parse(calc.dataset.pricing || "null");
+    const peopleInput = document.getElementById("pc-people") as HTMLInputElement;
+    const guideSelect = document.getElementById("pc-guide") as HTMLSelectElement;
+    const minusBtn = document.getElementById("pc-minus");
+    const plusBtn = document.getElementById("pc-plus");
+    const totalEl = document.getElementById("pc-total");
+    const labelEl = document.getElementById("pc-label");
+
+    function update() {
+      const people = Math.max(1, Math.min(19, parseInt(peopleInput.value, 10) || 1));
+      peopleInput.value = String(people);
+      const withGuide = guideSelect.value === "guide";
+      const total = priceFor(pricing, people, withGuide);
+      labelEl!.textContent = `Price for ${people} ${people === 1 ? "person" : "persons"}`;
+      totalEl!.textContent = total == null ? "Contact for price" : formatAMD(total);
+    }
+
+    minusBtn?.addEventListener("click", () => {
+      peopleInput.value = String(Math.max(1, parseInt(peopleInput.value, 10) - 1));
+      update();
+    });
+    plusBtn?.addEventListener("click", () => {
+      peopleInput.value = String(Math.min(19, parseInt(peopleInput.value, 10) + 1));
+      update();
+    });
+    peopleInput.addEventListener("input", update);
+    guideSelect.addEventListener("change", update);
+    update();
+  }
+</script>

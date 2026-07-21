@@ -1,0 +1,42 @@
+---
+import { translations } from "../data/translations";
+---
+
+<script define:vars={{ translations }}>
+  function switchLanguage(lang) {
+    const label = document.getElementById("current-lang-label");
+    if (label) label.innerText = lang.toUpperCase();
+    document.documentElement.lang = lang;
+
+    document.querySelectorAll("[data-t]").forEach((el) => {
+      const key = el.getAttribute("data-t");
+      if (translations[lang] && translations[lang][key]) {
+        el.innerText = translations[lang][key];
+      }
+    });
+
+    localStorage.setItem("preferredLang", lang);
+  }
+  // Expose for inline onclick="switchLanguage('en')" handlers in the header
+  window.switchLanguage = switchLanguage;
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const savedLang = localStorage.getItem("preferredLang") || "en";
+    switchLanguage(savedLang);
+
+    const observerOptions = { threshold: 0.1 };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("opacity-100", "translate-y-0");
+          entry.target.classList.remove("opacity-0", "translate-y-10");
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll("section").forEach((section) => {
+      section.classList.add("transition-all", "duration-1000", "opacity-0", "translate-y-10");
+      observer.observe(section);
+    });
+  });
+</script>

@@ -1,0 +1,72 @@
+---
+// Shared nav. `home` lets pages outside "/" (e.g. /gallery, /tours/xyz)
+// still link correctly to homepage anchor sections like #about.
+interface Props {
+  home?: string;
+  current?: "home" | "about" | "tours" | "gallery" | "reviews" | "contact";
+}
+const { home = "/", current = "home" } = Astro.props;
+
+const linkClass = (id: string) =>
+  current === id
+    ? "text-secondary border-b-2 border-secondary pb-1 text-label-md font-label-md"
+    : "text-on-surface-variant hover:text-primary transition-colors duration-300 text-label-md font-label-md";
+---
+
+<header class="docked full-width top-0 sticky z-50 backdrop-blur-xl shadow-sm bg-surface/80">
+  <div class="flex justify-between items-center w-full px-margin-desktop py-4 max-w-container-max mx-auto">
+    <div class="flex items-center gap-4">
+      <a href={home} class="flex items-center gap-4">
+        <img
+          alt="UPUPA TRAVEL Logo"
+          class="h-20 w-auto object-contain"
+          src="/images/logo.png"
+        />
+        <span class="font-display-lg text-headline-sm text-primary tracking-tight">UPUPA TRAVEL</span>
+      </a>
+    </div>
+    <nav class="hidden lg:flex items-center gap-stack-lg">
+      <a class={linkClass("home")} data-t="nav_home" href={home}>HOME</a>
+      <a class={linkClass("about")} data-t="nav_about" href={`${home}#about`}>ABOUT</a>
+      <a class={linkClass("tours")} data-t="nav_tours" href={`${home}#tours`}>TOURS</a>
+      <a class={linkClass("gallery")} data-t="nav_gallery" href="/gallery">GALLERY</a>
+      <a class={linkClass("contact")} data-t="nav_contact" href={`${home}#contact`}>CONTACT</a>
+      <a class={linkClass("reviews")} data-t="nav_reviews" href={`${home}#reviews`}>REVIEWS</a>
+    </nav>
+    <div class="flex items-center gap-stack-md">
+      <div class="relative group">
+        <button class="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors py-2">
+          <span class="material-symbols-outlined text-[20px]">language</span>
+          <span class="text-label-md font-label-md uppercase" id="current-lang-label">EN</span>
+          <span class="material-symbols-outlined text-[16px]">expand_more</span>
+        </button>
+        <div class="absolute right-0 top-full mt-1 bg-surface/90 backdrop-blur-xl shadow-lg rounded-lg border border-outline-variant opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-[60] min-w-[160px] overflow-hidden">
+          <button class="w-full text-left block px-4 py-3 text-label-md hover:bg-surface-container transition-colors border-b border-outline-variant/30" onclick="switchLanguage('en')">English</button>
+          <button class="w-full text-left block px-4 py-3 text-label-md hover:bg-surface-container transition-colors border-b border-outline-variant/30" onclick="switchLanguage('ru')">Русский</button>
+          <button class="w-full text-left block px-4 py-3 text-label-md hover:bg-surface-container transition-colors" onclick="switchLanguage('am')">Հայերեն</button>
+        </div>
+      </div>
+      <a class="bg-secondary text-white px-6 py-2.5 rounded-lg text-label-md font-label-md font-bold scale-95 active:scale-90 transition-transform shadow-sm hover:bg-secondary/90" data-t="btn_book" href={`${home}#contact`}>Book a Call</a>
+    </div>
+    <button id="hamburger" aria-label="Menu" class="lg:hidden text-primary">
+      <span class="material-symbols-outlined text-3xl">menu</span>
+    </button>
+  </div>
+  <div id="mobile-nav" class="hidden lg:hidden flex-col gap-1 px-margin-mobile pb-4 bg-surface/95">
+    <a class="py-2 border-b border-border-muted text-on-surface-variant" data-t="nav_home" href={home}>HOME</a>
+    <a class="py-2 border-b border-border-muted text-on-surface-variant" data-t="nav_about" href={`${home}#about`}>ABOUT</a>
+    <a class="py-2 border-b border-border-muted text-on-surface-variant" data-t="nav_tours" href={`${home}#tours`}>TOURS</a>
+    <a class="py-2 border-b border-border-muted text-on-surface-variant" data-t="nav_gallery" href="/gallery">GALLERY</a>
+    <a class="py-2 border-b border-border-muted text-on-surface-variant" data-t="nav_contact" href={`${home}#contact`}>CONTACT</a>
+    <a class="py-2 text-on-surface-variant" data-t="nav_reviews" href={`${home}#reviews`}>REVIEWS</a>
+  </div>
+</header>
+
+<script>
+  const btn = document.getElementById("hamburger");
+  const menu = document.getElementById("mobile-nav");
+  btn?.addEventListener("click", () => {
+    menu?.classList.toggle("hidden");
+    menu?.classList.toggle("flex");
+  });
+</script>
