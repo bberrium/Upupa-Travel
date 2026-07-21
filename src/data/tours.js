@@ -16,7 +16,7 @@ export const TOURS = [
     title: "Garni, Geghard & Symphony of Stones",
     desc: "Temple, cliffside monastery & basalt gorge in a day. Discover the pre-Christian roots and unique geology of Armenia.",
     image:
-      "https://armeniaplanet.com/Content/Img/sight/natural/mount/symphony-of-stones/4.jpg",
+      "https://janarmenia.com/uploads/0000/32/2023/01/24/armenia-garni.webp",
     languages: ["en", "ru"],
     duration: "5-6 hours",
     pricing: {
