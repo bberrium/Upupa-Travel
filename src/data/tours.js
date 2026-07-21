@@ -48,7 +48,7 @@ export const TOURS = [
     title: "Tatev & Syunik South Expedition",
     desc: "World's longest cable car & a mountain overnight. Explore the rugged beauty of Southern Armenia.",
     image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuCK_36TTsV_gF1AekA8u6_Ew-906lf2J_7gyWWoGqLqw2QmTMy4OxhlKihZl4_HbigK3wT9aBT3WgAfZl2wOWy7CZuYZinaWHL0YYVMtchBBDtA97sgXwySclHT_UT7wBCUtZHY3NBTPXclNWbo3WPGaKghf0jbmiV7c5wT9-9m8TxyK8FQ1UO2KT6hD5OPon0Cjbz4h0ZeRckUULOy9D0hp0HGk4sBDa2v457Zc7TNhmBDP28JIszQ",
+      "https://armeniantreasures.com/wp-content/uploads/2025/02/Tatev-Monastic-Complex-1.jpeg",
     languages: ["en", "ru"],
     duration: "2 days",
     pricing: null, // TODO: add tiered pricing
