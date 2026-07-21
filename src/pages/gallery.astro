@@ -1,6 +1,8 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { PHOTOS } from "../data/photos";
+
+const base = import.meta.env.BASE_URL;
 ---
 
 <BaseLayout title="Gallery — Upupa Travel" current="gallery" description="Photos from Upupa Travel's private tours across Armenia — monasteries, mountains, lakes and local culture.">
@@ -171,9 +173,15 @@ import { PHOTOS } from "../data/photos";
   }
 </style>
 
-<script define:vars={{ PHOTOS }}>
+<script define:vars={{ PHOTOS, base }}>
   const grid = document.getElementById("g-grid");
   let visible = PHOTOS.slice();
+
+  function resolveSrc(src) {
+    // Absolute URLs (Unsplash etc.) pass through untouched; local paths get the base prefix.
+    if (/^https?:\/\//.test(src)) return src;
+    return base + src.replace(/^\//, "");
+  }
 
   function render() {
     grid.innerHTML = "";
@@ -181,7 +189,7 @@ import { PHOTOS } from "../data/photos";
       const el = document.createElement("div");
       el.className = "g-item";
       el.dataset.idx = i;
-      el.innerHTML = `<img src="${p.src}" alt="${p.cap}" loading="lazy"/><div class="g-cap">${p.cap}</div>`;
+      el.innerHTML = `<img src="${resolveSrc(p.src)}" alt="${p.cap}" loading="lazy"/><div class="g-cap">${p.cap}</div>`;
       el.addEventListener("click", () => openLB(i));
       grid.appendChild(el);
     });
@@ -215,7 +223,7 @@ import { PHOTOS } from "../data/photos";
   }
   function showLB() {
     const p = visible[lbIdx];
-    lbImg.src = p.src;
+    lbImg.src = resolveSrc(p.src);
     lbImg.alt = p.cap;
     lbCap.textContent = p.cap;
   }

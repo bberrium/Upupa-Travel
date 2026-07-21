@@ -1,5 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const base = import.meta.env.BASE_URL;
 ---
 
 <BaseLayout title="Custom Tours — Upupa Travel" current="tours" description="Build a private Armenia itinerary around your own dates and interests.">
@@ -10,7 +12,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       Tell us your dates, interests, and pace, and we'll put together a private itinerary just for you —
       combining any of our tours, extra stops, or entirely new routes across Armenia.
     </p>
-    <a href="/#contact" class="inline-block bg-secondary text-white px-8 py-4 font-label-md text-label-md hover:bg-on-secondary-fixed-variant transition-all uppercase tracking-widest">
+    <a href={`${base}#contact`} class="inline-block bg-secondary text-white px-8 py-4 font-label-md text-label-md hover:bg-on-secondary-fixed-variant transition-all uppercase tracking-widest">
       Start Your Enquiry
     </a>
   </section>

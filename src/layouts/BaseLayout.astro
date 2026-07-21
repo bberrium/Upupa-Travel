@@ -14,7 +14,7 @@ interface Props {
 const {
   title,
   description = "Premium private guide service in Armenia. Explore ancient monasteries, volcanic highlands, and hidden valleys with local experts.",
-  home = "/",
+  home = import.meta.env.BASE_URL,
   current = "home",
 } = Astro.props;
 ---

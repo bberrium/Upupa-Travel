@@ -1,5 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const base = import.meta.env.BASE_URL;
 ---
 
 <BaseLayout title="Private Transfers — Upupa Travel" current="tours" description="Private drivers and airport transfer services in Armenia.">
@@ -10,7 +12,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       Skip the taxi lines. Book a private driver for airport pickup, drop-off, or point-to-point travel
       anywhere in Armenia — comfortable vehicles, fixed pricing, no surprises.
     </p>
-    <a href="/#contact" class="inline-block bg-secondary text-white px-8 py-4 font-label-md text-label-md hover:bg-on-secondary-fixed-variant transition-all uppercase tracking-widest">
+    <a href={`${base}#contact`} class="inline-block bg-secondary text-white px-8 py-4 font-label-md text-label-md hover:bg-on-secondary-fixed-variant transition-all uppercase tracking-widest">
       Request a Transfer
     </a>
   </section>
