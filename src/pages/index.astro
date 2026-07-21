@@ -1,6 +1,8 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { TOURS } from "../data/tours.js";
+
+const base = import.meta.env.BASE_URL;
 ---
 
 <BaseLayout title="Upupa Travel — Private Guides in Armenia" current="home">
@@ -8,7 +10,7 @@ import { TOURS } from "../data/tours.js";
 <section class="relative h-[85vh] flex items-center overflow-hidden">
 <div class="absolute inset-0 z-0">
 <div class="absolute inset-0 bg-black/30 z-10"></div>
-<img alt="Magnificent view of Mt. Ararat at sunrise" class="w-full h-full object-cover scale-105" src="/images/ararat1.jpg">
+<img alt="Magnificent view of Mt. Ararat at sunrise" class="w-full h-full object-cover scale-105" src={`${base}images/ararat1.jpg`}>
 </div>
 <div class="relative z-20 w-full px-margin-desktop max-w-container-max mx-auto">
 <div class="max-w-3xl">
@@ -33,7 +35,7 @@ import { TOURS } from "../data/tours.js";
 <h3 class="font-headline-md text-primary mb-2 text-[28px] leading-tight" data-t="cat_1_title">Day Tours</h3>
 <p class="text-on-surface-variant text-body-md" data-t="cat_1_desc">One-day private trips across Armenia.</p>
 <div class="mt-auto h-32 -mx-8 -mb-8 overflow-hidden">
-<img alt="Day Tours" class="w-full h-full object-cover transition-transform duration-500 group-hover/card:scale-110" src="/images/hp1.jpg">
+<img alt="Day Tours" class="w-full h-full object-cover transition-transform duration-500 group-hover/card:scale-110" src={`${base}images/hp1.jpg`}>
 </div>
 </div>
 </a>
@@ -43,27 +45,27 @@ import { TOURS } from "../data/tours.js";
 <h3 class="font-headline-md text-primary mb-2 text-[28px] leading-tight" data-t="cat_2_title">Multi-Day</h3>
 <p class="text-on-surface-variant text-body-md" data-t="cat_2_desc">Explore heritage in depth over 2-4 days.</p>
 <div class="mt-auto h-32 -mx-8 -mb-8 overflow-hidden">
-<img alt="Multi-Day" class="w-full h-full object-cover transition-transform duration-500 group-hover/card:scale-110" src="/images/hp2.jpg">
+<img alt="Multi-Day" class="w-full h-full object-cover transition-transform duration-500 group-hover/card:scale-110" src={`${base}images/hp2.jpg`}>
 </div>
 </div>
 </a>
 <!-- Box 3 -->
-<a class="block bg-surface shadow-xl rounded-xl border border-outline-variant hover:-translate-y-2 hover:scale-105 transition-all duration-300 cursor-pointer h-80 relative overflow-hidden group/card" href="/custom-tour">
+<a class="block bg-surface shadow-xl rounded-xl border border-outline-variant hover:-translate-y-2 hover:scale-105 transition-all duration-300 cursor-pointer h-80 relative overflow-hidden group/card" href={`${base}custom-tour`}>
 <div class="relative z-20 h-full flex flex-col p-8">
 <h3 class="font-headline-md text-primary mb-2 text-[28px] leading-tight" data-t="cat_3_title">Custom</h3>
 <p class="text-on-surface-variant text-body-md" data-t="cat_3_desc">Routes built around your specific dates.</p>
 <div class="mt-auto h-32 -mx-8 -mb-8 overflow-hidden">
-<img alt="Custom" class="w-full h-full object-cover transition-transform duration-500 group-hover/card:scale-110" src="/images/hp3.jpg">
+<img alt="Custom" class="w-full h-full object-cover transition-transform duration-500 group-hover/card:scale-110" src={`${base}images/hp3.jpg`}>
 </div>
 </div>
 </a>
 <!-- Box 4 -->
-<a class="block bg-surface shadow-xl rounded-xl border border-outline-variant hover:-translate-y-2 hover:scale-105 transition-all duration-300 cursor-pointer h-80 relative overflow-hidden group/card" href="/private-transfer">
+<a class="block bg-surface shadow-xl rounded-xl border border-outline-variant hover:-translate-y-2 hover:scale-105 transition-all duration-300 cursor-pointer h-80 relative overflow-hidden group/card" href={`${base}private-transfer`}>
 <div class="relative z-20 h-full flex flex-col p-8">
 <h3 class="font-headline-md text-primary mb-2 text-[28px] leading-tight" data-t="cat_4_title">Transfers</h3>
 <p class="text-on-surface-variant text-body-md" data-t="cat_4_desc">Private drivers &amp; airport shuttle services.</p>
 <div class="mt-auto h-32 -mx-8 -mb-8 overflow-hidden">
-<img alt="Transfers" class="w-full h-full object-cover transition-transform duration-500 group-hover/card:scale-110" src="/images/ararat1.jpg">
+<img alt="Transfers" class="w-full h-full object-cover transition-transform duration-500 group-hover/card:scale-110" src={`${base}images/ararat1.jpg`}>
 </div>
 </div>
 </a>
@@ -112,7 +114,7 @@ import { TOURS } from "../data/tours.js";
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter" id="tours-grid"></div>
 </section>
 
-<script define:vars={{ TOURS }}>
+<script define:vars={{ TOURS, base }}>
   const LANG_NAMES = { en: "English", ru: "Russian", am: "Armenian" };
 
   function priceFor(pricing, people, withGuide) {
@@ -174,7 +176,7 @@ import { TOURS } from "../data/tours.js";
           <h3 class="font-headline-sm text-primary mb-2">${t.title}</h3>
           <p class="text-on-surface-variant text-body-md mb-4 flex-grow">${t.desc}</p>
           <p class="text-primary font-label-md text-label-md mb-4">${priceLine}</p>
-          <a class="text-secondary font-bold flex items-center gap-1 group/btn hover:gap-3 transition-all" href="/tours/${t.slug}">
+          <a class="text-secondary font-bold flex items-center gap-1 group/btn hover:gap-3 transition-all" href="${base}tours/${t.slug}">
             <span>See more</span> <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
           </a>
         </div>
@@ -203,7 +205,7 @@ import { TOURS } from "../data/tours.js";
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-stack-lg items-center">
 <div class="relative group">
 <div class="absolute -inset-4 border border-white/20 rounded-lg group-hover:inset-0 transition-all duration-500"></div>
-<img alt="Upupa Travel local guide in action" class="rounded-lg shadow-2xl relative z-10" src="/images/vanq.jpg">
+<img alt="Upupa Travel local guide in action" class="rounded-lg shadow-2xl relative z-10" src={`${base}images/vanq.jpg`}>
 </div>
 <div class="lg:pl-stack-lg">
 <span class="text-secondary-container font-label-md text-label-md tracking-widest uppercase mb-2 block" data-t="about_subtitle">Who We Are</span>
@@ -314,7 +316,7 @@ import { TOURS } from "../data/tours.js";
 <div class="mt-16 pt-16 border-t border-white/10">
 <p class="text-caption text-secondary-container uppercase mb-4" data-t="contact_direct">Or reach us directly</p>
 <p class="text-body-lg mb-2"><a class="hover:text-secondary-container transition-colors" href="mailto:info@upupa-travel.am">info@upupa-travel.am</a></p>
-<p class="text-body-lg"><a class="hover:text-secondary-container transition-colors" href="tel:+37400000000">WhatsApp: +374 95 988 188</a></p>
+<p class="text-body-lg"><a class="hover:text-secondary-container transition-colors" href="tel:+37400000000">WhatsApp: +374 XX XXX XXX</a></p>
 </div>
 </div>
 <!-- Inquiry Form -->

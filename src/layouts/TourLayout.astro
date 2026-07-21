@@ -43,6 +43,8 @@ interface Props {
 
 const { label, title, summary, heroImage, duration, languages = [], pricing = null, days, included, tips } = Astro.props;
 
+const base = import.meta.env.BASE_URL;
+
 const LANG_NAMES: Record<string, string> = { en: "English", ru: "Russian", am: "Armenian" };
 ---
 
@@ -62,7 +64,7 @@ const LANG_NAMES: Record<string, string> = { en: "English", ru: "Russian", am: "
         <h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-white mb-stack-md leading-tight">{title}</h1>
         <p class="font-body-lg text-body-lg text-white/90 mb-stack-lg">{summary}</p>
         <div class="flex gap-4 w-full sm:w-auto">
-          <a href="/#contact" class="flex-1 sm:flex-none bg-secondary text-white px-8 py-4 font-label-md text-label-md hover:bg-on-secondary-fixed-variant transition-all uppercase tracking-widest text-center">Book Now</a>
+          <a href={`${base}#contact`} class="flex-1 sm:flex-none bg-secondary text-white px-8 py-4 font-label-md text-label-md hover:bg-on-secondary-fixed-variant transition-all uppercase tracking-widest text-center">Book Now</a>
           <a href="#itinerary" class="flex-1 sm:flex-none border border-white text-white px-8 py-4 font-label-md text-label-md hover:bg-white hover:text-primary transition-all text-center uppercase tracking-widest">View Itinerary</a>
         </div>
       </div>
@@ -148,7 +150,7 @@ const LANG_NAMES: Record<string, string> = { en: "English", ru: "Russian", am: "
             <p class="text-white text-headline-sm font-headline-sm" id="pc-total">Contact for price</p>
           </div>
 
-          <a href="/#contact" class="mt-5 block w-full bg-secondary text-white py-4 font-label-md text-label-md hover:bg-on-secondary-fixed-variant transition-colors uppercase tracking-widest text-center">Book Now</a>
+          <a href={`${base}#contact`} class="mt-5 block w-full bg-secondary text-white py-4 font-label-md text-label-md hover:bg-on-secondary-fixed-variant transition-colors uppercase tracking-widest text-center">Book Now</a>
         </div>
 
         <div class="bg-surface-container-low p-stack-lg border border-border-muted">

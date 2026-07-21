@@ -5,7 +5,8 @@ interface Props {
   home?: string;
   current?: "home" | "about" | "tours" | "gallery" | "reviews" | "contact";
 }
-const { home = "/", current = "home" } = Astro.props;
+const { home = import.meta.env.BASE_URL, current = "home" } = Astro.props;
+const base = import.meta.env.BASE_URL;
 
 const linkClass = (id: string) =>
   current === id
@@ -20,7 +21,7 @@ const linkClass = (id: string) =>
         <img
           alt="UPUPA TRAVEL Logo"
           class="h-20 w-auto object-contain"
-          src="/images/logo.png"
+          src={`${base}images/logo.png`}
         />
         <span class="font-display-lg text-headline-sm text-primary tracking-tight">UPUPA TRAVEL</span>
       </a>
@@ -29,7 +30,7 @@ const linkClass = (id: string) =>
       <a class={linkClass("home")} data-t="nav_home" href={home}>HOME</a>
       <a class={linkClass("about")} data-t="nav_about" href={`${home}#about`}>ABOUT</a>
       <a class={linkClass("tours")} data-t="nav_tours" href={`${home}#tours`}>TOURS</a>
-      <a class={linkClass("gallery")} data-t="nav_gallery" href="/gallery">GALLERY</a>
+      <a class={linkClass("gallery")} data-t="nav_gallery" href={`${base}gallery`}>GALLERY</a>
       <a class={linkClass("contact")} data-t="nav_contact" href={`${home}#contact`}>CONTACT</a>
       <a class={linkClass("reviews")} data-t="nav_reviews" href={`${home}#reviews`}>REVIEWS</a>
     </nav>
@@ -56,7 +57,7 @@ const linkClass = (id: string) =>
     <a class="py-2 border-b border-border-muted text-on-surface-variant" data-t="nav_home" href={home}>HOME</a>
     <a class="py-2 border-b border-border-muted text-on-surface-variant" data-t="nav_about" href={`${home}#about`}>ABOUT</a>
     <a class="py-2 border-b border-border-muted text-on-surface-variant" data-t="nav_tours" href={`${home}#tours`}>TOURS</a>
-    <a class="py-2 border-b border-border-muted text-on-surface-variant" data-t="nav_gallery" href="/gallery">GALLERY</a>
+    <a class="py-2 border-b border-border-muted text-on-surface-variant" data-t="nav_gallery" href={`${base}gallery`}>GALLERY</a>
     <a class="py-2 border-b border-border-muted text-on-surface-variant" data-t="nav_contact" href={`${home}#contact`}>CONTACT</a>
     <a class="py-2 text-on-surface-variant" data-t="nav_reviews" href={`${home}#reviews`}>REVIEWS</a>
   </div>
