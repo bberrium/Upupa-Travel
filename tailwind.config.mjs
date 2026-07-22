@@ -5,7 +5,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        secondary: "#9e4304",
+        secondary: "#fe7935",
         "surface-tint": "#335ca9",
         "primary-container": "#1c4a96",
         "surface-container": "#eeeef0",
@@ -14,7 +14,7 @@ export default {
         "error-container": "#ffdad6",
         "on-primary-container": "#a1bdff",
         "on-secondary-container": "#6d2b00",
-        "secondary-container": "#ff8d4e",
+        "secondary-container": "#fe7935",
         "on-tertiary-fixed": "#410007",
         "inverse-on-surface": "#f0f0f3",
         "on-primary-fixed": "#001a43",
@@ -53,7 +53,7 @@ export default {
         "surface-container-lowest": "#ffffff",
         primary: "#003376",
         "inverse-surface": "#2f3133",
-        "on-secondary-fixed-variant": "#793100",
+        "on-secondary-fixed-variant": "#e8641f",
         "inverse-primary": "#aec6ff",
       },
       borderRadius: {

@@ -6,6 +6,7 @@ export interface Stop {
   title: string;
   desc: string;
   image?: string;
+  images?: string[];
 }
 export interface Day {
   dayNumber: string; // "01", "02"
@@ -44,35 +45,29 @@ interface Props {
 const { label, title, summary, heroImage, duration, languages = [], pricing = null, days, included, tips } = Astro.props;
 
 const base = import.meta.env.BASE_URL;
-
-const LANG_NAMES: Record<string, string> = { en: "English", ru: "Russian", am: "Armenian" };
 ---
 
 <BaseLayout title={`${title} — Upupa Travel`} description={summary} current="tours">
-  <!-- Hero -->
-  <section class="relative h-[80vh] min-h-[600px] flex items-end overflow-hidden">
-    <div class="absolute inset-0 z-0">
-      <img src={heroImage} class="w-full h-full object-cover" alt={title} />
-      <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/10"></div>
-    </div>
-    <div class="relative z-10 w-full max-w-container-max mx-auto px-margin-desktop pb-section-padding">
-      <div class="max-w-3xl bg-black/35 backdrop-blur-sm rounded-lg p-6 sm:p-8">
-        <div class="flex items-center gap-3 mb-4 flex-wrap">
-          <span class="inline-block bg-secondary text-white px-3 py-1 text-label-md font-label-md">{label}</span>
-          {duration && <span class="text-white/80 text-label-md font-label-md">{duration}</span>}
-        </div>
-        <h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-white mb-stack-md leading-tight">{title}</h1>
-        <p class="font-body-lg text-body-lg text-white/90 mb-stack-lg">{summary}</p>
-        <div class="flex gap-4 w-full sm:w-auto">
-          <a href={`${base}#contact`} class="flex-1 sm:flex-none bg-secondary text-white px-8 py-4 font-label-md text-label-md hover:bg-on-secondary-fixed-variant transition-all uppercase tracking-widest text-center">Book Now</a>
-          <a href="#itinerary" class="flex-1 sm:flex-none border border-white text-white px-8 py-4 font-label-md text-label-md hover:bg-white hover:text-primary transition-all text-center uppercase tracking-widest">View Itinerary</a>
-        </div>
+  <!-- Title -->
+  <section class="pt-16 pb-10 px-margin-desktop max-w-container-max mx-auto">
+    <div class="max-w-3xl">
+      <div class="flex items-center gap-3 mb-4 flex-wrap">
+        <span class="inline-block bg-secondary text-white px-3 py-1 text-label-md font-label-md">{label}</span>
+        {duration && <span class="text-on-surface-variant text-label-md font-label-md">{duration}</span>}
+      </div>
+      <h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-primary mb-stack-md leading-tight">{title}</h1>
+      <p class="font-body-lg text-body-lg text-on-surface-variant mb-stack-lg">{summary}</p>
+      <div class="flex gap-4 w-full sm:w-auto flex-wrap">
+        <a href={`${base}#contact`} class="flex-1 sm:flex-none bg-secondary text-white px-8 py-4 font-label-md text-label-md hover:bg-on-secondary-fixed-variant transition-all uppercase tracking-widest text-center">Book Now</a>
+        <a href="https://wa.me/37400000000" target="_blank" rel="noopener" class="flex-1 sm:flex-none border border-primary text-primary px-8 py-4 font-label-md text-label-md hover:bg-primary hover:text-white transition-all text-center uppercase tracking-widest flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined text-[20px]">chat</span> Ask a Question
+        </a>
       </div>
     </div>
   </section>
 
   <!-- Content -->
-  <section id="itinerary" class="py-section-padding px-margin-desktop max-w-container-max mx-auto">
+  <section id="itinerary" class="pb-section-padding px-margin-desktop max-w-container-max mx-auto">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
       <!-- Itinerary -->
       <div class="lg:col-span-8">
@@ -97,11 +92,20 @@ const LANG_NAMES: Record<string, string> = { en: "English", ru: "Russian", am: "
                     <div class="absolute -left-[2.35rem] top-1 w-4 h-4 bg-secondary rounded-full"></div>
                     <h4 class="font-label-md text-label-md text-secondary uppercase mb-2">{stop.time} — {stop.title}</h4>
                     <p class="font-body-md text-body-md text-on-surface-variant mb-4">{stop.desc}</p>
-                    {stop.image && (
-                      <div class="aspect-video w-full overflow-hidden">
-                        <img src={stop.image} class="w-full h-full object-cover hover:scale-105 transition-transform duration-700" alt={stop.title} />
-                      </div>
-                    )}
+                    {(() => {
+                      const stopImages = stop.images?.length ? stop.images : stop.image ? [stop.image] : [];
+                      if (stopImages.length === 0) return null;
+                      const cols = stopImages.length === 1 ? "grid-cols-2 sm:grid-cols-3" : stopImages.length === 2 ? "grid-cols-2" : "grid-cols-2 sm:grid-cols-3";
+                      return (
+                        <div class={`grid ${cols} gap-2`}>
+                          {stopImages.map((src) => (
+                            <div class="aspect-square overflow-hidden rounded-lg">
+                              <img src={src} class="w-full h-full object-cover hover:scale-105 transition-transform duration-700" alt={stop.title} />
+                            </div>
+                          ))}
+                        </div>
+                      );
+                    })()}
                   </div>
                 ))}
               </div>
@@ -111,14 +115,21 @@ const LANG_NAMES: Record<string, string> = { en: "English", ru: "Russian", am: "
       </div>
 
       <!-- Sidebar -->
-      <div class="lg:col-span-4 space-y-stack-lg">
+      <div class="lg:col-span-4">
+        <div class="lg:sticky lg:top-28">
         <!-- Price Calculator -->
-        <div class="bg-primary p-stack-lg shadow-xl" id="price-calc" data-pricing={JSON.stringify(pricing)}>
-          <h3 class="font-headline-sm text-headline-sm text-white mb-stack-sm">Check Price</h3>
-          <p class="text-white/70 font-caption text-caption mb-stack-md">Price adjusts automatically for your group size.</p>
+        <div class="bg-primary p-8 sm:p-10 shadow-xl flex flex-col" id="price-calc" data-pricing={JSON.stringify(pricing)}>
+          <h3 class="font-headline-md text-headline-md text-white mb-stack-sm">Check Price</h3>
+          <p class="text-white/70 font-body-md text-body-md mb-8">Price adjusts automatically for your group size and guide preference.</p>
 
-          <div class="mb-4">
-            <label class="block font-label-md text-label-md text-white mb-2 uppercase">Number of People</label>
+          <div class="mb-6">
+            <label class="flex items-center gap-1.5 font-label-md text-label-md text-white mb-3 uppercase">
+              <span>Number of People</span>
+              <span class="relative inline-flex group/tip">
+                <span class="material-symbols-outlined text-[16px] normal-case text-white/60 cursor-help">info</span>
+                <span class="pointer-events-none absolute left-1/2 -translate-x-1/2 bottom-full mb-2 w-52 rounded-md bg-on-surface text-white text-[12px] normal-case font-normal leading-snug px-3 py-2 text-center opacity-0 invisible group-hover/tip:opacity-100 group-hover/tip:visible transition-opacity duration-150 z-50 shadow-lg">Total number of travelers in your group</span>
+              </span>
+            </label>
             <div class="flex items-center gap-3">
               <button type="button" id="pc-minus" class="w-10 h-10 bg-white/10 border border-white/20 text-white text-xl hover:bg-white/20 transition-colors" aria-label="Decrease">−</button>
               <input id="pc-people" type="number" min="1" max="19" value="2" class="w-16 text-center bg-white/10 border border-white/20 text-white px-2 py-2 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />
@@ -126,60 +137,85 @@ const LANG_NAMES: Record<string, string> = { en: "English", ru: "Russian", am: "
             </div>
           </div>
 
-          <div class="mb-4">
-            <label class="block font-label-md text-label-md text-white mb-2 uppercase">Guide</label>
-            <select id="pc-guide" class="w-full bg-white/10 border border-white/20 text-white px-4 py-3 focus:ring-secondary focus:border-secondary">
-              <option value="guide" class="text-on-surface">With guide</option>
-              <option value="noGuide" class="text-on-surface">Without guide</option>
-            </select>
+          <div class="mb-6 relative" id="pc-guide-wrap">
+            <label class="block font-label-md text-label-md text-white mb-3 uppercase">Guide</label>
+            <button type="button" id="pc-guide-btn" class="w-full flex items-center justify-between gap-3 bg-white/10 border border-white/20 text-white px-4 py-3 hover:bg-white/20 transition-colors" aria-haspopup="listbox" aria-expanded="false">
+              <span id="pc-guide-label" class="flex items-center gap-2">No guide</span>
+              <span class="material-symbols-outlined text-[20px] transition-transform" id="pc-guide-chevron">expand_more</span>
+            </button>
+            <ul id="pc-guide-list" role="listbox" class="hidden absolute z-30 mt-1 w-full bg-surface-container-lowest border border-border-muted shadow-xl overflow-hidden">
+              <li data-value="noGuide" role="option" class="px-4 py-2.5 flex items-center gap-2 cursor-pointer text-on-surface hover:bg-surface-container transition-colors">No guide</li>
+              <li data-value="guide:en" role="option" class="px-4 py-2.5 flex items-center gap-2 cursor-pointer text-on-surface hover:bg-surface-container transition-colors border-t border-border-muted"><span>🇬🇧</span> Guide — English</li>
+              <li data-value="guide:ru" role="option" class="px-4 py-2.5 flex items-center gap-2 cursor-pointer text-on-surface hover:bg-surface-container transition-colors border-t border-border-muted"><span>🇷🇺</span> Guide — Russian</li>
+              <li data-value="guide:am" role="option" class="px-4 py-2.5 flex items-center gap-2 cursor-pointer text-on-surface hover:bg-surface-container transition-colors border-t border-border-muted"><span>🇦🇲</span> Guide — Armenian</li>
+            </ul>
           </div>
 
-          {languages.length > 0 && (
-            <div class="mb-5">
-              <p class="font-label-md text-label-md text-white mb-2 uppercase">Guide Language</p>
-              <div class="flex gap-2 flex-wrap">
-                {languages.map((l) => (
-                  <span class="bg-white/10 border border-white/20 text-white text-caption px-3 py-1 uppercase">{LANG_NAMES[l] ?? l}</span>
-                ))}
+          <div class="mb-8 relative" id="pc-vehicle-wrap">
+            <label class="flex items-center gap-2 font-label-md text-label-md text-white mb-3 uppercase">
+              <span>Vehicle</span>
+              <span class="text-white/50 normal-case">–</span>
+              <a href={`${base}gallery`} class="text-secondary-container normal-case hover:underline">Photos</a>
+            </label>
+            <button type="button" id="pc-vehicle-btn" class="w-full flex items-center justify-between gap-3 bg-white/10 border border-white/20 text-white px-4 py-3 hover:bg-white/20 transition-colors" aria-haspopup="listbox" aria-expanded="false">
+              <span id="pc-vehicle-label">Comfort Sedan</span>
+              <span class="material-symbols-outlined text-[20px] transition-transform" id="pc-vehicle-chevron">expand_more</span>
+            </button>
+            <ul id="pc-vehicle-list" role="listbox" class="hidden absolute z-30 mt-1 w-full bg-surface-container-lowest border border-border-muted shadow-xl overflow-hidden">
+              <li data-value="sedan" role="option" class="px-4 py-2.5 cursor-pointer text-on-surface hover:bg-surface-container transition-colors">Comfort Sedan</li>
+              <li data-value="minivan" role="option" class="px-4 py-2.5 cursor-pointer text-on-surface hover:bg-surface-container transition-colors border-t border-border-muted">Minivan (up to 6)</li>
+              <li data-value="minibus" role="option" class="px-4 py-2.5 cursor-pointer text-on-surface hover:bg-surface-container transition-colors border-t border-border-muted">Minibus (up to 14)</li>
+              <li data-value="sprinter" role="option" class="px-4 py-2.5 cursor-pointer text-on-surface hover:bg-surface-container transition-colors border-t border-border-muted">Sprinter (up to 19)</li>
+            </ul>
+          </div>
+
+          <div class="mt-auto">
+            <div class="border-t border-white/20 pt-5 pb-6 flex items-end justify-between gap-4">
+              <p class="flex items-center gap-1.5 text-white/70 text-caption font-caption uppercase tracking-wider">
+                <span id="pc-label">Total for 2 persons</span>
+                <span class="relative inline-flex group/tip">
+                  <span class="material-symbols-outlined text-[14px] normal-case cursor-help">info</span>
+                  <span class="pointer-events-none absolute left-1/2 -translate-x-1/2 bottom-full mb-2 w-52 rounded-md bg-on-surface text-white text-[12px] normal-case font-normal leading-snug px-3 py-2 text-center opacity-0 invisible group-hover/tip:opacity-100 group-hover/tip:visible transition-opacity duration-150 z-50 shadow-lg">Total price for your group size, guide, and vehicle</span>
+                </span>
+              </p>
+              <p class="text-white text-headline-sm font-headline-sm" id="pc-total">Contact for price</p>
+            </div>
+
+            <a href={`${base}#contact`} class="block w-full bg-secondary text-white py-5 font-label-md text-label-md hover:bg-on-secondary-fixed-variant transition-colors uppercase tracking-widest text-center">Book Now</a>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Included & Tips -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-gutter mt-stack-lg">
+      <div class="bg-surface-container-low p-stack-lg border border-border-muted">
+        <h3 class="font-headline-sm text-headline-sm text-primary mb-stack-md">What's Included</h3>
+        <ul class="space-y-3">
+          {included.map((item) => (
+            <li class="flex items-start gap-3">
+              <span class="material-symbols-outlined text-secondary text-[20px]">check_circle</span>
+              <span class="font-body-md text-body-md text-on-surface-variant">{item}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="bg-surface-container-high p-stack-lg border border-border-muted">
+        <h3 class="font-headline-sm text-headline-sm text-primary mb-stack-md">Know Before You Go</h3>
+        <div class="space-y-4">
+          {tips.map((tip) => (
+            <div class="flex gap-4">
+              <div class="bg-surface-container-lowest p-2 h-fit">
+                <span class="material-symbols-outlined text-primary">{tip.icon}</span>
+              </div>
+              <div>
+                <h4 class="font-label-md text-label-md text-primary uppercase">{tip.title}</h4>
+                <p class="font-body-md text-body-md text-on-surface-variant">{tip.desc}</p>
               </div>
             </div>
-          )}
-
-          <div class="border-t border-white/20 pt-4">
-            <p class="text-white/70 text-caption font-caption uppercase tracking-wider mb-1" id="pc-label">Price for 2 persons</p>
-            <p class="text-white text-headline-sm font-headline-sm" id="pc-total">Contact for price</p>
-          </div>
-
-          <a href={`${base}#contact`} class="mt-5 block w-full bg-secondary text-white py-4 font-label-md text-label-md hover:bg-on-secondary-fixed-variant transition-colors uppercase tracking-widest text-center">Book Now</a>
-        </div>
-
-        <div class="bg-surface-container-low p-stack-lg border border-border-muted">
-          <h3 class="font-headline-sm text-headline-sm text-primary mb-stack-md">What's Included</h3>
-          <ul class="space-y-3">
-            {included.map((item) => (
-              <li class="flex items-start gap-3">
-                <span class="material-symbols-outlined text-secondary text-[20px]">check_circle</span>
-                <span class="font-body-md text-body-md text-on-surface-variant">{item}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div class="bg-surface-container-high p-stack-lg border border-border-muted">
-          <h3 class="font-headline-sm text-headline-sm text-primary mb-stack-md">Know Before You Go</h3>
-          <div class="space-y-4">
-            {tips.map((tip) => (
-              <div class="flex gap-4">
-                <div class="bg-surface-container-lowest p-2 h-fit">
-                  <span class="material-symbols-outlined text-primary">{tip.icon}</span>
-                </div>
-                <div>
-                  <h4 class="font-label-md text-label-md text-primary uppercase">{tip.title}</h4>
-                  <p class="font-body-md text-body-md text-on-surface-variant">{tip.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+          ))}
         </div>
       </div>
     </div>
@@ -203,18 +239,98 @@ const LANG_NAMES: Record<string, string> = { en: "English", ru: "Russian", am: "
   if (calc) {
     const pricing = JSON.parse(calc.dataset.pricing || "null");
     const peopleInput = document.getElementById("pc-people") as HTMLInputElement;
-    const guideSelect = document.getElementById("pc-guide") as HTMLSelectElement;
     const minusBtn = document.getElementById("pc-minus");
     const plusBtn = document.getElementById("pc-plus");
     const totalEl = document.getElementById("pc-total");
     const labelEl = document.getElementById("pc-label");
 
+    // Combined guide + language dropdown
+    const guideWrap = document.getElementById("pc-guide-wrap")!;
+    const guideBtn = document.getElementById("pc-guide-btn")!;
+    const guideLabel = document.getElementById("pc-guide-label")!;
+    const guideChevron = document.getElementById("pc-guide-chevron")!;
+    const guideList = document.getElementById("pc-guide-list")!;
+    const guideItems = Array.from(guideList.querySelectorAll("li"));
+    let guideValue = "noGuide"; // noGuide | guide:en | guide:ru | guide:am
+
+    function closeGuideList() {
+      guideList.classList.add("hidden");
+      guideChevron.classList.remove("rotate-180");
+      guideBtn.setAttribute("aria-expanded", "false");
+    }
+
+    guideBtn.addEventListener("click", () => {
+      const willOpen = guideList.classList.contains("hidden");
+      guideList.classList.toggle("hidden");
+      guideChevron.classList.toggle("rotate-180", willOpen);
+      guideBtn.setAttribute("aria-expanded", String(willOpen));
+    });
+
+    guideItems.forEach((li) => {
+      li.addEventListener("click", () => {
+        guideValue = li.getAttribute("data-value") || "noGuide";
+        guideLabel.innerHTML = li.innerHTML;
+        guideItems.forEach((o) => o.classList.toggle("bg-surface-container", o === li));
+        closeGuideList();
+        update();
+      });
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!guideWrap.contains(e.target as Node)) closeGuideList();
+    });
+
+    // Vehicle dropdown — placeholder multiplier algorithm until real
+    // per-vehicle pricing is provided; swap VEHICLE_MULTIPLIERS for real
+    // numbers later.
+    const VEHICLE_MULTIPLIERS: Record<string, number> = {
+      sedan: 1,
+      minivan: 1.15,
+      minibus: 1.35,
+      sprinter: 1.6,
+    };
+    const vehicleWrap = document.getElementById("pc-vehicle-wrap")!;
+    const vehicleBtn = document.getElementById("pc-vehicle-btn")!;
+    const vehicleLabel = document.getElementById("pc-vehicle-label")!;
+    const vehicleChevron = document.getElementById("pc-vehicle-chevron")!;
+    const vehicleList = document.getElementById("pc-vehicle-list")!;
+    const vehicleItems = Array.from(vehicleList.querySelectorAll("li"));
+    let vehicleValue = "sedan";
+
+    function closeVehicleList() {
+      vehicleList.classList.add("hidden");
+      vehicleChevron.classList.remove("rotate-180");
+      vehicleBtn.setAttribute("aria-expanded", "false");
+    }
+
+    vehicleBtn.addEventListener("click", () => {
+      const willOpen = vehicleList.classList.contains("hidden");
+      vehicleList.classList.toggle("hidden");
+      vehicleChevron.classList.toggle("rotate-180", willOpen);
+      vehicleBtn.setAttribute("aria-expanded", String(willOpen));
+    });
+
+    vehicleItems.forEach((li) => {
+      li.addEventListener("click", () => {
+        vehicleValue = li.getAttribute("data-value") || "sedan";
+        vehicleLabel.textContent = li.textContent;
+        vehicleItems.forEach((o) => o.classList.toggle("bg-surface-container", o === li));
+        closeVehicleList();
+        update();
+      });
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!vehicleWrap.contains(e.target as Node)) closeVehicleList();
+    });
+
     function update() {
       const people = Math.max(1, Math.min(19, parseInt(peopleInput.value, 10) || 1));
       peopleInput.value = String(people);
-      const withGuide = guideSelect.value === "guide";
-      const total = priceFor(pricing, people, withGuide);
-      labelEl!.textContent = `Price for ${people} ${people === 1 ? "person" : "persons"}`;
+      const withGuide = guideValue.startsWith("guide:");
+      const base = priceFor(pricing, people, withGuide);
+      const total = base == null ? null : Math.round((base * VEHICLE_MULTIPLIERS[vehicleValue]) / 100) * 100;
+      labelEl!.textContent = `Total for ${people} ${people === 1 ? "person" : "persons"}`;
       totalEl!.textContent = total == null ? "Contact for price" : formatAMD(total);
     }
 
@@ -227,7 +343,6 @@ const LANG_NAMES: Record<string, string> = { en: "English", ru: "Russian", am: "
       update();
     });
     peopleInput.addEventListener("input", update);
-    guideSelect.addEventListener("change", update);
     update();
   }
 </script>

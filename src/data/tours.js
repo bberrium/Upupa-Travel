@@ -17,7 +17,7 @@ export const TOURS = [
     desc: "Temple, cliffside monastery & basalt gorge in a day. Discover the pre-Christian roots and unique geology of Armenia.",
     image:
       "https://janarmenia.com/uploads/0000/32/2023/01/24/armenia-garni.webp",
-    languages: ["en", "ru"],
+    languages: ["en", "ru", "am"],
     duration: "5-6 hours",
     pricing: {
       noGuide: {
@@ -38,9 +38,19 @@ export const TOURS = [
     title: "Khor Virap, Areni Cave & Noravank",
     desc: "Ararat views, an ancient wine cave & canyon monastery. A journey through the Vayots Dzor wine region.",
     image: "https://images.pexels.com/photos/34146317/pexels-photo-34146317.jpeg?auto=compress&cs=tinysrgb&w=1200",
-    languages: ["en", "ru"],
+    languages: ["en", "ru", "am"],
     duration: "8-9 hours",
-    pricing: null, // TODO: add tiered pricing (sedan/minivan/minibus/sprinter, guide + no-guide)
+    pricing: {
+      noGuide: {
+        1: 30000, 2: 31000, 3: 32000, 4: 34000, 5: 35000, 6: 36000,
+        7: 47000, 8: 48000, 9: 49000, 10: 58000,
+      },
+      guide: {
+        1: 50000, 2: 51000, 3: 52000, 4: 59000, 5: 60000, 6: 61000,
+        7: 82000, 8: 83000, 9: 84000, 10: 88000,
+        extraPerPerson: 1000, maxPeople: 18,
+      },
+    },
   },
   {
     slug: "tatev-syunik",
@@ -49,9 +59,20 @@ export const TOURS = [
     desc: "World's longest cable car & a mountain overnight. Explore the rugged beauty of Southern Armenia.",
     image:
       "https://armeniantreasures.com/wp-content/uploads/2025/02/Tatev-Monastic-Complex-1.jpeg",
-    languages: ["en", "ru"],
+    languages: ["en", "ru", "am"],
     duration: "2 days",
-    pricing: null, // TODO: add tiered pricing
+    pricing: {
+      noGuide: {
+        1: 60000, 2: 61000, 3: 62000, 4: 64000, 5: 65000, 6: 66000,
+        7: 77000, 8: 78000, 9: 79000, 10: 88000,
+        extraPerPerson: 1000, maxPeople: 19,
+      },
+      guide: {
+        1: 80000, 2: 81000, 3: 82000, 4: 89000, 5: 90000, 6: 91000,
+        7: 102000, 8: 103000, 9: 104000, 10: 108000,
+        extraPerPerson: 1000, maxPeople: 18,
+      },
+    },
   },
 ];
 
