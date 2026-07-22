@@ -6,3 +6,16 @@
     scroll-behavior: smooth;
   }
 }
+
+@layer utilities {
+  .hero-background {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  
+  .crisp-image {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}
