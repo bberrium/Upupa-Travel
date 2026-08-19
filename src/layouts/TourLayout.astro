@@ -55,7 +55,7 @@ const base = import.meta.env.BASE_URL;
         <span class="inline-block bg-secondary text-white px-3 py-1 text-label-md font-label-md">{label}</span>
         {duration && <span class="text-on-surface-variant text-label-md font-label-md">{duration}</span>}
       </div>
-      <h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-primary mb-stack-md leading-tight">{title}</h1>
+      <h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-primary mb-stack-md leading-tight" style="font-family: 'Source Serif 4', serif;">{title}</h1>
       <p class="font-body-lg text-body-lg text-on-surface-variant mb-stack-lg">{summary}</p>
       <div class="flex gap-4 w-full sm:w-auto flex-wrap">
         <a href={`${base}#contact`} class="flex-1 sm:flex-none bg-secondary text-white px-8 py-4 font-label-md text-label-md hover:bg-on-secondary-fixed-variant transition-all uppercase tracking-widest text-center">Book Now</a>
@@ -72,7 +72,7 @@ const base = import.meta.env.BASE_URL;
       <!-- Itinerary -->
       <div class="lg:col-span-8">
         <div class="mb-stack-lg border-b border-border-muted pb-stack-sm">
-          <h2 class="font-headline-md text-headline-md text-primary">Detailed Itinerary</h2>
+          <h2 class="font-headline-md text-headline-md text-primary" style="font-family: 'Source Serif 4', serif;">Detailed Itinerary</h2>
         </div>
 
         {days.map((day) => (
@@ -85,11 +85,13 @@ const base = import.meta.env.BASE_URL;
               </div>
             </div>
 
-            <div class="relative pl-8 border-l border-border-muted">
+            <div class="relative pl-8 itin-line">
+              <div class="absolute left-0 top-0 bottom-0 w-px bg-border-muted"></div>
+              <div class="absolute left-0 top-0 w-px bg-secondary itin-fill transition-[height] duration-500 ease-out" style="height: 0px;"></div>
               <div class="space-y-10">
                 {day.stops.map((stop) => (
                   <div class="relative">
-                    <div class="absolute -left-[2.35rem] top-1 w-4 h-4 bg-secondary rounded-full"></div>
+                    <div class="absolute -left-[2.35rem] top-1 w-4 h-4 rounded-full bg-border-muted scale-100 transition-all duration-500 itin-dot"></div>
                     <h4 class="font-label-md text-label-md text-secondary uppercase mb-2">{stop.time} — {stop.title}</h4>
                     <p class="font-body-md text-body-md text-on-surface-variant mb-4">{stop.desc}</p>
                     {(() => {
@@ -235,6 +237,35 @@ const base = import.meta.env.BASE_URL;
     return n.toLocaleString("en-US") + " AMD";
   }
 
+  // Itinerary route line — fills in and lights up dots as the reader scrolls through stops
+  document.querySelectorAll(".itin-line").forEach((line) => {
+    const fill = line.querySelector(".itin-fill") as HTMLElement | null;
+    const dots = Array.from(line.querySelectorAll(".itin-dot")) as HTMLElement[];
+    if (!fill || dots.length === 0) return;
+
+    let deepest = -1;
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const i = dots.indexOf(entry.target as HTMLElement);
+          if (i <= deepest) return;
+          deepest = i;
+          const lineTop = line.getBoundingClientRect().top;
+          const dotRect = dots[deepest].getBoundingClientRect();
+          const heightPx = dotRect.top - lineTop + dotRect.height / 2;
+          fill.style.height = `${Math.max(0, heightPx)}px`;
+          for (let j = 0; j <= deepest; j++) {
+            dots[j].classList.remove("bg-border-muted", "scale-100");
+            dots[j].classList.add("bg-secondary", "scale-110");
+          }
+        });
+      },
+      { threshold: 0.6, rootMargin: "0px 0px -10% 0px" }
+    );
+    dots.forEach((dot) => io.observe(dot));
+  });
+
   const calc = document.getElementById("price-calc");
   if (calc) {
     const pricing = JSON.parse(calc.dataset.pricing || "null");
@@ -324,6 +355,20 @@ const base = import.meta.env.BASE_URL;
       if (!vehicleWrap.contains(e.target as Node)) closeVehicleList();
     });
 
+    let lastTotal: number | null = null;
+    function animateTotal(from: number, to: number) {
+      const start = performance.now();
+      const duration = 400;
+      function tick(now: number) {
+        const t = Math.min(1, (now - start) / duration);
+        const eased = 1 - Math.pow(1 - t, 3);
+        const val = Math.round(from + (to - from) * eased);
+        totalEl!.textContent = formatAMD(val);
+        if (t < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }
+
     function update() {
       const people = Math.max(1, Math.min(19, parseInt(peopleInput.value, 10) || 1));
       peopleInput.value = String(people);
@@ -331,7 +376,15 @@ const base = import.meta.env.BASE_URL;
       const base = priceFor(pricing, people, withGuide);
       const total = base == null ? null : Math.round((base * VEHICLE_MULTIPLIERS[vehicleValue]) / 100) * 100;
       labelEl!.textContent = `Total for ${people} ${people === 1 ? "person" : "persons"}`;
-      totalEl!.textContent = total == null ? "Contact for price" : formatAMD(total);
+
+      if (total == null) {
+        totalEl!.textContent = "Contact for price";
+      } else if (lastTotal == null) {
+        totalEl!.textContent = formatAMD(total);
+      } else {
+        animateTotal(lastTotal, total);
+      }
+      lastTotal = total;
     }
 
     minusBtn?.addEventListener("click", () => {
