@@ -1,0 +1,76 @@
+---
+import TourLayout from "../../layouts/TourLayout.astro";
+import { TOURS } from "../../data/tours.js";
+
+const tour = TOURS.find((t) => t.slug === "sevan-dilijan")!;
+
+const days = [
+  {
+    dayNumber: "01",
+    title: "Lake Sevan & Tavush Province",
+    subtitle: "The Blue Pearl & Armenian Switzerland",
+    stops: [
+      {
+        time: "Arrival",
+        title: "Lake Sevan",
+        desc: "Lake Sevan is the Blue Pearl of Armenia. Located almost 1,900 meters above sea level, it is the largest lake in the country and one of the highest large freshwater lakes in the world, surrounded by mountains and open skies.",
+        image: "", // Insert photo path here once you have the client's images
+      },
+      {
+        time: "60 minutes",
+        title: "Sevanavank Monastery",
+        desc: "Sevanavank is one of the most famous medieval monasteries in Armenia, located on a rocky peninsula overlooking Lake Sevan. Founded in 874 AD by Princess Mariam, it originally stood on an island when the lake’s water level was higher. Today, the monastery is famous for its two surviving churches, Surp Arakelots and Surp Astvatsatsin, as well as its beautiful panoramic views.",
+        image: "", 
+      },
+      {
+        time: "40 minutes",
+        title: "Dilijan",
+        desc: "Dilijan is one of the greenest and most picturesque towns in Armenia. Surrounded by thick forests and mountains, it is famous for its clean air, peaceful atmosphere, and charming traditional architecture. Because of its beautiful landscapes and mild climate, Dilijan is often called the “Armenian Switzerland.”",
+        image: "", 
+      },
+      {
+        time: "50-60 minutes",
+        title: "Lunch stop",
+        desc: "Optional lunch at a traditional local restaurant, at your own expense.",
+      },
+      {
+        time: "60 minutes",
+        title: "Goshavank Monastery",
+        desc: "Goshavank Monastery is a medieval monastery located in the picturesque village of Gosh, surrounded by the green forests of Tavush. Founded in the 12th century by the scholar and monk Mkhitar Gosh, it became an important religious, educational, and cultural center of medieval Armenia.",
+        image: "", 
+      },
+      {
+        time: "60 minutes",
+        title: "Haghartsin Monastery",
+        desc: "Haghartsin Monastery is a beautiful medieval Armenian monastery hidden in the lush forests of Tavush Province, near Dilijan. Founded in the 10th–11th centuries, it flourished in the 12th–13th centuries. The complex includes several churches, chapels, and a refectory, and is especially famous for its elegant Church of the Holy Mother of God (Surb Astvatsatsin).",
+        image: "", 
+      },
+    ],
+  },
+];
+
+const included = [
+  "Private transportation",
+  "English/Russian/Armenian speaking guide (if selected)",
+  "All entrance fees and local taxes",
+];
+
+const tips = [
+  { icon: "thermostat", title: "Weather Prep", desc: "Lake Sevan and Dilijan can be significantly cooler and breezier than Yerevan. Bring a light jacket." },
+  { icon: "hiking", title: "Footwear", desc: "The climb up to Sevanavank involves many stone steps; comfortable walking shoes are recommended." },
+];
+---
+
+<TourLayout
+  label={tour.label}
+  title={tour.title}
+  summary={tour.desc}
+  heroImage={tour.image}
+  duration={tour.duration}
+  region={tour.region}
+  languages={tour.languages}
+  pricing={tour.pricing}
+  days={days}
+  included={included}
+  tips={tips}
+/>

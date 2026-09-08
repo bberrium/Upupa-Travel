@@ -61,7 +61,6 @@ const HERO_IMAGES = [
     </div>
   </div>
 
-  <!-- Category Quick-links remain below -->
 <!-- Category Quick-links -->
 <div class="absolute bottom-0 left-0 right-0 z-30 transform translate-y-1/2 hidden md:block">
 <div class="max-w-container-max mx-auto px-margin-desktop">
@@ -110,6 +109,7 @@ const HERO_IMAGES = [
 </div>
 </div>
 </section>
+
 <!-- Tours & Packages Section -->
 <section class="py-section-padding px-margin-desktop max-w-container-max mx-auto mt-20" id="tours">
 <div class="text-center mb-16">
@@ -126,7 +126,7 @@ const HERO_IMAGES = [
     <label class="block text-label-md font-label-md text-primary uppercase mb-3">Number of people</label>
     <div class="flex items-center gap-2">
       <button type="button" id="ts-minus" class="w-9 h-9 border border-border-muted text-primary hover:bg-surface-container transition-colors" aria-label="Decrease">−</button>
-      <input id="ts-people" type="number" min="1" max="19" value="2" class="w-14 text-center border border-border-muted rounded p-2 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />
+      <input id="ts-people" type="number" min="1" max="20" value="2" class="w-14 text-center border border-border-muted rounded p-2 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />
       <button type="button" id="ts-plus" class="w-9 h-9 border border-border-muted text-primary hover:bg-surface-container transition-colors" aria-label="Increase">+</button>
     </div>
   </div>
@@ -234,7 +234,7 @@ const HERO_IMAGES = [
   }
 
   function render() {
-    const people = Math.max(1, Math.min(19, parseInt(peopleInput.value, 10) || 1));
+    const people = Math.max(1, Math.min(20, parseInt(peopleInput.value, 10) || 1));
     const selectedOption = guideLangSelect.value; // "noGuide" | "en" | "ru" | "am"
     const withGuide = selectedOption !== "noGuide";
 
@@ -297,7 +297,7 @@ const HERO_IMAGES = [
     render();
   });
   plusBtn.addEventListener("click", () => {
-    peopleInput.value = String(Math.min(19, parseInt(peopleInput.value, 10) + 1));
+    peopleInput.value = String(Math.min(20, parseInt(peopleInput.value, 10) + 1));
     render();
   });
   peopleInput.addEventListener("input", render);
@@ -407,14 +407,19 @@ const HERO_IMAGES = [
 <p class="text-white/80 max-w-xl mx-auto mb-8" data-t="review_form_desc">How was your journey? Your feedback helps us grow and helps others discover Armenia.</p>
 <form class="max-w-xl mx-auto text-left space-y-6">
 <div class="flex flex-col items-center gap-2 mb-4">
-<label class="text-white/90 text-label-md uppercase tracking-wider" data-t="label_rating">Your Rating</label>
-<div class="flex gap-1 text-secondary-container">
-<span class="material-symbols-outlined cursor-pointer hover:scale-110 transition-transform">star</span>
-<span class="material-symbols-outlined cursor-pointer hover:scale-110 transition-transform">star</span>
-<span class="material-symbols-outlined cursor-pointer hover:scale-110 transition-transform">star</span>
-<span class="material-symbols-outlined cursor-pointer hover:scale-110 transition-transform">star</span>
-<span class="material-symbols-outlined cursor-pointer hover:scale-110 transition-transform">star</span>
-</div>
+  <label class="text-white/90 text-label-md uppercase tracking-wider" data-t="label_rating">Your Rating</label>
+  
+  <!-- Hidden input to store the actual value for the form submission -->
+  <input type="hidden" id="review-rating" name="rating" value="5">
+  
+  <div class="flex gap-1" id="star-container">
+    <!-- Added 'star-btn' class, 'data-value', and default color classes -->
+    <span class="star-btn material-symbols-outlined cursor-pointer hover:scale-110 transition-transform text-secondary-container" data-value="1" style="font-variation-settings: 'FILL' 1;">star</span>
+    <span class="star-btn material-symbols-outlined cursor-pointer hover:scale-110 transition-transform text-secondary-container" data-value="2" style="font-variation-settings: 'FILL' 1;">star</span>
+    <span class="star-btn material-symbols-outlined cursor-pointer hover:scale-110 transition-transform text-secondary-container" data-value="3" style="font-variation-settings: 'FILL' 1;">star</span>
+    <span class="star-btn material-symbols-outlined cursor-pointer hover:scale-110 transition-transform text-secondary-container" data-value="4" style="font-variation-settings: 'FILL' 1;">star</span>
+    <span class="star-btn material-symbols-outlined cursor-pointer hover:scale-110 transition-transform text-secondary-container" data-value="5" style="font-variation-settings: 'FILL' 1;">star</span>
+  </div>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 <div class="flex flex-col gap-1.5">
@@ -478,7 +483,7 @@ const HERO_IMAGES = [
 <div class="mt-16 pt-16 border-t border-white/10">
 <p class="text-caption text-secondary-container uppercase mb-4" data-t="contact_direct">Or reach us directly</p>
 <p class="text-body-lg mb-2"><a class="hover:text-secondary-container transition-colors" href="mailto:info@upupa-travel.am">info@upupa-travel.am</a></p>
-<p class="text-body-lg"><a class="hover:text-secondary-container transition-colors" href="tel:+37400000000">WhatsApp: +374 95 988 188</a></p>
+<p class="text-body-lg"><a class="hover:text-secondary-container transition-colors" href="tel:+37495988188">WhatsApp: +374 95 988 188</a></p>
 </div>
 </div>
 <!-- Inquiry Form -->
@@ -555,3 +560,34 @@ const HERO_IMAGES = [
     animation: price-pop 0.35s ease-out;
   }
 </style>
+
+<script>
+  // --- Interactive Review Stars Logic ---
+  const ratingInput = document.getElementById('review-rating');
+  const stars = document.querySelectorAll('.star-btn');
+
+  if (ratingInput && stars.length > 0) {
+    stars.forEach((star, index) => {
+      star.addEventListener('click', () => {
+        // 1. Update the hidden input value
+        const ratingValue = index + 1;
+        ratingInput.value = ratingValue;
+        
+        // 2. Update the visual state of all stars
+        stars.forEach((s, i) => {
+          if (i < ratingValue) {
+            // Fill the star and make it orange (selected)
+            s.style.fontVariationSettings = '"FILL" 1';
+            s.classList.add('text-secondary-container');
+            s.classList.remove('text-white/40');
+          } else {
+            // Hollow the star and make it faded (unselected)
+            s.style.fontVariationSettings = '"FILL" 0';
+            s.classList.add('text-white/40');
+            s.classList.remove('text-secondary-container');
+          }
+        });
+      });
+    });
+  }
+</script>

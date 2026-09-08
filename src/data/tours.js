@@ -74,6 +74,30 @@ export const TOURS = [
       },
     },
   },
+  {
+    slug: "sevan-dilijan",
+    label: "Day Tour",
+    title: "Lake Sevan, Sevanavank, Dilijan, Goshavank, Haghartsin",
+    desc: "Explore the 'Blue Pearl of Armenia' and discover medieval monasteries hidden deep within the lush forests of the Armenian Switzerland.",
+    image: "/images/sevan-placeholder.jpg", // Remember to replace this with your actual image path
+    duration: "9-10 hours",
+    region: "Yerevan",
+    languages: ["en", "ru", "am"],
+    pricing: {
+      noGuide: {
+        1: 44000, 2: 44000, 3: 46000, 4: 48000, 5: 54000, 
+        6: 56000, 7: 66000, 8: 68000, 9: 70000, 10: 78000,
+        extraPerPerson: 2000,
+        maxPeople: 20
+      },
+      guide: {
+        1: 74000, 2: 74000, 3: 76000, 4: 78000, 5: 84000, 
+        6: 86000, 7: 96000, 8: 98000, 9: 100000, 10: 108000,
+        extraPerPerson: 2000,
+        maxPeople: 20
+      }
+    }
+  }
 ];
 
 // Total group price (AMD) for a given tour, headcount, and guide option.

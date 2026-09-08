@@ -30,19 +30,21 @@ export interface Pricing {
 }
 
 interface Props {
-  label: string; // e.g. "DAY TOUR"
+  label: string; 
   title: string;
   summary: string;
   heroImage: string;
-  duration?: string; // e.g. "5-6 hours"
-  languages?: string[]; // e.g. ["en", "ru"]
-  pricing?: Pricing | null; // null/undefined => "Contact for price"
+  duration?: string; 
+  region?: string; // <-- Add this
+  languages?: string[]; 
+  pricing?: Pricing | null; 
   days: Day[];
   included: string[];
   tips: Tip[];
 }
 
-const { label, title, summary, heroImage, duration, languages = [], pricing = null, days, included, tips } = Astro.props;
+// Extract region from Astro.props
+const { label, title, summary, heroImage, duration, region, languages = [], pricing = null, days, included, tips } = Astro.props;
 
 const base = import.meta.env.BASE_URL;
 ---
@@ -54,6 +56,11 @@ const base = import.meta.env.BASE_URL;
       <div class="flex items-center gap-3 mb-4 flex-wrap">
         <span class="inline-block bg-secondary text-white px-3 py-1 text-label-md font-label-md">{label}</span>
         {duration && <span class="text-on-surface-variant text-label-md font-label-md">{duration}</span>}
+        {region && (
+          <span class="text-on-surface-variant text-label-md font-label-md flex items-center gap-1">
+            <span class="material-symbols-outlined text-[16px]">location_on</span>{region}
+          </span>
+        )}
       </div>
       <h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-primary mb-stack-md leading-tight" style="font-family: 'Source Serif 4', serif;">{title}</h1>
       <p class="font-body-lg text-body-lg text-on-surface-variant mb-stack-lg">{summary}</p>
@@ -134,8 +141,7 @@ const base = import.meta.env.BASE_URL;
             </label>
             <div class="flex items-center gap-3">
               <button type="button" id="pc-minus" class="w-10 h-10 bg-white/10 border border-white/20 text-white text-xl hover:bg-white/20 transition-colors" aria-label="Decrease">−</button>
-              <input id="pc-people" type="number" min="1" max="19" value="2" class="w-16 text-center bg-white/10 border border-white/20 text-white px-2 py-2 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />
-              <button type="button" id="pc-plus" class="w-10 h-10 bg-white/10 border border-white/20 text-white text-xl hover:bg-white/20 transition-colors" aria-label="Increase">+</button>
+              <input id="pc-people" type="number" min="1" max="20" value="2" class="w-16 text-center bg-white/10 border border-white/20 text-white px-2 py-2 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />              <button type="button" id="pc-plus" class="w-10 h-10 bg-white/10 border border-white/20 text-white text-xl hover:bg-white/20 transition-colors" aria-label="Increase">+</button>
             </div>
           </div>
 
@@ -370,8 +376,7 @@ const base = import.meta.env.BASE_URL;
     }
 
     function update() {
-      const people = Math.max(1, Math.min(19, parseInt(peopleInput.value, 10) || 1));
-      peopleInput.value = String(people);
+      const people = Math.max(1, Math.min(20, parseInt(peopleInput.value, 10) || 1));      peopleInput.value = String(people);
       const withGuide = guideValue.startsWith("guide:");
       const base = priceFor(pricing, people, withGuide);
       const total = base == null ? null : Math.round((base * VEHICLE_MULTIPLIERS[vehicleValue]) / 100) * 100;
@@ -392,8 +397,7 @@ const base = import.meta.env.BASE_URL;
       update();
     });
     plusBtn?.addEventListener("click", () => {
-      peopleInput.value = String(Math.min(19, parseInt(peopleInput.value, 10) + 1));
-      update();
+      peopleInput.value = String(Math.min(20, parseInt(peopleInput.value, 10) + 1));      update();
     });
     peopleInput.addEventListener("input", update);
     update();
