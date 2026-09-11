@@ -34,6 +34,7 @@ interface Props {
   title: string;
   summary: string;
   heroImage: string;
+  images?: string[];
   duration?: string; 
   region?: string; // <-- Add this
   languages?: string[]; 
@@ -44,7 +45,11 @@ interface Props {
 }
 
 // Extract region from Astro.props
-const { label, title, summary, heroImage, duration, region, languages = [], pricing = null, days, included, tips } = Astro.props;
+const { label, title, summary, heroImage, images = [], duration, region, languages = [], pricing = null, days, included, tips } = Astro.props;
+
+// Slideshow images: use the tour's curated image set if provided, else just
+// fall back to the single heroImage so older callers keep working.
+const slideImages = images.length > 0 ? images : heroImage ? [heroImage] : [];
 
 const base = import.meta.env.BASE_URL;
 ---
@@ -73,17 +78,31 @@ const base = import.meta.env.BASE_URL;
     </div>
   </section>
 
-  <!-- Hero Image -->
-  {heroImage && (
+  <!-- Hero Slideshow -->
+  {slideImages.length > 0 && (
     <section class="px-margin-desktop max-w-container-max mx-auto mb-stack-lg">
-      <div class="relative rounded-2xl overflow-hidden shadow-xl border border-outline-variant h-[300px] sm:h-[420px] md:h-[520px]">
-        <img
-          src={heroImage}
-          alt={title}
-          fetchpriority="high"
-          loading="eager"
-          class="w-full h-full object-cover"
-        />
+      <div class="relative rounded-2xl overflow-hidden shadow-xl border border-outline-variant h-[300px] sm:h-[420px] md:h-[520px]" id="tour-hero-slideshow">
+        {slideImages.map((src, i) => (
+          <img
+            src={src}
+            alt={title}
+            fetchpriority={i === 0 ? "high" : "auto"}
+            loading={i === 0 ? "eager" : "lazy"}
+            class={`tour-hero-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${i === 0 ? "opacity-100" : "opacity-0"}`}
+          />
+        ))}
+        {slideImages.length > 1 && (
+          <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10" id="tour-hero-dots">
+            {slideImages.map((_, i) => (
+              <button
+                type="button"
+                class={`tour-hero-dot h-1.5 rounded-full transition-all duration-500 ${i === 0 ? "w-8 bg-white" : "w-1.5 bg-white/50 hover:bg-white/80"}`}
+                data-index={i}
+                aria-label={`Go to slide ${i + 1}`}
+              ></button>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   )}
@@ -247,6 +266,59 @@ const base = import.meta.env.BASE_URL;
 
 <script>
   import { priceFor, formatAMD } from "../data/tours.js";
+
+  // Hero slideshow — crossfades through the tour's image set. If an image
+  // 404s or is blocked (hotlink protection, expired CDN link), it's dropped
+  // from rotation instead of leaving a broken-image icon on screen.
+  const tourHeroSlides = Array.from(document.querySelectorAll(".tour-hero-slide")) as HTMLElement[];
+  const tourHeroDots = Array.from(document.querySelectorAll(".tour-hero-dot")) as HTMLElement[];
+  if (tourHeroSlides.length > 0) {
+    let heroIdx = 0;
+    let heroTimer: number | undefined;
+
+    function showHeroSlide(next: number) {
+      tourHeroSlides[heroIdx].classList.replace("opacity-100", "opacity-0");
+      tourHeroDots[heroIdx]?.classList.remove("w-8", "bg-white");
+      tourHeroDots[heroIdx]?.classList.add("w-1.5", "bg-white/50");
+      heroIdx = next;
+      tourHeroSlides[heroIdx].classList.replace("opacity-0", "opacity-100");
+      tourHeroDots[heroIdx]?.classList.remove("w-1.5", "bg-white/50");
+      tourHeroDots[heroIdx]?.classList.add("w-8", "bg-white");
+    }
+
+    tourHeroSlides.forEach((slide, i) => {
+      slide.addEventListener("error", () => {
+        slide.classList.add("hidden");
+        tourHeroDots[i]?.classList.add("hidden");
+        if (i === heroIdx) {
+          const next = tourHeroSlides.findIndex((s, j) => j !== i && !s.classList.contains("hidden"));
+          if (next !== -1) showHeroSlide(next);
+        }
+      });
+    });
+
+    if (tourHeroSlides.length > 1) {
+      function startHeroTimer() {
+        heroTimer = window.setInterval(() => {
+          let next = (heroIdx + 1) % tourHeroSlides.length;
+          let attempts = 0;
+          while (tourHeroSlides[next].classList.contains("hidden") && attempts < tourHeroSlides.length) {
+            next = (next + 1) % tourHeroSlides.length;
+            attempts++;
+          }
+          if (!tourHeroSlides[next].classList.contains("hidden")) showHeroSlide(next);
+        }, 4000);
+      }
+      startHeroTimer();
+      tourHeroDots.forEach((dot) => {
+        dot.addEventListener("click", () => {
+          if (heroTimer) clearInterval(heroTimer);
+          showHeroSlide(parseInt(dot.dataset.index || "0", 10));
+          startHeroTimer();
+        });
+      });
+    }
+  }
 
   // Itinerary route line — fills in and lights up dots as the reader scrolls through stops
   document.querySelectorAll(".itin-line").forEach((line) => {
