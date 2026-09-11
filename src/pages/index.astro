@@ -110,6 +110,42 @@ const HERO_IMAGES = [
 </div>
 </section>
 
+<!-- Category Quick-links (mobile) — the desktop version above is absolutely
+     positioned to straddle the hero/about seam, which doesn't translate to
+     mobile, so phones get their own in-flow version instead of nothing. -->
+<div class="px-margin-desktop mt-8 md:hidden">
+  <div class="grid grid-cols-2 gap-4" id="category-grid-mobile">
+    <a class="block bg-surface shadow-lg rounded-xl border border-outline-variant h-36 relative overflow-hidden" href="#tours">
+      <img alt="Day Tours" class="absolute inset-0 w-full h-full object-cover" src={`${base}images/hp1.jpg`} />
+      <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
+      <div class="absolute inset-x-0 bottom-0 p-3">
+        <h3 class="text-white font-headline-sm text-sm leading-tight" data-t="cat_1_title">Day Tours</h3>
+      </div>
+    </a>
+    <a class="block bg-surface shadow-lg rounded-xl border border-outline-variant h-36 relative overflow-hidden" href="#tours">
+      <img alt="Multi-Day" class="absolute inset-0 w-full h-full object-cover" src={`${base}images/hp2.jpg`} />
+      <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
+      <div class="absolute inset-x-0 bottom-0 p-3">
+        <h3 class="text-white font-headline-sm text-sm leading-tight" data-t="cat_2_title">Multi-Day</h3>
+      </div>
+    </a>
+    <a class="block bg-surface shadow-lg rounded-xl border border-outline-variant h-36 relative overflow-hidden" href={`${base}custom-tour`}>
+      <img alt="Custom" class="absolute inset-0 w-full h-full object-cover" src={`${base}images/hp3.jpg`} />
+      <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
+      <div class="absolute inset-x-0 bottom-0 p-3">
+        <h3 class="text-white font-headline-sm text-sm leading-tight" data-t="cat_3_title">Custom</h3>
+      </div>
+    </a>
+    <a class="block bg-surface shadow-lg rounded-xl border border-outline-variant h-36 relative overflow-hidden" href={`${base}private-transfer`}>
+      <img alt="Transfers" class="absolute inset-0 w-full h-full object-cover" src={`${base}images/ararat1.jpg`} />
+      <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
+      <div class="absolute inset-x-0 bottom-0 p-3">
+        <h3 class="text-white font-headline-sm text-sm leading-tight" data-t="cat_4_title">Transfers</h3>
+      </div>
+    </a>
+  </div>
+</div>
+
 <!-- Minimalist About Section -->
 <section class="bg-primary text-white py-20 relative overflow-hidden" id="about">
   <div class="max-w-container-max mx-auto px-margin-desktop">
