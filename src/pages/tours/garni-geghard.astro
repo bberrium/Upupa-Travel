@@ -20,7 +20,7 @@ const days = [
         time: "60 minutes",
         title: "Geghard Monastery",
         desc: "A UNESCO World Heritage Site and one of Armenia's most remarkable medieval monasteries. Founded in the 4th century by Saint Gregory the Illuminator, the monastery is famous for its churches carved directly into the surrounding cliffs. Its name, Geghard, means \"spear\", referring to the Holy Lance believed to have pierced the side of Jesus Christ. Surrounded by dramatic mountains, Geghard is a masterpiece of Armenian architecture and spirituality.",
-        image: "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkqHmX-eyncB-b4Cp0hnSgzqK2UiNr_leZsUaa6V2hq90zeWLS9f3x0Akdk0VtFztBtV9O49pLixF_NhuJ5vEt2DwBoDg1aZW2lcARwQkjqDJE8z-JbFwmg6m8TPupUUI0-BsTZ=s680-w680-h510-rw",
+        image: "https://www.armenia-spirit.com/images/destinations/geghard/hero.jpg",
       },
       {
         time: "40 minutes",
@@ -53,8 +53,9 @@ const tips = [
   label={tour.label}
   title={tour.title}
   summary={tour.desc}
-  heroImage={tour.image}
+  heroImage={tour.images[0]}
   duration={tour.duration}
+  region={tour.region}
   languages={tour.languages}
   pricing={tour.pricing}
   days={days}

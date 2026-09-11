@@ -73,6 +73,21 @@ const base = import.meta.env.BASE_URL;
     </div>
   </section>
 
+  <!-- Hero Image -->
+  {heroImage && (
+    <section class="px-margin-desktop max-w-container-max mx-auto mb-stack-lg">
+      <div class="relative rounded-2xl overflow-hidden shadow-xl border border-outline-variant h-[300px] sm:h-[420px] md:h-[520px]">
+        <img
+          src={heroImage}
+          alt={title}
+          fetchpriority="high"
+          loading="eager"
+          class="w-full h-full object-cover"
+        />
+      </div>
+    </section>
+  )}
+
   <!-- Content -->
   <section id="itinerary" class="pb-section-padding px-margin-desktop max-w-container-max mx-auto">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
@@ -231,17 +246,7 @@ const base = import.meta.env.BASE_URL;
 </BaseLayout>
 
 <script>
-  function priceFor(pricing: any, people: number, withGuide: boolean): number | null {
-    if (!pricing) return null;
-    const table = withGuide ? pricing.guide : pricing.noGuide;
-    if (!table) return null;
-    if (people < 1 || people > table.maxPeople) return null;
-    if (people <= 10) return table[people];
-    return table[10] + (people - 10) * table.extraPerPerson;
-  }
-  function formatAMD(n: number): string {
-    return n.toLocaleString("en-US") + " AMD";
-  }
+  import { priceFor, formatAMD } from "../data/tours.js";
 
   // Itinerary route line — fills in and lights up dots as the reader scrolls through stops
   document.querySelectorAll(".itin-line").forEach((line) => {
