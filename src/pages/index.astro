@@ -179,17 +179,17 @@ const HERO_IMAGES = [
         <!-- Streamlined Minimal Highlights -->
         <div class="space-y-4">
           <div class="flex items-center gap-3">
-            <span class="material-symbols-outlined text-[#229ED9] text-xl">language</span>
+            <span class="material-symbols-outlined text-secondary text-xl">language</span>
             <span class="text-on-surface text-sm font-medium">Local, native guides (English, Russian, Armenian)</span>
           </div>
 
           <div class="flex items-center gap-3">
-            <span class="material-symbols-outlined text-[#229ED9] text-xl">groups</span>
+            <span class="material-symbols-outlined text-secondary text-xl">groups</span>
             <span class="text-on-surface text-sm font-medium">Small, private groups tailored to your rhythm</span>
           </div>
 
           <div class="flex items-center gap-3">
-            <span class="material-symbols-outlined text-[#229ED9] text-xl">map</span>
+            <span class="material-symbols-outlined text-secondary text-xl">map</span>
             <span class="text-on-surface text-sm font-medium">Custom-built itineraries based on your interests</span>
           </div>
         </div>
@@ -527,13 +527,12 @@ const HERO_IMAGES = [
 </div>
 <div class="flex flex-col gap-1.5">
 <label class="text-white/90 text-label-md uppercase tracking-wider" data-t="label_tour">Tour Taken</label>
-<select class="bg-white/10 border-white/20 rounded-lg p-3 text-white focus:ring-2 focus:ring-secondary-container outline-none appearance-none">
-<option class="text-on-surface" data-t="opt_select_tour">Select a tour...</option>
-<option class="text-on-surface">Garni &amp; Geghard</option>
-<option class="text-on-surface">Khor Virap &amp; Noravank</option>
-<option class="text-on-surface">Tatev Expedition</option>
-<option class="text-on-surface">Classic Armenia</option>
-<option class="text-on-surface">Custom Route</option>
+<select class="bg-white/10 border-white/20 rounded-lg p-3 text-black/50 focus:ring-2 focus:ring-secondary-container outline-none appearance-none">
+  <option data-t="opt_choose">Choose...</option>
+  {TOURS.map((t) => (
+    <option>{t.title}</option>
+  ))}
+  <option>Custom Route</option>
 </select>
 </div>
 </div>
@@ -602,8 +601,8 @@ const HERO_IMAGES = [
 <label class="text-label-md font-label-md text-primary uppercase" data-t="label_tour_sel">TOUR</label>
 <select class="border-muted rounded-lg p-3 w-full">
 <option data-t="opt_choose">Choose...</option>
-<option>Garni &amp; Geghard</option>
-<option>Classic Armenia</option>
+<option>Garni, Geghard &amp; Symphony of Stones</option>
+<option>Lake Sevan, Dilijan &amp; Monasteries</option>
 <option>Custom Route</option>
 </select>
 </div>

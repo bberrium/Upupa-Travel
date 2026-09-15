@@ -1,70 +1,257 @@
----
-const { tour } = Astro.props;
-const carouselId = `carousel-${tour.slug}`;
----
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Upupa Travel — Tours & Packages</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&display=swap');
 
-<div class="border border-gray-200 rounded-xl overflow-hidden max-w-sm relative group bg-white shadow-sm hover:shadow-md transition-shadow">
-  
-  <!-- Slideshow Section -->
-  <div class="relative h-56 w-full">
-    <!-- Prev Button -->
-    <button class="nav-btn prev absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-all z-10" data-target={carouselId}>
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg>
-    </button>
+  :root{
+    --stone:#F1EBE1;
+    --stone-dark:#E3D9C8;
+    --basalt:#241F1C;
+    --basalt-soft:#4A4038;
+    --pomegranate:#9C3B2C;
+    --pomegranate-deep:#7A2C20;
+    --apricot:#D4972E;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Manrope',sans-serif;
+    background:var(--stone);
+    color:var(--basalt);
+    padding:56px 20px 70px;
+  }
+  .wrap{max-width:1040px;margin:0 auto;}
 
-    <!-- Carousel Container -->
-    <div id={carouselId} class="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar h-full w-full">
-      {tour.images.map((img) => (
-        <div class="min-w-full snap-center h-full">
-          <img src={img} alt={tour.title} loading="lazy" class="w-full h-full object-cover" />
-        </div>
-      ))}
-    </div>
+  .head{
+    max-width:52ch;
+    margin-bottom:40px;
+  }
+  .eyebrow{
+    font-size:13px;
+    color:var(--pomegranate);
+    font-weight:600;
+  }
+  h1{
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    font-size:34px;
+    margin:8px 0 10px;
+    line-height:1.15;
+  }
+  .sub{
+    font-size:15.5px;
+    color:var(--basalt-soft);
+    line-height:1.55;
+  }
 
-    <!-- Next Button -->
-    <button class="nav-btn next absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-all z-10" data-target={carouselId}>
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
-    </button>
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:22px;
+  }
+  @media (max-width:860px){ .grid{grid-template-columns:1fr 1fr;} }
+  @media (max-width:600px){ .grid{grid-template-columns:1fr;} }
+
+  .tcard{
+    background:#fff;
+    border:1px solid var(--stone-dark);
+    overflow:hidden;
+    cursor:pointer;
+    position:relative;
+    transition:border-color .2s ease;
+  }
+  .tcard:hover{border-color:var(--basalt-soft);}
+
+  .tcard .imgwrap{
+    position:relative;
+    height:210px;
+    overflow:hidden;
+    background:var(--basalt);
+  }
+  .tcard .imgwrap img{
+    width:100%;height:100%;object-fit:cover;
+    display:block;
+    transition:transform .5s ease;
+  }
+  .tcard:hover .imgwrap img{transform:scale(1.06);}
+
+  .duration-tag{
+    position:absolute;
+    top:12px;left:12px;
+    background:rgba(36,31,28,0.82);
+    color:var(--stone);
+    font-size:12px;
+    font-weight:600;
+    padding:5px 10px;
+    letter-spacing:0.01em;
+  }
+
+  .view-overlay{
+    position:absolute;
+    inset:0;
+    background:rgba(36,31,28,0.55);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    opacity:0;
+    transition:opacity .25s ease;
+  }
+  .tcard:hover .view-overlay{opacity:1;}
+  .view-btn{
+    background:var(--stone);
+    color:var(--basalt);
+    font-size:13.5px;
+    font-weight:600;
+    padding:11px 22px;
+    transform:translateY(8px);
+    transition:transform .25s ease;
+  }
+  .tcard:hover .view-btn{transform:translateY(0);}
+
+  .tbody{
+    padding:20px 20px 22px;
+  }
+  .cat{
+    font-size:11.5px;
+    color:var(--apricot);
+    font-weight:700;
+    margin-bottom:6px;
+  }
+  .tname{
+    font-family:'Fraunces',serif;
+    font-size:20px;
+    font-weight:500;
+    line-height:1.2;
+    margin-bottom:8px;
+  }
+  .desc{
+    font-size:13.5px;
+    color:var(--basalt-soft);
+    line-height:1.5;
+    margin-bottom:16px;
+    min-height:40px;
+  }
+  .tfoot{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    border-top:1px solid var(--stone-dark);
+    padding-top:14px;
+  }
+  .pfrom{
+    font-size:11.5px;
+    color:var(--basalt-soft);
+  }
+  .pnum{
+    font-family:'Fraunces',serif;
+    font-size:18px;
+    color:var(--basalt);
+  }
+  .stops{
+    font-size:12px;
+    color:var(--basalt-soft);
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="head">
+    <div class="eyebrow">TOURS &amp; PACKAGES</div>
+    <h1>Curated experiences</h1>
+    <div class="sub">Discover the heart of Armenia through our specialized language-inclusive routes — each one guided, private, and built around your pace.</div>
   </div>
 
-  <!-- Tour Info -->
-  <div class="p-5">
-    <span class="text-xs font-semibold tracking-wider text-gray-500 uppercase">{tour.label}</span>
-    <h3 class="text-lg font-bold text-gray-900 mt-1 mb-2 line-clamp-1">{tour.title}</h3>
-    <p class="text-sm text-gray-600 mb-4 line-clamp-2">{tour.desc}</p>
-    <a href={`/tours/${tour.slug}`} class="text-[#03adfc] text-sm font-semibold hover:underline">
-      View details &rarr;
-    </a>
-  </div>
+  <div class="grid" id="grid"></div>
 </div>
 
 <script>
-  const buttons = document.querySelectorAll('.nav-btn');
-  
-  buttons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const targetId = btn.getAttribute('data-target');
-      const carousel = document.getElementById(targetId);
-      
-      if (carousel) {
-        const slideWidth = carousel.clientWidth;
-        if (btn.classList.contains('next')) {
-          carousel.scrollBy({ left: slideWidth, behavior: 'smooth' });
-        } else {
-          carousel.scrollBy({ left: -slideWidth, behavior: 'smooth' });
-        }
-      }
-    });
-  });
+const tours = [
+  {
+    cat: 'DAY TOUR',
+    name: 'Garni & Geghard',
+    desc: 'A pagan temple and a monastery carved into the cliffs, back by evening.',
+    duration: 'Full day',
+    stops: '2 stops',
+    priceFrom: '18,000',
+    img: 'https://bberrium.github.io/Upupa-Travel/images/church.png'
+  },
+  {
+    cat: 'DAY TOUR',
+    name: 'Khor Virap & Noravank',
+    desc: 'The monastery under Ararat, then a canyon road to red-rock Noravank.',
+    duration: 'Full day',
+    stops: '2 stops',
+    priceFrom: '22,000',
+    img: 'https://bberrium.github.io/Upupa-Travel/images/hall.png'
+  },
+  {
+    cat: 'MULTI-DAY',
+    name: 'Tatev Expedition',
+    desc: "The Wings of Tatev cable car and Armenia's most remote monastery.",
+    duration: '2 days',
+    stops: '4 stops',
+    priceFrom: '45,000',
+    img: 'https://bberrium.github.io/Upupa-Travel/images/ani1.jpg'
+  },
+  {
+    cat: 'MULTI-DAY',
+    name: 'Classic Armenia',
+    desc: 'Yerevan, Lake Sevan, Dilijan forests, and the southern monasteries.',
+    duration: '4 days',
+    stops: '7 stops',
+    priceFrom: '96,000',
+    img: 'https://bberrium.github.io/Upupa-Travel/images/ani2.jpg'
+  },
+  {
+    cat: 'DAY TOUR',
+    name: 'Echmiadzin & Zvartnots',
+    desc: 'The seat of the Armenian church and the ruins of a 7th-century cathedral.',
+    duration: 'Half day',
+    stops: '2 stops',
+    priceFrom: '14,000',
+    img: 'https://bberrium.github.io/Upupa-Travel/images/cathedral.png'
+  },
+  {
+    cat: 'CUSTOM',
+    name: 'Build Your Own Route',
+    desc: "Tell us your dates and interests — we'll design a private itinerary.",
+    duration: 'Flexible',
+    stops: 'Custom',
+    priceFrom: 'Quote',
+    img: 'https://bberrium.github.io/Upupa-Travel/images/ani3.jpg'
+  },
+];
+
+const grid = document.getElementById('grid');
+tours.forEach(t => {
+  const card = document.createElement('div');
+  card.className = 'tcard';
+  card.innerHTML = `
+    <div class="imgwrap">
+      <img src="${t.img}" alt="${t.name}">
+      <div class="duration-tag">${t.duration}</div>
+      <div class="view-overlay"><div class="view-btn">View Details</div></div>
+    </div>
+    <div class="tbody">
+      <div class="cat">${t.cat}</div>
+      <div class="tname">${t.name}</div>
+      <div class="desc">${t.desc}</div>
+      <div class="tfoot">
+        <div>
+          <div class="pfrom">From</div>
+          <div class="pnum">${t.priceFrom}${t.priceFrom !== 'Quote' ? ' AMD' : ''}</div>
+        </div>
+        <div class="stops">${t.stops}</div>
+      </div>
+    </div>
+  `;
+  grid.appendChild(card);
+});
 </script>
 
-<style>
-  /* Hides the scrollbar but keeps functionality */
-  .hide-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-  .hide-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-</style>
+</body>
+</html>
