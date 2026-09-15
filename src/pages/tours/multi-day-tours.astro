@@ -1,0 +1,188 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { TOURS, priceFor, formatAMD } from "../../data/tours.js";
+
+const base = import.meta.env.BASE_URL;
+---
+
+<BaseLayout title="Multi-Day Tours — Upupa Travel" current="tours">
+  <!-- Page Header -->
+  <section class="bg-surface text-on-surface pt-32 pb-12 relative overflow-hidden border-b border-border-muted">
+    <div class="max-w-container-max mx-auto px-margin-desktop text-center">
+      <h1 class="text-4xl md:text-5xl font-display-lg font-bold mb-4 text-primary" style="font-family: 'Source Serif 4', serif;">Multi-Day Tours</h1>
+      <p class="text-on-surface-variant max-w-2xl mx-auto text-body-lg">Explore Armenia's heritage in depth over 2-4 days with coordinated stays.</p>
+    </div>
+  </section>
+
+  <!-- Tours Grid & Filters -->
+  <section class="py-section-padding px-margin-desktop max-w-container-max mx-auto">
+    <!-- Search / Filter Bar -->
+    <div class="flex flex-wrap gap-6 justify-center mb-12" id="tours-search">
+      <div class="bg-surface-container-low border border-border-muted rounded-lg p-6">
+        <label class="block text-label-md font-label-md text-primary uppercase mb-3">Number of people</label>
+        <div class="flex items-center gap-2">
+          <button type="button" id="ts-minus" class="w-9 h-9 border border-border-muted text-primary hover:bg-surface-container transition-colors" aria-label="Decrease">−</button>
+          <input id="ts-people" type="number" min="1" max="20" value="2" class="w-14 text-center border border-border-muted rounded p-2 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />
+          <button type="button" id="ts-plus" class="w-9 h-9 border border-border-muted text-primary hover:bg-surface-container transition-colors" aria-label="Increase">+</button>
+        </div>
+      </div>
+
+      <div class="bg-surface-container-low border border-border-muted rounded-lg p-6 min-w-[220px]">
+        <label class="block text-label-md font-label-md text-primary uppercase mb-3">Guide</label>
+        <select id="ts-guide-lang" class="border border-border-muted rounded p-2.5 w-full bg-white text-primary font-medium focus:ring-2 focus:ring-secondary focus:outline-none">
+          <option value="noGuide">No guide</option>
+          <option value="en">🇬🇧 English</option>
+          <option value="ru">🇷🇺 Russian</option>
+          <option value="am">🇦🇲 Armenian</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter" id="tours-grid"></div>
+  </section>
+</BaseLayout>
+
+<style is:global>
+  @keyframes price-pop {
+    from { opacity: 0.3; transform: scale(0.94); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  .price-pop {
+    animation: price-pop 0.35s ease-out;
+  }
+</style>
+
+<script>
+  import { TOURS, priceFor, formatAMD } from "../../data/tours.js";
+  const base = import.meta.env.BASE_URL;
+
+  const grid = document.getElementById("tours-grid");
+  const peopleInput = document.getElementById("ts-people");
+  const minusBtn = document.getElementById("ts-minus");
+  const plusBtn = document.getElementById("ts-plus");
+  const guideLangSelect = document.getElementById("ts-guide-lang");
+
+  let cardTimers = [];
+  function clearCardTimers() {
+    cardTimers.forEach((id) => clearInterval(id));
+    cardTimers = [];
+  }
+
+  function initCardSlideshow(card) {
+    const slides = Array.from(card.querySelectorAll(".card-slide"));
+    const dots = Array.from(card.querySelectorAll(".card-dot"));
+    if (slides.length === 0) return;
+
+    let idx = 0;
+    function show(next) {
+      slides[idx].classList.replace("opacity-100", "opacity-0");
+      dots[idx]?.classList.remove("w-6", "bg-white");
+      dots[idx]?.classList.add("w-1.5", "bg-white/50");
+      idx = next;
+      slides[idx].classList.replace("opacity-0", "opacity-100");
+      dots[idx]?.classList.remove("w-1.5", "bg-white/50");
+      dots[idx]?.classList.add("w-6", "bg-white");
+    }
+
+    if (slides.length <= 1) return;
+
+    const timer = setInterval(() => {
+      let next = (idx + 1) % slides.length;
+      show(next);
+    }, 4000);
+    cardTimers.push(timer);
+
+    dots.forEach((dot) => {
+      dot.addEventListener("click", () => {
+        clearInterval(timer);
+        show(parseInt(dot.dataset.index || "0", 10));
+      });
+    });
+  }
+
+  function render() {
+    const people = Math.max(1, Math.min(20, parseInt(peopleInput.value, 10) || 1));
+    const selectedOption = guideLangSelect.value;
+    const withGuide = selectedOption !== "noGuide";
+
+    // FILTER LOGIC FOR MULTI-DAY TOURS ONLY
+    const visible = TOURS.filter((t) => {
+      // Fallback to checking the label if you haven't added a category field yet
+      const isMultiDayTour = t.category === 'multi' || t.label === 'Multi-Day';
+      if (!isMultiDayTour) return false;
+
+      if (selectedOption !== "noGuide") {
+        if (!t.languages?.includes(selectedOption)) return false;
+      }
+      return true;
+    });
+
+    clearCardTimers();
+    if (!grid) return;
+    grid.innerHTML = "";
+
+    if (visible.length === 0) {
+      grid.innerHTML = `<p class="col-span-full text-center text-on-surface-variant py-8">No tours match those filters yet — try different options.</p>`;
+      return;
+    }
+
+    visible.forEach((t) => {
+      const total = priceFor(t.pricing, people, withGuide);
+      const personLabel = people === 1 ? "person" : "persons";
+      const priceLine = total ? `Price for ${people} ${personLabel}: ${formatAMD(total)}` : `Contact for price`;
+      const tourHref = `${base}tours/${t.slug}`;
+
+      let slidesHtml = "";
+      let dotsHtml = "";
+      if (t.images && t.images.length > 0) {
+        t.images.forEach((img, i) => {
+          slidesHtml += `<img alt="${t.title}" loading="lazy" class="card-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${i === 0 ? "opacity-100" : "opacity-0"}" src="${img}">`;
+        });
+        if (t.images.length > 1) {
+          t.images.forEach((_, i) => {
+            dotsHtml += `<span class="card-dot h-1.5 rounded-full cursor-pointer transition-all duration-500 ${i === 0 ? "w-6 bg-white" : "w-1.5 bg-white/50"}" data-index="${i}"></span>`;
+          });
+        }
+      }
+
+      const card = document.createElement("div");
+      card.className = "group bg-surface border border-border-muted rounded-lg overflow-hidden transition-all hover:shadow-lg hover:-translate-y-1 flex flex-col";
+      card.innerHTML = `
+        <div class="h-64 relative overflow-hidden bg-surface-container">
+          <div class="absolute top-4 left-4 z-20 pointer-events-none">
+            <span class="bg-secondary text-white text-caption px-3 py-1 rounded-full uppercase">${t.label || ''}</span>
+          </div>
+          <a href="${tourHref}" class="block w-full h-full group/slide" aria-label="View ${t.title} itinerary">
+            ${slidesHtml}
+            <div class="absolute inset-0 bg-black/0 group-hover/slide:bg-black/30 transition-colors duration-300 flex items-center justify-center z-10">
+              <span class="opacity-0 group-hover/slide:opacity-100 translate-y-2 group-hover/slide:translate-y-0 transition-all duration-300 bg-white text-primary font-label-md text-label-md px-5 py-2.5 rounded-full flex items-center gap-1.5 shadow-lg">
+                View Itinerary <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+              </span>
+            </div>
+          </a>
+          ${dotsHtml ? `<div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-20 pointer-events-auto">${dotsHtml}</div>` : ""}
+        </div>
+        <div class="p-6 flex flex-col flex-grow">
+          <a href="${tourHref}" class="inline-block">
+            <h3 class="font-headline-sm text-primary mb-2 group-hover:text-secondary transition-colors cursor-pointer">${t.title}</h3>
+          </a>
+          <p class="text-on-surface-variant text-body-md mb-4 flex-grow">${t.desc}</p>
+          <p class="text-primary font-label-md text-label-md price-pop">${priceLine}</p>
+        </div>
+      `;
+      grid.appendChild(card);
+      initCardSlideshow(card);
+    });
+  }
+
+  minusBtn?.addEventListener("click", () => {
+    if(peopleInput) { peopleInput.value = String(Math.max(1, parseInt(peopleInput.value, 10) - 1)); render(); }
+  });
+  plusBtn?.addEventListener("click", () => {
+    if(peopleInput) { peopleInput.value = String(Math.min(20, parseInt(peopleInput.value, 10) + 1)); render(); }
+  });
+  peopleInput?.addEventListener("input", render);
+  guideLangSelect?.addEventListener("change", render);
+
+  render();
+</script>

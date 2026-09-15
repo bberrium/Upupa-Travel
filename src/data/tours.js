@@ -13,6 +13,7 @@ export const TOURS = [
   {
     slug: "garni-geghard",
     label: "Day Tour",
+    category: "day",
     title: "Garni, Geghard & Symphony of Stones",
     desc: "Temple, cliffside monastery & basalt gorge in a day. Discover the pre-Christian roots and unique geology of Armenia.",
     images: [
@@ -40,6 +41,7 @@ export const TOURS = [
   {
     slug: "sevan-dilijan",
     label: "Day Tour",
+    category: "day",
     title: "Lake Sevan, Sevanavank, Dilijan, Goshavank, Haghartsin",
     desc: "Explore the 'Blue Pearl of Armenia' and discover medieval monasteries hidden deep within the lush forests of the Armenian Switzerland.",
     images: [
