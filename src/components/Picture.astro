@@ -1,0 +1,44 @@
+---
+// <img> with an automatic .webp source and explicit dimensions, so images
+// don't shift the layout while they load.
+import { image } from "../lib/images.js";
+
+interface Props {
+  src: string;
+  alt: string;
+  width?: number;
+  height?: number;
+  class?: string;
+  loading?: "eager" | "lazy";
+  fetchpriority?: "high" | "low" | "auto";
+  sizes?: string;
+}
+
+const {
+  src,
+  alt,
+  width = 1200,
+  height = 800,
+  class: className = "",
+  loading = "lazy",
+  fetchpriority = "auto",
+  sizes,
+} = Astro.props;
+
+const resolved = image(src);
+---
+
+<picture>
+  {resolved.webp && <source srcset={resolved.webp} type="image/webp" sizes={sizes} />}
+  <img
+    src={resolved.src}
+    alt={alt}
+    width={width}
+    height={height}
+    loading={loading}
+    fetchpriority={fetchpriority}
+    decoding={loading === "eager" ? "sync" : "async"}
+    class={className}
+    sizes={sizes}
+  />
+</picture>

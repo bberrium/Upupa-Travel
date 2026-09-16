@@ -1,19 +1,95 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import EnquiryForm from "../components/EnquiryForm.astro";
+import { SITE } from "../lib/site.js";
 
-const base = import.meta.env.BASE_URL;
+const vehicles = [
+  { name: "Comfort sedan", seats: "Up to 3 passengers", luggage: "2 large cases", icon: "directions_car" },
+  { name: "Minivan", seats: "Up to 6 passengers", luggage: "6 large cases", icon: "airport_shuttle" },
+  { name: "Minibus", seats: "Up to 14 passengers", luggage: "14 large cases", icon: "local_shipping" },
+  { name: "Sprinter", seats: "Up to 19 passengers", luggage: "Group luggage trailer on request", icon: "directions_bus" },
+];
+
+const routes = [
+  "Zvartnots Airport ⇄ Yerevan city centre",
+  "Yerevan ⇄ Dilijan / Lake Sevan",
+  "Yerevan ⇄ Goris / Tatev",
+  "Yerevan ⇄ Gyumri",
+  "Yerevan ⇄ Tbilisi (Georgia) border transfer",
+  "Point-to-point anywhere in Armenia",
+];
 ---
 
-<BaseLayout title="Private Transfers — Upupa Travel" current="tours" description="Private drivers and airport transfer services in Armenia.">
-  <section class="max-w-3xl mx-auto px-margin-mobile md:px-margin-desktop py-24 text-center">
-    <div class="text-secondary text-label-md font-label-md tracking-widest uppercase mb-2">Point to Point</div>
-    <h1 class="font-display-lg text-headline-md md:text-display-lg text-primary mb-6">Private Drivers & Airport Transfers</h1>
-    <p class="text-on-surface-variant text-body-lg mb-10">
-      Skip the taxi lines. Book a private driver for airport pickup, drop-off, or point-to-point travel
-      anywhere in Armenia — comfortable vehicles, fixed pricing, no surprises.
-    </p>
-    <a href={`${base}#contact`} class="inline-block bg-secondary text-white px-8 py-4 font-label-md text-label-md hover:bg-on-secondary-fixed-variant transition-all uppercase tracking-widest">
-      Request a Transfer
-    </a>
+<BaseLayout
+  title="Private Transfers & Airport Pickup in Armenia — Upupa Travel"
+  current="tours"
+  description="Private drivers and Zvartnots airport transfers across Armenia. Fixed prices agreed in advance, meet-and-greet on arrival, vehicles from sedan to 19-seat sprinter."
+>
+  <section class="border-b border-border-muted bg-surface-container-low/60 py-14 md:py-20">
+    <div class="container-page text-center">
+      <span class="eyebrow">Point to Point</span>
+      <h1 class="font-display text-display-lg-mobile font-display-lg text-balance text-primary md:text-display-lg">
+        Private drivers &amp; airport transfers
+      </h1>
+      <p class="mx-auto mt-4 max-w-2xl text-body-lg text-on-surface-variant">
+        Skip the taxi queue. A named driver, a fixed price agreed before you travel, and a vehicle
+        sized to your luggage.
+      </p>
+    </div>
+  </section>
+
+  <section class="section-y">
+    <div class="container-page grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-7">
+        <h2 class="section-title">Vehicles</h2>
+        <div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+          {vehicles.map((vehicle) => (
+            <div class="panel-muted p-5">
+              <span class="material-symbols-outlined text-[28px] text-secondary">{vehicle.icon}</span>
+              <h3 class="font-display mt-2 text-headline-sm font-headline-sm text-primary">{vehicle.name}</h3>
+              <p class="mt-1 text-body-md text-on-surface-variant">{vehicle.seats}</p>
+              <p class="text-caption font-caption text-on-surface-variant">{vehicle.luggage}</p>
+            </div>
+          ))}
+        </div>
+
+        <h2 class="section-title mt-14">Common routes</h2>
+        <ul class="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
+          {routes.map((route) => (
+            <li class="flex items-start gap-3 text-body-md text-on-surface-variant">
+              <span class="material-symbols-outlined text-[20px] text-secondary">alt_route</span>
+              {route}
+            </li>
+          ))}
+        </ul>
+
+        <h2 class="section-title mt-14">What you get</h2>
+        <ul class="mt-6 space-y-3">
+          {[
+            "A fixed total price quoted before you book — no meter, no surge",
+            "Meet-and-greet in arrivals with a name board, flight tracked for delays",
+            "Child seats on request at no extra cost",
+            "Driver contact details sent the day before",
+            "Payment in AMD cash, card or bank transfer",
+          ].map((item) => (
+            <li class="flex items-start gap-3">
+              <span class="material-symbols-outlined text-[20px] text-secondary">check_circle</span>
+              <span class="text-body-md text-on-surface-variant">{item}</span>
+            </li>
+          ))}
+        </ul>
+
+        <p class="mt-8 text-body-md text-on-surface-variant">
+          Transfer prices depend on distance and vehicle, so we quote each one individually. Send the
+          route and date and you'll have a price the same day — or message
+          <a class="text-secondary underline underline-offset-4" href={SITE.whatsapp} target="_blank" rel="noopener">WhatsApp {SITE.phoneDisplay}</a>
+          for anything last-minute.
+        </p>
+      </div>
+
+      <div class="lg:col-span-5" id="contact">
+        <EnquiryForm />
+      </div>
+    </div>
   </section>
 </BaseLayout>

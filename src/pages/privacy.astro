@@ -1,0 +1,76 @@
+---
+// TEMPLATE — accurate for the site as it currently behaves (enquiry form,
+// language preference in localStorage, Google Fonts). Update it the moment you
+// add analytics, a booking platform or a chat widget.
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { SITE } from "../lib/site.js";
+
+const updated = "15 September 2026";
+
+const sections = [
+  {
+    title: "What we collect",
+    body: [
+      "When you send an enquiry or a review we receive the name, contact details, tour, date and notes you type into the form. Nothing else is collected automatically about you as an individual.",
+      "Your language choice is stored in your own browser (localStorage) so the site opens in the same language next time. It never leaves your device.",
+    ],
+  },
+  {
+    title: "Why we use it",
+    body: [
+      "Only to reply to you, plan and run your tour, and keep a record of the booking. We do not sell or rent your details, and we do not add you to a mailing list unless you ask.",
+    ],
+  },
+  {
+    title: "Who else sees it",
+    body: [
+      "The guide and driver assigned to your tour, so they know who they are meeting and what you asked for.",
+      "The service that delivers our form submissions and our email provider, purely as a technical step.",
+      "Fonts are loaded from Google Fonts, which means Google receives your IP address as part of that request. If you prefer to avoid this we can self-host the fonts — ask us.",
+    ],
+  },
+  {
+    title: "How long we keep it",
+    body: [
+      "Enquiries that do not become bookings are deleted within 12 months. Booking records are kept as long as Armenian accounting rules require.",
+    ],
+  },
+  {
+    title: "Your choices",
+    body: [
+      `Write to ${SITE.email} at any time to see what we hold about you, correct it, or ask us to delete it. We reply within 30 days.`,
+    ],
+  },
+  {
+    title: "Cookies",
+    body: [
+      "This site sets no advertising or analytics cookies. The only browser storage used is the language preference described above.",
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Privacy Policy — Upupa Travel"
+  current="contact"
+  description="How Upupa Travel handles the personal information you send through the website."
+>
+  <article class="container-page max-w-3xl py-14 md:py-20">
+    <span class="eyebrow">Legal</span>
+    <h1 class="font-display text-display-lg-mobile font-display-lg text-primary">Privacy Policy</h1>
+    <p class="mt-3 text-caption font-caption uppercase tracking-wide text-on-surface-variant">
+      Last updated {updated}
+    </p>
+
+    <div class="mt-10 space-y-9">
+      {sections.map((section) => (
+        <section>
+          <h2 class="font-display text-headline-sm font-headline-sm text-primary">{section.title}</h2>
+          {section.body.map((paragraph) => (
+            <p class="mt-3 text-body-md text-on-surface-variant">{paragraph}</p>
+          ))}
+        </section>
+      ))}
+    </div>
+  </article>
+</BaseLayout>

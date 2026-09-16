@@ -1,0 +1,191 @@
+---
+// src/components/PricingCalculator.astro
+import { TOURS } from "../data/tours.js";
+---
+
+<div class="bg-surface-container-lowest border border-border-muted rounded-2xl shadow-card overflow-hidden max-w-3xl mx-auto w-full flex flex-col" id="tour-calculator">
+  <!-- Header -->
+  <div class="p-6 md:p-8 border-b border-border-muted bg-surface/50">
+    <span class="text-secondary font-label-md text-xs tracking-widest uppercase font-bold mb-2 block">TOUR PRICING</span>
+    <h2 class="text-3xl font-display-lg font-bold text-primary mb-2" style="font-family: 'Source Serif 4', serif;">Build your Armenia route</h2>
+    <p class="text-on-surface-variant text-body-md max-w-lg">Pick a tour, tell us how many are travelling, and see your price update instantly.</p>
+  </div>
+
+  <div class="p-6 md:p-8 space-y-8">
+    <!-- Tour Selection -->
+    <div>
+      <label class="block text-label-md font-label-md text-primary uppercase mb-4">Select Tour</label>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="calc-tours">
+        {TOURS.map((t, i) => (
+          <button type="button" class={`calc-tour-btn text-left p-4 rounded-xl border transition-all ${i === 0 ? 'border-secondary bg-secondary/5 ring-1 ring-secondary' : 'border-border-muted hover:border-primary/40 bg-surface'}`} data-id={t.slug}>
+            <div class="font-headline-sm text-primary font-bold leading-tight mb-1">{t.title}</div>
+            <div class="text-caption text-on-surface-variant">{t.duration || t.label}</div>
+          </button>
+        ))}
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+      <!-- Group Size -->
+      <div>
+        <label class="block text-label-md font-label-md text-primary uppercase mb-4">Group Size</label>
+        <div class="flex items-center gap-4">
+          <button type="button" id="calc-minus" class="w-11 h-11 flex items-center justify-center rounded-lg border border-border-muted text-primary hover:bg-surface-container transition-colors text-2xl">−</button>
+          <div class="text-3xl font-display-lg font-bold text-primary w-12 text-center" style="font-family: 'Source Serif 4', serif;" id="calc-count">2</div>
+          <button type="button" id="calc-plus" class="w-11 h-11 flex items-center justify-center rounded-lg border border-border-muted text-primary hover:bg-surface-container transition-colors text-2xl">+</button>
+          <div class="text-body-sm text-on-surface-variant">travellers</div>
+        </div>
+      </div>
+
+      <!-- Guide Option -->
+      <div>
+        <label class="block text-label-md font-label-md text-primary uppercase mb-4">Guide Service</label>
+        <select id="calc-guide" class="w-full border border-border-muted rounded-lg p-3 bg-white text-primary font-medium focus:ring-2 focus:ring-secondary focus:outline-none">
+          <option value="noGuide">No guide (Driver only)</option>
+          <option value="en">🇬🇧 English-speaking guide</option>
+          <option value="ru">🇷🇺 Russian-speaking guide</option>
+          <option value="am">🇦🇲 Armenian-speaking guide</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Price Panel -->
+  <div class="bg-primary text-white p-6 md:p-8 flex flex-col sm:flex-row sm:items-end justify-between gap-6 mt-auto border-t border-primary-light">
+    <div>
+      <div class="text-secondary-container text-sm font-medium mb-1 uppercase tracking-wide">Total for this group</div>
+      <div class="text-4xl md:text-5xl font-display-lg font-bold transition-opacity duration-200" id="calc-price" style="font-family: 'Source Serif 4', serif;">—</div>
+      <div class="text-white/60 text-caption mt-2" id="calc-note">Select options to see price</div>
+    </div>
+    <!-- Clicking this smooth-scrolls to the contact form! -->
+    <a href="#contact" class="bg-secondary hover:bg-secondary/90 text-white px-8 py-4 rounded-lg font-bold text-center transition-all hover:-translate-y-0.5 shadow-lg whitespace-nowrap flex items-center justify-center gap-2">
+      Request this tour <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+    </a>
+  </div>
+</div>
+
+<script>
+  import { TOURS, priceFor, formatAMD } from "../data/tours.js";
+
+  function initCalculator() {
+    const container = document.getElementById("tour-calculator");
+    if (!container) return;
+
+    const tourBtns = Array.from(container.querySelectorAll(".calc-tour-btn"));
+    const btnMinus = document.getElementById("calc-minus");
+    const btnPlus = document.getElementById("calc-plus");
+    const countDisplay = document.getElementById("calc-count");
+    const guideSelect = document.getElementById("calc-guide") as HTMLSelectElement;
+    const priceDisplay = document.getElementById("calc-price");
+    const noteDisplay = document.getElementById("calc-note");
+
+    let state = {
+      tourSlug: (tourBtns[0] as HTMLElement)?.dataset.id || "",
+      count: 2,
+      guide: "noGuide"
+    };
+
+    let currentPrice = 0; // Remembers the price so we can animate from it
+    let animationId: number;
+
+    // The "Casino" Rolling Number Function
+    function animateValue(element: HTMLElement, start: number, end: number, duration: number) {
+      if (start === end) {
+        element.textContent = formatAMD(end);
+        return;
+      }
+      
+      let startTime: number | null = null;
+      if (animationId) cancelAnimationFrame(animationId);
+
+      const step = (timestamp: number) => {
+        if (!startTime) startTime = timestamp;
+        // Calculate how far along the animation is (0 to 1)
+        const progress = Math.min((timestamp - startTime) / duration, 1);
+        
+        // Easing function makes it start fast and slow down at the end like a wheel
+        const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+        const current = Math.floor(start + (end - start) * easeOutQuart);
+        
+        element.textContent = formatAMD(current);
+        
+        if (progress < 1) {
+          animationId = requestAnimationFrame(step);
+        } else {
+          // Snap to final exact number at the end
+          element.textContent = formatAMD(end);
+        }
+      };
+      
+      animationId = requestAnimationFrame(step);
+    }
+
+    function updatePrice() {
+      const selectedTour = TOURS.find(t => t.slug === state.tourSlug);
+      if (!selectedTour) return;
+
+      const withGuide = state.guide !== "noGuide";
+      const total = priceFor(selectedTour.pricing, state.count, withGuide);
+
+      if (countDisplay) countDisplay.textContent = state.count.toString();
+      
+      if (priceDisplay && noteDisplay) {
+        if (total) {
+          // If it's the first load, pretend it counted up from a lower number for fun
+          const startVal = currentPrice === 0 ? Math.max(0, total - 20000) : currentPrice;
+          
+          animateValue(priceDisplay, startVal, total, 500); // 500ms duration
+          currentPrice = total;
+
+          const guideText = withGuide ? "With guide" : "Driver only";
+          noteDisplay.textContent = `${state.count} travellers · ${guideText}`;
+        } else {
+          priceDisplay.textContent = "Contact us";
+          noteDisplay.textContent = "Custom pricing required for this group size";
+          currentPrice = 0;
+        }
+      }
+    }
+
+    // Event Listeners
+    tourBtns.forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        const target = e.currentTarget as HTMLElement;
+        state.tourSlug = target.dataset.id || "";
+        
+        tourBtns.forEach(b => {
+          b.classList.remove("border-secondary", "bg-secondary/5", "ring-1", "ring-secondary");
+          b.classList.add("border-border-muted", "bg-surface");
+        });
+        target.classList.remove("border-border-muted", "bg-surface");
+        target.classList.add("border-secondary", "bg-secondary/5", "ring-1", "ring-secondary");
+        
+        updatePrice();
+      });
+    });
+
+    if (btnMinus) {
+      btnMinus.addEventListener("click", () => {
+        if (state.count > 1) { state.count--; updatePrice(); }
+      });
+    }
+
+    if (btnPlus) {
+      btnPlus.addEventListener("click", () => {
+        if (state.count < 20) { state.count++; updatePrice(); }
+      });
+    }
+
+    if (guideSelect) {
+      guideSelect.addEventListener("change", (e) => {
+        state.guide = (e.target as HTMLSelectElement).value;
+        updatePrice();
+      });
+    }
+
+    // Initial render on load
+    updatePrice();
+  }
+
+  initCalculator();
+</script>

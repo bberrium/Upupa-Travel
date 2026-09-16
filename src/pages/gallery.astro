@@ -1,82 +1,97 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { PHOTOS } from "../data/photos";
+import { PHOTOS } from "../data/photos.js";
+import { image } from "../lib/images.js";
 
-const base = import.meta.env.BASE_URL;
+// Resolved at build time so paths work under the site base and .webp is used
+// where available.
+const photos = PHOTOS.map((photo) => ({ ...photo, ...image(photo.src) }));
+
+const filters = [
+  { key: "all", label: "All" },
+  { key: "landscapes", label: "Landscapes" },
+  { key: "monasteries", label: "Monasteries" },
+  { key: "cities", label: "Cities" },
+  { key: "culture", label: "Culture" },
+];
 ---
 
-<BaseLayout title="Gallery — Upupa Travel" current="gallery" description="Photos from Upupa Travel's private tours across Armenia — monasteries, mountains, lakes and local culture.">
-  <header class="text-center max-w-3xl mx-auto pt-16 pb-10 px-margin-mobile md:px-margin-desktop">
-    <div class="text-secondary text-label-md font-label-md tracking-widest uppercase mb-2">Photo Gallery</div>
-    <h1 class="font-display-lg text-headline-md md:text-display-lg text-primary">Armenia Through Our Lens</h1>
-    <div class="w-9 h-0.5 bg-secondary mx-auto my-5 rounded-full"></div>
-    <p class="text-on-surface-variant text-body-md">Monasteries carved into cliffs, alpine lakes, vineyards, and the peaks of the Caucasus — moments from our tours across Armenia.</p>
+<BaseLayout
+  title="Gallery — Upupa Travel"
+  current="gallery"
+  description="Photos from Upupa Travel's private tours across Armenia — monasteries, mountains, lakes and local culture."
+>
+  <header class="container-page max-w-3xl pb-8 pt-14 text-center">
+    <span class="eyebrow">Photo Gallery</span>
+    <h1 class="font-display text-display-lg-mobile font-display-lg text-balance text-primary md:text-display-lg">
+      Armenia Through Our Lens
+    </h1>
+    <div class="mx-auto my-5 h-1 w-12 rounded-full bg-secondary"></div>
+    <p class="text-body-md text-on-surface-variant">
+      Monasteries carved into cliffs, alpine lakes, vineyards and the peaks of the Caucasus — moments
+      from our tours across Armenia.
+    </p>
   </header>
 
-  <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pb-8 flex flex-wrap gap-2 justify-center" id="g-filters">
-    <button class="g-chip active" data-cat="all">All</button>
-    <button class="g-chip" data-cat="landscapes">Landscapes</button>
-    <button class="g-chip" data-cat="monasteries">Monasteries</button>
-    <button class="g-chip" data-cat="cities">Cities</button>
-    <button class="g-chip" data-cat="culture">Culture</button>
+  <div class="container-page flex flex-wrap justify-center gap-2 pb-8" id="g-filters" role="group" aria-label="Filter photos">
+    {filters.map((filter, index) => (
+      <button type="button" class="chip" data-cat={filter.key} aria-pressed={index === 0 ? "true" : "false"}>
+        {filter.label}
+      </button>
+    ))}
   </div>
 
-  <section class="max-w-container-max mx-auto px-4 pb-24 g-grid" id="g-grid"></section>
+  <section class="container-page g-grid pb-24" id="g-grid">
+    {photos.map((photo, index) => (
+      <button type="button" class="g-item" data-cat={photo.cat} data-index={index} aria-label={`Open ${photo.cap}`}>
+        <picture>
+          {photo.webp && <source srcset={photo.webp} type="image/webp" />}
+          <img src={photo.src} alt={photo.cap} width="900" height="600" loading="lazy" decoding="async" />
+        </picture>
+        <span class="g-cap">{photo.cap}</span>
+      </button>
+    ))}
+  </section>
 
-  <div id="lightbox">
-    <button class="lb-close" aria-label="Close">×</button>
-    <button class="lb-prev" aria-label="Previous">‹</button>
+  <!-- Lightbox -->
+  <div id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer" hidden>
+    <button class="lb-btn lb-close" type="button" aria-label="Close">×</button>
+    <button class="lb-btn lb-prev" type="button" aria-label="Previous photo">‹</button>
     <img id="lb-img" src="" alt="" />
-    <button class="lb-next" aria-label="Next">›</button>
-    <div class="lb-cap" id="lb-cap"></div>
+    <button class="lb-btn lb-next" type="button" aria-label="Next photo">›</button>
+    <p class="lb-cap" id="lb-cap"></p>
   </div>
 </BaseLayout>
 
 <style>
-  .g-chip {
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    color: #003376;
-    background: #fff;
-    border: 1px solid #e2e8f0;
-    border-radius: 999px;
-    padding: 0.5rem 1.05rem;
-    transition: all 0.2s;
-    cursor: pointer;
-  }
-  .g-chip:hover {
-    border-color: #003376;
-  }
-  .g-chip.active {
-    background: #fe7935;
-    border-color: #fe7935;
-    color: #fff;
-  }
-
   .g-grid {
     columns: 3 260px;
     column-gap: 0.9rem;
   }
-  :global(.g-item) {
+  .g-item {
+    display: block;
+    width: 100%;
     break-inside: avoid;
     margin: 0 0 0.9rem;
-    border-radius: 10px;
+    border-radius: 0.75rem;
     overflow: hidden;
     position: relative;
     cursor: pointer;
-    background: #eef4fd;
+    background: theme("colors.surface-container");
+    padding: 0;
+    border: 0;
+    text-align: left;
   }
-  :global(.g-item img) {
+  .g-item img {
     width: 100%;
     height: auto;
     display: block;
     transition: transform 0.5s ease;
   }
-  :global(.g-item:hover img) {
-    transform: scale(1.05);
+  .g-item:hover img {
+    transform: scale(1.04);
   }
-  :global(.g-item::after) {
+  .g-item::after {
     content: "";
     position: absolute;
     inset: 0;
@@ -84,57 +99,57 @@ const base = import.meta.env.BASE_URL;
     opacity: 0;
     transition: opacity 0.3s;
   }
-  :global(.g-item:hover::after) {
+  .g-item:hover::after,
+  .g-item:focus-visible::after {
     opacity: 1;
   }
-  :global(.g-cap) {
+  .g-cap {
     position: absolute;
     left: 0;
     right: 0;
     bottom: 0;
     padding: 0.85rem 1rem;
     color: #fff;
-    font-family: "Source Serif 4", serif;
+    font-family: "Source Serif 4", ui-serif, Georgia, serif;
     font-size: 0.95rem;
     opacity: 0;
     transform: translateY(6px);
     transition: opacity 0.3s, transform 0.3s;
     z-index: 1;
   }
-  :global(.g-item:hover .g-cap) {
+  .g-item:hover .g-cap,
+  .g-item:focus-visible .g-cap {
     opacity: 1;
     transform: none;
   }
 
   #lightbox {
-    display: none;
     position: fixed;
     inset: 0;
     z-index: 500;
-    background: rgba(0, 0, 0, 0.9);
+    background: rgba(0, 0, 0, 0.92);
     align-items: center;
     justify-content: center;
     padding: 2rem;
+    display: none;
   }
   #lightbox.open {
     display: flex;
   }
   #lightbox img {
     max-width: 92vw;
-    max-height: 88vh;
-    border-radius: 8px;
+    max-height: 84vh;
+    border-radius: 0.5rem;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
   }
-  #lightbox .lb-close,
-  #lightbox .lb-prev,
-  #lightbox .lb-next {
+  .lb-btn {
     position: absolute;
     background: rgba(255, 255, 255, 0.12);
     border: 1px solid rgba(255, 255, 255, 0.25);
     color: #fff;
     width: 44px;
     height: 44px;
-    border-radius: 50%;
+    border-radius: 9999px;
     font-size: 1.3rem;
     display: flex;
     align-items: center;
@@ -142,22 +157,20 @@ const base = import.meta.env.BASE_URL;
     transition: background 0.2s;
     cursor: pointer;
   }
-  #lightbox .lb-close:hover,
-  #lightbox .lb-prev:hover,
-  #lightbox .lb-next:hover {
+  .lb-btn:hover {
     background: rgba(255, 255, 255, 0.24);
   }
-  #lightbox .lb-close {
+  .lb-close {
     top: 1.5rem;
     right: 1.5rem;
   }
-  #lightbox .lb-prev {
-    left: 1.5rem;
+  .lb-prev {
+    left: 1rem;
     top: 50%;
     transform: translateY(-50%);
   }
-  #lightbox .lb-next {
-    right: 1.5rem;
+  .lb-next {
+    right: 1rem;
     top: 50%;
     transform: translateY(-50%);
   }
@@ -171,74 +184,78 @@ const base = import.meta.env.BASE_URL;
     font-size: 0.8rem;
     letter-spacing: 0.05em;
   }
+  @media (max-width: 640px) {
+    .g-grid {
+      columns: 2 150px;
+    }
+  }
 </style>
 
-<script define:vars={{ PHOTOS, base }}>
-  const grid = document.getElementById("g-grid");
-  let visible = PHOTOS.slice();
+<script>
+  const items = Array.from(document.querySelectorAll<HTMLElement>(".g-item"));
+  const chips = Array.from(document.querySelectorAll<HTMLElement>(".chip"));
+  const lightbox = document.getElementById("lightbox") as HTMLElement | null;
+  const lightboxImg = document.getElementById("lb-img") as HTMLImageElement | null;
+  const lightboxCap = document.getElementById("lb-cap");
 
-  function resolveSrc(src) {
-    // Absolute URLs (Unsplash etc.) pass through untouched; local paths get the base prefix.
-    if (/^https?:\/\//.test(src)) return src;
-    return base + src.replace(/^\//, "");
-  }
+  let visible = items.slice();
+  let index = 0;
+  let lastFocused: HTMLElement | null = null;
 
-  function render() {
-    grid.innerHTML = "";
-    visible.forEach((p, i) => {
-      const el = document.createElement("div");
-      el.className = "g-item";
-      el.dataset.idx = i;
-      el.innerHTML = `<img src="${resolveSrc(p.src)}" alt="${p.cap}" loading="lazy"/><div class="g-cap">${p.cap}</div>`;
-      el.addEventListener("click", () => openLB(i));
-      grid.appendChild(el);
-    });
-  }
-
-  document.querySelectorAll(".g-chip").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      document.querySelectorAll(".g-chip").forEach((b) => b.classList.remove("active"));
-      btn.classList.add("active");
-      const cat = btn.dataset.cat;
-      visible = cat === "all" ? PHOTOS.slice() : PHOTOS.filter((p) => p.cat === cat);
-      render();
+  chips.forEach((chip) => {
+    chip.addEventListener("click", () => {
+      chips.forEach((other) => other.setAttribute("aria-pressed", String(other === chip)));
+      const category = chip.dataset.cat;
+      items.forEach((item) => {
+        const match = category === "all" || item.dataset.cat === category;
+        item.classList.toggle("hidden", !match);
+      });
+      visible = items.filter((item) => !item.classList.contains("hidden"));
     });
   });
 
-  let lbIdx = 0;
-  const lb = document.getElementById("lightbox");
-  const lbImg = document.getElementById("lb-img");
-  const lbCap = document.getElementById("lb-cap");
-  function openLB(i) {
-    lbIdx = i;
-    showLB();
-    lb.classList.add("open");
+  function show() {
+    const item = visible[index];
+    const img = item?.querySelector("img");
+    if (!img || !lightboxImg) return;
+    lightboxImg.src = img.currentSrc || img.src;
+    lightboxImg.alt = img.alt;
+    if (lightboxCap) lightboxCap.textContent = img.alt;
   }
-  function closeLB() {
-    lb.classList.remove("open");
-  }
-  function stepLB(d) {
-    lbIdx = (lbIdx + d + visible.length) % visible.length;
-    showLB();
-  }
-  function showLB() {
-    const p = visible[lbIdx];
-    lbImg.src = resolveSrc(p.src);
-    lbImg.alt = p.cap;
-    lbCap.textContent = p.cap;
-  }
-  lb.addEventListener("click", (e) => {
-    if (e.target === lb) closeLB();
-  });
-  document.querySelector(".lb-close").addEventListener("click", closeLB);
-  document.querySelector(".lb-prev").addEventListener("click", () => stepLB(-1));
-  document.querySelector(".lb-next").addEventListener("click", () => stepLB(1));
-  document.addEventListener("keydown", (e) => {
-    if (!lb.classList.contains("open")) return;
-    if (e.key === "Escape") closeLB();
-    if (e.key === "ArrowLeft") stepLB(-1);
-    if (e.key === "ArrowRight") stepLB(1);
-  });
 
-  render();
+  function open(item: HTMLElement) {
+    index = visible.indexOf(item);
+    lastFocused = item;
+    show();
+    lightbox?.removeAttribute("hidden");
+    lightbox?.classList.add("open");
+    (lightbox?.querySelector(".lb-close") as HTMLElement | null)?.focus();
+  }
+
+  function close() {
+    lightbox?.classList.remove("open");
+    lightbox?.setAttribute("hidden", "");
+    lastFocused?.focus();
+  }
+
+  function step(delta: number) {
+    if (!visible.length) return;
+    index = (index + delta + visible.length) % visible.length;
+    show();
+  }
+
+  items.forEach((item) => item.addEventListener("click", () => open(item)));
+  lightbox?.addEventListener("click", (event) => {
+    if (event.target === lightbox) close();
+  });
+  lightbox?.querySelector(".lb-close")?.addEventListener("click", close);
+  lightbox?.querySelector(".lb-prev")?.addEventListener("click", () => step(-1));
+  lightbox?.querySelector(".lb-next")?.addEventListener("click", () => step(1));
+
+  document.addEventListener("keydown", (event) => {
+    if (!lightbox?.classList.contains("open")) return;
+    if (event.key === "Escape") close();
+    if (event.key === "ArrowLeft") step(-1);
+    if (event.key === "ArrowRight") step(1);
+  });
 </script>

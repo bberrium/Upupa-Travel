@@ -7,15 +7,21 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "images:fetch": "node scripts/fetch-images.mjs",
+    "images:optimize": "node scripts/optimize-images.mjs",
+    "check": "astro check",
+    "dev:mobile": "astro dev --host"
   },
   "dependencies": {
     "astro": "^5.0.0"
   },
   "devDependencies": {
+    "@astrojs/sitemap": "^3.7.4",
     "@astrojs/tailwind": "^6.0.2",
     "autoprefixer": "^10.5.4",
     "postcss": "^8.5.26",
-    "tailwindcss": "^3.4.1"
+    "tailwindcss": "^3.4.1",
+    "sharp": "^0.34.0"
   }
 }

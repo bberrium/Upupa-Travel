@@ -1,16 +1,75 @@
-<footer class="full-width bottom-0 bg-primary text-on-primary">
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-stack-lg w-full px-margin-desktop py-12 max-w-container-max mx-auto border-t border-white/10">
-    <div>
-      <h2 class="text-headline-md font-headline-md text-on-primary mb-4" style="font-family: 'Source Serif 4', serif;">UPUPA TRAVEL</h2>
-      <p class="text-white/60 max-w-sm" data-t="footer_desc">Crafting premium, language-rich experiences across the Armenian highlands since our inception.</p>
+---
+import Logo from "./Logo.astro";
+import { SITE, SOCIAL_LINKS } from "../lib/site.js";
+
+const base = import.meta.env.BASE_URL;
+const year = new Date().getFullYear();
+---
+
+<footer class="bg-primary text-on-primary">
+  <div class="container-page grid grid-cols-1 gap-stack-lg py-14 md:grid-cols-3">
+    <div class="md:col-span-1">
+      <Logo href={base} size="h-14" variant="footer" />
+      <div class="h-4"></div>
+      <p class="max-w-sm text-white/70" data-t="footer_desc">
+        Private, language-rich journeys across the Armenian highlands — planned around you and led by
+        local guides.
+      </p>
     </div>
-    <div class="flex flex-col md:items-end gap-stack-md">
-      <div class="flex gap-stack-lg flex-wrap">
-        <a class="text-label-md font-label-md text-primary-fixed-dim/80 hover:text-white transition-colors underline-offset-4 hover:underline" href="#">Instagram</a>
-        <a class="text-label-md font-label-md text-primary-fixed-dim/80 hover:text-white transition-colors underline-offset-4 hover:underline" href="#">TripAdvisor</a>
-        <a class="text-label-md font-label-md text-primary-fixed-dim/80 hover:text-white transition-colors underline-offset-4 hover:underline" href="#">Facebook</a>
-        <a class="text-label-md font-label-md text-primary-fixed-dim/80 hover:text-white transition-colors underline-offset-4 hover:underline" data-t="footer_privacy" href="#">Privacy Policy</a>
-        <a class="text-label-md font-label-md text-primary-fixed-dim/80 hover:text-white transition-colors underline-offset-4 hover:underline" data-t="footer_terms" href="#">Terms of Service</a>
+
+    <div>
+      <h3 class="mb-4 text-label-md font-label-md uppercase tracking-widest text-white/60">Explore</h3>
+      <ul class="space-y-2.5">
+        <li><a class="text-white/80 transition-colors hover:text-white" href={`${base}tours/day-tours`}>Day Tours</a></li>
+        <li><a class="text-white/80 transition-colors hover:text-white" href={`${base}tours/multi-day-tours`}>Multi-Day Tours</a></li>
+        <li><a class="text-white/80 transition-colors hover:text-white" href={`${base}custom-tour`}>Custom Tours</a></li>
+        <li><a class="text-white/80 transition-colors hover:text-white" href={`${base}private-transfer`}>Private Transfers</a></li>
+        <li><a class="text-white/80 transition-colors hover:text-white" href={`${base}gallery`}>Gallery</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h3 class="mb-4 text-label-md font-label-md uppercase tracking-widest text-white/60">Contact</h3>
+      <ul class="space-y-2.5">
+        <li><a class="text-white/80 transition-colors hover:text-white" href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
+        <li>
+          <a
+            class="inline-flex items-center gap-2 text-white/80 transition-colors hover:text-white"
+            href={SITE.whatsapp}
+            target="_blank"
+            rel="noopener"
+          >
+            <span class="material-symbols-outlined text-[18px]">chat</span>
+            WhatsApp {SITE.phoneDisplay}
+          </a>
+        </li>
+        <li><a class="text-white/80 transition-colors hover:text-white" href={`tel:${SITE.phoneE164}`}>Call {SITE.phoneDisplay}</a></li>
+        <li class="pt-1 text-white/60">{SITE.city}, Armenia</li>
+      </ul>
+
+      {SOCIAL_LINKS.length > 0 && (
+        <div class="mt-5 flex flex-wrap gap-4">
+          {SOCIAL_LINKS.map((link) => (
+            <a
+              class="text-label-md font-label-md text-white/80 underline-offset-4 transition-colors hover:text-white hover:underline"
+              href={link.href}
+              target="_blank"
+              rel="noopener"
+            >
+              {link.label}
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  </div>
+
+  <div class="border-t border-white/10">
+    <div class="container-page flex flex-col gap-3 py-5 text-caption font-caption text-white/60 sm:flex-row sm:items-center sm:justify-between">
+      <p>© {year} {SITE.legalName}. All rights reserved.</p>
+      <div class="flex gap-5">
+        <a class="underline-offset-4 transition-colors hover:text-white hover:underline" data-t="footer_privacy" href={`${base}privacy`}>Privacy Policy</a>
+        <a class="underline-offset-4 transition-colors hover:text-white hover:underline" data-t="footer_terms" href={`${base}terms`}>Terms & Booking Conditions</a>
       </div>
     </div>
   </div>

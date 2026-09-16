@@ -1,0 +1,107 @@
+---
+// Group size + guide language search, and the results grid.
+//
+// This used to be copy-pasted into index.astro, day-tours.astro and
+// multi-day-tours.astro — three near-identical copies that drifted apart.
+// One component now serves all three.
+import TourCard from "./TourCard.astro";
+import { TOURS } from "../data/tours.js";
+
+interface Props {
+  /** "day" | "multi" | undefined (all) */
+  category?: string;
+  emptyMessage?: string;
+}
+const { category, emptyMessage = "No tours match those filters yet — try different options." } = Astro.props;
+
+const tours = category ? TOURS.filter((t) => t.category === category) : TOURS;
+---
+
+<div class="mb-10 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:justify-center" data-tour-search>
+  <div class="panel-muted p-5 sm:p-6">
+    <label class="field-label text-primary" for="ts-people">Number of people</label>
+    <div class="flex items-center gap-2">
+      <button type="button" id="ts-minus" class="h-10 w-10 rounded-lg border border-border-muted text-primary transition-colors hover:bg-surface-container" aria-label="One fewer person">−</button>
+      <input
+        id="ts-people"
+        name="people"
+        type="number"
+        inputmode="numeric"
+        min="1"
+        max="20"
+        value="2"
+        class="field w-16 px-0 text-center [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+      />
+      <button type="button" id="ts-plus" class="h-10 w-10 rounded-lg border border-border-muted text-primary transition-colors hover:bg-surface-container" aria-label="One more person">+</button>
+    </div>
+  </div>
+
+  <div class="panel-muted p-5 sm:p-6 sm:min-w-[240px]">
+    <label class="field-label text-primary" for="ts-guide-lang">Guide</label>
+    <select id="ts-guide-lang" name="guide" class="field">
+      <option value="noGuide">No guide</option>
+      <option value="en">English-speaking guide</option>
+      <option value="ru">Russian-speaking guide</option>
+      <option value="am">Armenian-speaking guide</option>
+    </select>
+  </div>
+</div>
+
+<div class="grid grid-cols-1 gap-gutter md:grid-cols-2 lg:grid-cols-3" id="tours-grid">
+  {tours.map((tour, i) => <TourCard tour={tour} eager={i === 0} />)}
+</div>
+
+<p class="hidden py-10 text-center text-on-surface-variant" id="tours-empty">{emptyMessage}</p>
+
+<script>
+  import { priceFor, formatAMD, approxUSD } from "../data/tours.js";
+
+  const peopleInput = document.getElementById("ts-people") as HTMLInputElement | null;
+  const guideSelect = document.getElementById("ts-guide-lang") as HTMLSelectElement | null;
+  const emptyNote = document.getElementById("tours-empty");
+  const cards = Array.from(document.querySelectorAll<HTMLElement>("[data-tour-card]"));
+
+  if (peopleInput && guideSelect && cards.length) {
+    function update() {
+      const people = Math.max(1, Math.min(20, parseInt(peopleInput!.value, 10) || 1));
+      const selected = guideSelect!.value;
+      const withGuide = selected !== "noGuide";
+      let shown = 0;
+
+      cards.forEach((card) => {
+        const languages = (card.dataset.languages || "").split(",").filter(Boolean);
+        const matches = !withGuide || languages.includes(selected);
+        card.classList.toggle("hidden", !matches);
+        if (!matches) return;
+        shown += 1;
+
+        const pricing = JSON.parse(card.dataset.pricing || "null");
+        const total = priceFor(pricing, people, withGuide);
+        const label = card.querySelector("[data-price-label]");
+        const value = card.querySelector("[data-price-value]");
+        const usd = card.querySelector("[data-price-usd]");
+
+        if (label) label.textContent = `Total for ${people} ${people === 1 ? "person" : "persons"}`;
+        if (value) value.textContent = total ? formatAMD(total) : "Contact for price";
+        if (usd) {
+          usd.textContent = total ? `${approxUSD(total)} approx.` : "";
+          usd.classList.toggle("hidden", !total);
+        }
+      });
+
+      emptyNote?.classList.toggle("hidden", shown > 0);
+    }
+
+    document.getElementById("ts-minus")?.addEventListener("click", () => {
+      peopleInput.value = String(Math.max(1, (parseInt(peopleInput.value, 10) || 1) - 1));
+      update();
+    });
+    document.getElementById("ts-plus")?.addEventListener("click", () => {
+      peopleInput.value = String(Math.min(20, (parseInt(peopleInput.value, 10) || 1) + 1));
+      update();
+    });
+    peopleInput.addEventListener("input", update);
+    guideSelect.addEventListener("change", update);
+    update();
+  }
+</script>

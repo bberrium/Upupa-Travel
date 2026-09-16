@@ -1,257 +1,149 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Upupa Travel — Tours & Packages</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&display=swap');
+---
+// Server-rendered tour card. Rendering on the server (instead of building the
+// markup in a client script) means the tours are in the HTML: search engines
+// index them, and they show up even if JavaScript fails.
+import Picture from "./Picture.astro";
+import { priceFor, formatAMD, approxUSD } from "../data/tours.js";
 
-  :root{
-    --stone:#F1EBE1;
-    --stone-dark:#E3D9C8;
-    --basalt:#241F1C;
-    --basalt-soft:#4A4038;
-    --pomegranate:#9C3B2C;
-    --pomegranate-deep:#7A2C20;
-    --apricot:#D4972E;
-  }
-  *{box-sizing:border-box;}
-  body{
-    margin:0;
-    font-family:'Manrope',sans-serif;
-    background:var(--stone);
-    color:var(--basalt);
-    padding:56px 20px 70px;
-  }
-  .wrap{max-width:1040px;margin:0 auto;}
+interface Props {
+  tour: any;
+  eager?: boolean;
+}
+const { tour, eager = false } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const href = `${base}tours/${tour.slug}`;
 
-  .head{
-    max-width:52ch;
-    margin-bottom:40px;
-  }
-  .eyebrow{
-    font-size:13px;
-    color:var(--pomegranate);
-    font-weight:600;
-  }
-  h1{
-    font-family:'Fraunces',serif;
-    font-weight:500;
-    font-size:34px;
-    margin:8px 0 10px;
-    line-height:1.15;
-  }
-  .sub{
-    font-size:15.5px;
-    color:var(--basalt-soft);
-    line-height:1.55;
-  }
+// Rendered price is the no-guide price for 2 people; the client script updates
+// it as soon as the visitor changes the search controls.
+const initial = priceFor(tour.pricing, 2, false);
+---
 
-  .grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:22px;
-  }
-  @media (max-width:860px){ .grid{grid-template-columns:1fr 1fr;} }
-  @media (max-width:600px){ .grid{grid-template-columns:1fr;} }
+<article
+  class="group flex flex-col overflow-hidden rounded-xl border border-border-muted bg-surface-container-lowest shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover motion-reduce:hover:translate-y-0"
+  data-tour-card
+  data-slug={tour.slug}
+  data-category={tour.category}
+  data-languages={(tour.languages || []).join(",")}
+  data-pricing={JSON.stringify(tour.pricing)}
+>
+  <a href={href} class="relative block h-56 overflow-hidden bg-surface-container sm:h-64 group/slide" aria-label={`View the ${tour.title} itinerary`}>
+    
+    {tour.images?.map((img: string, index: number) => (
+      <div class={`card-slide absolute inset-0 h-full w-full transition-opacity duration-700 ${index === 0 ? "opacity-100 z-10" : "opacity-0 z-0"}`}>
+        <Picture
+          src={img}
+          alt={tour.title}
+          width={800}
+          height={600}
+          loading={eager && index === 0 ? "eager" : "lazy"}
+          class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105 motion-reduce:transform-none"
+          sizes="(max-width: 768px) 100vw, 400px"
+        />
+      </div>
+    ))}
 
-  .tcard{
-    background:#fff;
-    border:1px solid var(--stone-dark);
-    overflow:hidden;
-    cursor:pointer;
-    position:relative;
-    transition:border-color .2s ease;
-  }
-  .tcard:hover{border-color:var(--basalt-soft);}
+    <span class="absolute left-4 top-4 z-20 rounded-full bg-secondary px-3 py-1 text-caption font-caption uppercase tracking-wide text-white">
+      {tour.label}
+    </span>
+    
+    {tour.images && tour.images.length > 1 && (
+      <div class="absolute bottom-3 left-1/2 z-30 flex -translate-x-1/2 gap-1.5 pointer-events-auto">
+        {tour.images.map((_: any, index: number) => (
+          <button type="button" class={`card-dot h-1.5 rounded-full transition-all duration-500 ${index === 0 ? "w-6 bg-white" : "w-1.5 bg-white/50"}`} data-index={index} aria-label={`Slide ${index + 1}`}></button>
+        ))}
+      </div>
+    )}
 
-  .tcard .imgwrap{
-    position:relative;
-    height:210px;
-    overflow:hidden;
-    background:var(--basalt);
-  }
-  .tcard .imgwrap img{
-    width:100%;height:100%;object-fit:cover;
-    display:block;
-    transition:transform .5s ease;
-  }
-  .tcard:hover .imgwrap img{transform:scale(1.06);}
+    <span class="pointer-events-none absolute inset-0 z-20 bg-gradient-to-t from-black/45 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"></span>
+  </a>
 
-  .duration-tag{
-    position:absolute;
-    top:12px;left:12px;
-    background:rgba(36,31,28,0.82);
-    color:var(--stone);
-    font-size:12px;
-    font-weight:600;
-    padding:5px 10px;
-    letter-spacing:0.01em;
-  }
+  <div class="flex flex-grow flex-col p-6">
+    <div class="mb-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-caption font-caption uppercase tracking-wide text-on-surface-variant">
+      {tour.duration && (
+        <span class="inline-flex items-center gap-1">
+          <span class="material-symbols-outlined text-[15px]">schedule</span>{tour.duration}
+        </span>
+      )}
+      {tour.region && (
+        <span class="inline-flex items-center gap-1">
+          <span class="material-symbols-outlined text-[15px]">location_on</span>from {tour.region}
+        </span>
+      )}
+    </div>
 
-  .view-overlay{
-    position:absolute;
-    inset:0;
-    background:rgba(36,31,28,0.55);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    opacity:0;
-    transition:opacity .25s ease;
-  }
-  .tcard:hover .view-overlay{opacity:1;}
-  .view-btn{
-    background:var(--stone);
-    color:var(--basalt);
-    font-size:13.5px;
-    font-weight:600;
-    padding:11px 22px;
-    transform:translateY(8px);
-    transition:transform .25s ease;
-  }
-  .tcard:hover .view-btn{transform:translateY(0);}
+    <h3 class="font-display text-headline-sm font-headline-sm text-primary transition-colors group-hover:text-secondary">
+      <a href={href}>{tour.title}</a>
+    </h3>
 
-  .tbody{
-    padding:20px 20px 22px;
-  }
-  .cat{
-    font-size:11.5px;
-    color:var(--apricot);
-    font-weight:700;
-    margin-bottom:6px;
-  }
-  .tname{
-    font-family:'Fraunces',serif;
-    font-size:20px;
-    font-weight:500;
-    line-height:1.2;
-    margin-bottom:8px;
-  }
-  .desc{
-    font-size:13.5px;
-    color:var(--basalt-soft);
-    line-height:1.5;
-    margin-bottom:16px;
-    min-height:40px;
-  }
-  .tfoot{
-    display:flex;
-    justify-content:space-between;
-    align-items:baseline;
-    border-top:1px solid var(--stone-dark);
-    padding-top:14px;
-  }
-  .pfrom{
-    font-size:11.5px;
-    color:var(--basalt-soft);
-  }
-  .pnum{
-    font-family:'Fraunces',serif;
-    font-size:18px;
-    color:var(--basalt);
-  }
-  .stops{
-    font-size:12px;
-    color:var(--basalt-soft);
-  }
-</style>
-</head>
-<body>
+    <p class="mt-2 flex-grow text-body-md text-on-surface-variant">{tour.desc}</p>
 
-<div class="wrap">
-  <div class="head">
-    <div class="eyebrow">TOURS &amp; PACKAGES</div>
-    <h1>Curated experiences</h1>
-    <div class="sub">Discover the heart of Armenia through our specialized language-inclusive routes — each one guided, private, and built around your pace.</div>
+    <div class="mt-5 flex items-end justify-between gap-4 border-t border-border-muted pt-4">
+      <div>
+        <p class="text-caption font-caption uppercase tracking-wide text-on-surface-variant" data-price-label>
+          Total for 2 persons
+        </p>
+        <p class="text-headline-sm font-headline-sm text-primary" data-price-value>
+          {initial ? formatAMD(initial) : "Contact for price"}
+        </p>
+        {initial && (
+          <p class="text-caption font-caption text-on-surface-variant" data-price-usd>{approxUSD(initial)} approx.</p>
+        )}
+      </div>
+      <a href={href} class="inline-flex items-center gap-1 text-label-md font-label-md uppercase tracking-widest text-secondary hover:text-pomegranate transition-colors cursor-pointer relative z-10">
+        Details <span class="material-symbols-outlined text-[18px] transition-transform group-hover:translate-x-1">arrow_forward</span>
+      </a>
+    </div>
   </div>
-
-  <div class="grid" id="grid"></div>
-</div>
+</article>
 
 <script>
-const tours = [
-  {
-    cat: 'DAY TOUR',
-    name: 'Garni & Geghard',
-    desc: 'A pagan temple and a monastery carved into the cliffs, back by evening.',
-    duration: 'Full day',
-    stops: '2 stops',
-    priceFrom: '18,000',
-    img: 'https://bberrium.github.io/Upupa-Travel/images/church.png'
-  },
-  {
-    cat: 'DAY TOUR',
-    name: 'Khor Virap & Noravank',
-    desc: 'The monastery under Ararat, then a canyon road to red-rock Noravank.',
-    duration: 'Full day',
-    stops: '2 stops',
-    priceFrom: '22,000',
-    img: 'https://bberrium.github.io/Upupa-Travel/images/hall.png'
-  },
-  {
-    cat: 'MULTI-DAY',
-    name: 'Tatev Expedition',
-    desc: "The Wings of Tatev cable car and Armenia's most remote monastery.",
-    duration: '2 days',
-    stops: '4 stops',
-    priceFrom: '45,000',
-    img: 'https://bberrium.github.io/Upupa-Travel/images/ani1.jpg'
-  },
-  {
-    cat: 'MULTI-DAY',
-    name: 'Classic Armenia',
-    desc: 'Yerevan, Lake Sevan, Dilijan forests, and the southern monasteries.',
-    duration: '4 days',
-    stops: '7 stops',
-    priceFrom: '96,000',
-    img: 'https://bberrium.github.io/Upupa-Travel/images/ani2.jpg'
-  },
-  {
-    cat: 'DAY TOUR',
-    name: 'Echmiadzin & Zvartnots',
-    desc: 'The seat of the Armenian church and the ruins of a 7th-century cathedral.',
-    duration: 'Half day',
-    stops: '2 stops',
-    priceFrom: '14,000',
-    img: 'https://bberrium.github.io/Upupa-Travel/images/cathedral.png'
-  },
-  {
-    cat: 'CUSTOM',
-    name: 'Build Your Own Route',
-    desc: "Tell us your dates and interests — we'll design a private itinerary.",
-    duration: 'Flexible',
-    stops: 'Custom',
-    priceFrom: 'Quote',
-    img: 'https://bberrium.github.io/Upupa-Travel/images/ani3.jpg'
-  },
-];
+  // Astro automatically bundles this script and runs it once on the client page
+  function initTourCards() {
+    const cards = document.querySelectorAll("[data-tour-card]");
+    
+    cards.forEach((card) => {
+      const slides = Array.from(card.querySelectorAll(".card-slide"));
+      const dots = Array.from(card.querySelectorAll(".card-dot"));
+      if (slides.length <= 1) return;
 
-const grid = document.getElementById('grid');
-tours.forEach(t => {
-  const card = document.createElement('div');
-  card.className = 'tcard';
-  card.innerHTML = `
-    <div class="imgwrap">
-      <img src="${t.img}" alt="${t.name}">
-      <div class="duration-tag">${t.duration}</div>
-      <div class="view-overlay"><div class="view-btn">View Details</div></div>
-    </div>
-    <div class="tbody">
-      <div class="cat">${t.cat}</div>
-      <div class="tname">${t.name}</div>
-      <div class="desc">${t.desc}</div>
-      <div class="tfoot">
-        <div>
-          <div class="pfrom">From</div>
-          <div class="pnum">${t.priceFrom}${t.priceFrom !== 'Quote' ? ' AMD' : ''}</div>
-        </div>
-        <div class="stops">${t.stops}</div>
-      </div>
-    </div>
-  `;
-  grid.appendChild(card);
-});
+      let current = 0;
+      let timer: number | undefined;
+
+      function showSlide(next: number) {
+        slides[current].classList.replace("opacity-100", "opacity-0");
+        slides[current].classList.replace("z-10", "z-0");
+        if (dots[current]) {
+          dots[current].classList.remove("w-6", "bg-white");
+          dots[current].classList.add("w-1.5", "bg-white/50");
+        }
+
+        current = next;
+
+        slides[current].classList.replace("opacity-0", "opacity-100");
+        slides[current].classList.replace("z-0", "z-10");
+        if (dots[current]) {
+          dots[current].classList.remove("w-1.5", "bg-white/50");
+          dots[current].classList.add("w-6", "bg-white");
+        }
+      }
+
+      function start() {
+        timer = window.setInterval(() => showSlide((current + 1) % slides.length), 4000);
+      }
+
+      start();
+
+      dots.forEach((dot) => {
+        dot.addEventListener("click", (e) => {
+          e.preventDefault(); // Prevents the link from triggering when clicking a dot
+          if (timer) clearInterval(timer);
+          showSlide(parseInt((dot as HTMLElement).dataset.index || "0", 10));
+          start();
+        });
+      });
+    });
+  }
+
+  // Run initialization
+  initTourCards();
 </script>
-
-</body>
-</html>

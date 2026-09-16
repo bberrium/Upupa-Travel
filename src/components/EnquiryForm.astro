@@ -1,0 +1,101 @@
+---
+import { SITE } from "../lib/site.js";
+import { TOURS } from "../data/tours.js";
+---
+
+<div class="panel self-start p-6 shadow-card sm:p-8">
+  <h3 class="font-display text-headline-sm font-headline-sm text-primary" data-t="form_title">
+    Request a Tour or Custom Itinerary
+  </h3>
+  <p class="mt-2 text-body-md text-on-surface-variant">
+    No payment now. We confirm availability first.
+  </p>
+
+  <form
+    class="mt-6 space-y-4"
+    id="enquiry-form"
+    name="enquiry"
+    method="POST"
+    action={SITE.formEndpoint || undefined}
+    data-netlify={SITE.netlifyForms ? "true" : undefined}
+    data-endpoint={SITE.formEndpoint}
+    data-email={SITE.email}
+    data-subject="Tour enquiry from the website"
+  >
+    {SITE.netlifyForms && <input type="hidden" name="form-name" value="enquiry" />}
+    <p class="hidden" aria-hidden="true">
+      <label>Leave this empty<input name="company" tabindex="-1" autocomplete="off" /></label>
+    </p>
+
+    <div data-field>
+      <label class="field-label text-primary" for="enq-name" data-t="label_full_name">FULL NAME</label>
+      <input class="field" id="enq-name" name="name" type="text" autocomplete="name" placeholder="Jane Smith" required />
+      <p class="field-error" data-error></p>
+    </div>
+
+    <div data-field>
+      <label class="field-label text-primary" for="enq-contact" data-t="label_whatsapp">EMAIL OR WHATSAPP</label>
+      <input
+        class="field"
+        id="enq-contact"
+        name="contact"
+        type="text"
+        autocomplete="email"
+        placeholder="you@example.com or +1 555 000 111"
+        required
+        data-error-message="We need an email or phone number to reply to."
+      />
+      <p class="field-error" data-error></p>
+    </div>
+
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <div data-field>
+        <label class="field-label text-primary" for="enq-tour" data-t="label_tour_sel">TOUR</label>
+        <select class="field" id="enq-tour" name="tour" required data-error-message="Pick a tour, or choose Custom Route.">
+          <option value="" data-t="opt_choose">Choose…</option>
+          {TOURS.map((tour) => <option value={tour.title}>{tour.title}</option>)}
+          <option value="Custom Route">Custom Route</option>
+          <option value="Private Transfer">Private Transfer</option>
+        </select>
+        <p class="field-error" data-error></p>
+      </div>
+
+      <div data-field>
+        <label class="field-label text-primary" for="enq-date" data-t="label_date">DESIRED DATE</label>
+        <input class="field" id="enq-date" name="date" type="date" />
+        <p class="field-error" data-error></p>
+      </div>
+    </div>
+
+    <div data-field>
+      <label class="field-label text-primary" for="enq-notes" data-t="label_group_notes">GROUP SIZE &amp; NOTES</label>
+      <textarea class="field" id="enq-notes" name="notes" rows="3" placeholder="How many people? Dietary needs, interests…"></textarea>
+      <p class="field-error" data-error></p>
+    </div>
+
+    <p class="form-status" data-form-status role="status" aria-live="polite"></p>
+
+    <button class="btn-primary btn-block mt-2" type="submit">
+      <span data-t="btn_send_enquiry">Send Enquiry</span>
+      <span class="material-symbols-outlined text-[20px]">send</span>
+    </button>
+
+    <p class="text-center text-caption font-caption text-on-surface-variant" data-t="form_note">
+      No payment now. We confirm availability first.
+    </p>
+  </form>
+</div>
+
+<script>
+  import { initForm } from "../lib/forms.js";
+
+  const form = document.getElementById("enquiry-form");
+  if (form) {
+    initForm(form, {
+      endpoint: form.dataset.endpoint || "",
+      email: form.dataset.email || "",
+      subject: form.dataset.subject || "Tour enquiry",
+      netlify: form.dataset.netlify === "true",
+    });
+  }
+</script>

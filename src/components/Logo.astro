@@ -1,0 +1,73 @@
+---
+// The header lockup.
+//
+// The original file (public/images/brand/logo.png) is a circular badge: the
+// name is set in an arch around a photo of the bird. Two things made it look
+// small in the header:
+//   1. ~40% of the PNG was empty transparent padding, so the artwork only
+//      filled about half the box it was given;
+//   2. a near-square badge inside a horizontal bar can only be as tall as the
+//      bar, and at 48-80px the arched lettering is 4-6px tall — unreadable.
+//
+// So the header now uses a lockup: the hoopoe (redrawn illustration, background
+// knocked out) next to the name as live text. Same brand, several times more
+// legible, and it scales perfectly on every screen. Switch to the full badge
+// with `logo.style: "badge"` in src/lib/site.js.
+import { SITE } from "../lib/site.js";
+import { image } from "../lib/images.js";
+
+interface Props {
+  href: string;
+  /** Tailwind height classes for the mark, e.g. "h-12 md:h-14". */
+  size?: string;
+  variant?: "header" | "footer";
+}
+
+const { href, size = "h-12 md:h-14", variant = "header" } = Astro.props;
+const mark = image("images/brand/mark.png");
+const badge = image("images/brand/logo-badge.png");
+const onDark = variant === "footer";
+const useBadge = SITE.logo.style === "badge" && variant === "header";
+---
+
+<a href={href} class="flex shrink-0 items-center gap-3" aria-label={`${SITE.name} — home`}>
+  {useBadge ? (
+    <picture>
+      {badge.webp && <source srcset={badge.webp} type="image/webp" />}
+      <img
+        src={badge.src}
+        alt={SITE.name}
+        width="689"
+        height="600"
+        class={`w-auto object-contain transition-all duration-300 ${size}`}
+      />
+    </picture>
+  ) : (
+    <>
+      <picture>
+        {mark.webp && <source srcset={mark.webp} type="image/webp" />}
+        <img
+          src={mark.src}
+          alt=""
+          width="125"
+          height="180"
+          class={`w-auto object-contain transition-all duration-300 ${size}`}
+        />
+      </picture>
+
+      <span class="flex flex-col leading-none">
+        <span
+          class={`font-display font-bold tracking-[0.16em] transition-all duration-300 ${
+            onDark ? "text-white" : "text-primary"
+          } text-[17px] sm:text-[20px] md:text-[23px]`}
+        >
+          {SITE.logo.wordmark}
+        </span>
+        <span class="mt-1 flex items-baseline gap-1 text-[10px] font-semibold uppercase tracking-[0.22em] sm:text-[11px]">
+          <span class={onDark ? "text-white/70" : "text-secondary"}>{SITE.logo.taglineLead}</span>
+          <span class={onDark ? "text-white" : "text-tertiary"}>{SITE.logo.taglineName}</span>
+        </span>
+      </span>
+    </>
+  )}
+</a>

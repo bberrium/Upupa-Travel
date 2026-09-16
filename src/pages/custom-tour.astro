@@ -1,19 +1,113 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import Picture from "../components/Picture.astro";
+import EnquiryForm from "../components/EnquiryForm.astro";
 
 const base = import.meta.env.BASE_URL;
+
+const steps = [
+  {
+    icon: "edit_calendar",
+    title: "Tell us the shape of the trip",
+    desc: "Dates, how many of you, what you want to see, and how much driving you're happy with in a day.",
+  },
+  {
+    icon: "route",
+    title: "We draft a route",
+    desc: "You get a written itinerary with timings, distances and a total price for the group — usually within a day.",
+  },
+  {
+    icon: "tune",
+    title: "You change whatever you want",
+    desc: "Swap a monastery for a hike, add a winery, start later. We redraw it until it fits.",
+  },
+  {
+    icon: "check_circle",
+    title: "Deposit locks the date",
+    desc: "The balance is paid on the day. Cancellation terms are written down, not improvised.",
+  },
+];
+
+const ideas = [
+  "Wine country: Areni, Noravank and a cellar tasting in Vayots Dzor",
+  "South expedition: Tatev cable car, Khndzoresk and a night in Goris",
+  "North greens: Lori canyons, Haghpat and Sanahin",
+  "Family pace: short drives, long lunches, one site per day",
+  "Photography: sunrise at Khor Virap, golden hour at Garni gorge",
+  "Pilgrimage: Echmiadzin, Zvartnots and Khor Virap in one day",
+];
 ---
 
-<BaseLayout title="Custom Tours — Upupa Travel" current="tours" description="Build a private Armenia itinerary around your own dates and interests.">
-  <section class="max-w-3xl mx-auto px-margin-mobile md:px-margin-desktop py-24 text-center">
-    <div class="text-secondary text-label-md font-label-md tracking-widest uppercase mb-2">Tailor-Made</div>
-    <h1 class="font-display-lg text-headline-md md:text-display-lg text-primary mb-6">Design Your Own Route</h1>
-    <p class="text-on-surface-variant text-body-lg mb-10">
-      Tell us your dates, interests, and pace, and we'll put together a private itinerary just for you —
-      combining any of our tours, extra stops, or entirely new routes across Armenia.
-    </p>
-    <a href={`${base}#contact`} class="inline-block bg-secondary text-white px-8 py-4 font-label-md text-label-md hover:bg-on-secondary-fixed-variant transition-all uppercase tracking-widest">
-      Start Your Enquiry
-    </a>
+<BaseLayout
+  title="Custom Tours in Armenia — Upupa Travel"
+  current="tours"
+  description="Tell us your dates, interests and pace, and we build a private Armenia itinerary around them — any combination of our routes, or something entirely new."
+>
+  <section class="border-b border-border-muted bg-surface-container-low/60 py-14 md:py-20">
+    <div class="container-page text-center">
+      <span class="eyebrow">Tailor-Made</span>
+      <h1 class="font-display text-display-lg-mobile font-display-lg text-balance text-primary md:text-display-lg">
+        Design your own route
+      </h1>
+      <p class="mx-auto mt-4 max-w-2xl text-body-lg text-on-surface-variant">
+        Most of our guests end up somewhere between two of our tours. That's fine — we build the
+        route around you rather than the other way round.
+      </p>
+    </div>
+  </section>
+
+  <section class="section-y">
+    <div class="container-page grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-7">
+        <h2 class="section-title">How it works</h2>
+        <ol class="mt-8 space-y-7">
+          {steps.map((step, index) => (
+            <li class="reveal flex gap-5">
+              <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                <span class="material-symbols-outlined">{step.icon}</span>
+              </span>
+              <div>
+                <h3 class="font-display text-headline-sm font-headline-sm text-on-surface">
+                  {index + 1}. {step.title}
+                </h3>
+                <p class="mt-1 text-body-md text-on-surface-variant">{step.desc}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+
+        <div class="mt-12 overflow-hidden rounded-2xl border border-border-muted shadow-card">
+          <Picture
+            src="images/about/armenia-highlands.jpg"
+            alt="Road through the Armenian highlands"
+            width={1200}
+            height={700}
+            class="h-[260px] w-full object-cover md:h-[340px]"
+            sizes="(max-width: 1024px) 100vw, 640px"
+          />
+        </div>
+
+        <h2 class="section-title mt-14">Routes guests often ask for</h2>
+        <ul class="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
+          {ideas.map((idea) => (
+            <li class="panel-muted flex items-start gap-3 p-4">
+              <span class="material-symbols-outlined text-[20px] text-secondary">near_me</span>
+              <span class="text-body-md text-on-surface-variant">{idea}</span>
+            </li>
+          ))}
+        </ul>
+
+        <p class="mt-8 text-body-md text-on-surface-variant">
+          Pricing follows the same structure as our fixed tours: one total for the group, guide
+          optional, vehicle sized to your party. See a
+          <a class="text-secondary underline underline-offset-4" href={`${base}tours/day-tours`}>day tour</a>
+          for an example of how it's calculated.
+        </p>
+      </div>
+
+      <div class="lg:col-span-5" id="contact">
+        <EnquiryForm />
+      </div>
+    </div>
   </section>
 </BaseLayout>

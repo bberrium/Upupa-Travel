@@ -1,6 +1,7 @@
 ---
-// Shared nav. `home` lets pages outside "/" (e.g. /gallery, /tours/xyz)
-// still link correctly to homepage anchor sections like #about.
+import Logo from "./Logo.astro";
+import { SITE } from "../lib/site.js";
+
 interface Props {
   home?: string;
   current?: "home" | "about" | "tours" | "gallery" | "reviews" | "contact";
@@ -8,88 +9,266 @@ interface Props {
 const { home = import.meta.env.BASE_URL, current = "home" } = Astro.props;
 const base = import.meta.env.BASE_URL;
 
-const linkClass = (id: string) =>
-  current === id
-    ? "text-secondary border-b-2 border-secondary pb-1 text-label-md font-label-md"
-    : "text-on-surface-variant hover:text-primary transition-colors duration-300 text-label-md font-label-md";
+const navLink = (id: string) =>
+  [
+    "text-label-md font-label-md transition-colors duration-200 border-b-2 pb-1",
+    current === id
+      ? "text-secondary border-secondary"
+      : "text-on-surface-variant border-transparent hover:text-primary",
+  ].join(" ");
+
+const tourLinks = [
+  { href: `${base}tours/day-tours`, label: "Day Tours" },
+  { href: `${base}tours/multi-day-tours`, label: "Multi-Day Tours" },
+  { href: `${base}custom-tour`, label: "Custom Tours" },
+  { href: `${base}private-transfer`, label: "Private Transfers" },
+];
 ---
 
-<header class="docked full-width top-0 sticky z-50 backdrop-blur-xl shadow-sm bg-surface/80">
-  <div class="flex justify-between items-center w-full px-margin-desktop py-4 max-w-container-max mx-auto">
-    <div class="flex items-center gap-4">
-      <a href={home} class="flex items-center gap-4">
-        <img
-          alt="UPUPA TRAVEL Logo"
-          class="h-20 w-auto object-contain"
-          src={`${base}images/logo.png`}
-        />
-      </a>
-    </div>
-    <nav class="hidden lg:flex items-center gap-stack-lg">
-      <a class={linkClass("home")} data-t="nav_home" href={home}>HOME</a>
-      <a class={linkClass("about")} data-t="nav_about" href={`${home}#about`}>ABOUT</a>
-      
-      <!-- Desktop TOURS Dropdown -->
-      <div class="relative group">
-        <button class={`flex items-center gap-1 py-2 ${linkClass("tours")}`}>
+<!-- Solid background, not a translucent blur: the logo now always sits on a
+     clean surface instead of over whatever photo is scrolling underneath. -->
+<header
+  class="sticky top-0 z-50 w-full border-b border-border-muted bg-surface-container-lowest shadow-sm transition-shadow duration-300"
+  data-header
+  data-logo={SITE.logo.style}
+>
+  <div class="container-page flex items-center justify-between gap-3 py-3 transition-all duration-300 md:py-4" data-header-inner>
+    <Logo href={home} size="site-logo" />
+
+    <nav class="hidden items-center gap-stack-lg xl:flex" aria-label="Main">
+      <a class={navLink("home")} data-t="nav_home" href={home}>HOME</a>
+      <a class={navLink("about")} data-t="nav_about" href={`${home}#about`}>ABOUT</a>
+
+      <div class="relative" data-menu>
+        <button
+          type="button"
+          class={`flex items-center gap-1 ${navLink("tours")}`}
+          data-menu-button
+          aria-expanded="false"
+          aria-haspopup="true"
+        >
           <span data-t="nav_tours">TOURS</span>
-          <span class="material-symbols-outlined text-[16px]">expand_more</span>
+          <span class="material-symbols-outlined text-[16px]" data-menu-chevron>expand_more</span>
         </button>
-        <div class="absolute left-0 top-full mt-1 bg-surface/90 backdrop-blur-xl shadow-lg rounded-lg border border-outline-variant opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-[60] min-w-[200px] overflow-hidden">
-          <a href={`${base}tours/day-tours`} class="w-full text-left block px-4 py-3 text-label-md hover:bg-surface-container transition-colors border-b border-outline-variant/30">Day Tours</a>
-          <a href={`${base}tours/multi-day-tours`} class="w-full text-left block px-4 py-3 text-label-md hover:bg-surface-container transition-colors border-b border-outline-variant/30">Multi-Day Tours</a>
-          <a href={`${base}custom-tour`} class="w-full text-left block px-4 py-3 text-label-md hover:bg-surface-container transition-colors">Custom Tours</a>
+        <div
+          class="invisible absolute left-0 top-full z-[60] mt-2 min-w-[220px] overflow-hidden rounded-xl border border-outline-variant bg-surface-container-lowest opacity-0 shadow-card transition-all duration-150"
+          data-menu-panel
+        >
+          {tourLinks.map((link) => (
+            <a
+              href={link.href}
+              class="block px-4 py-3 text-label-md font-label-md text-on-surface-variant transition-colors hover:bg-surface-container hover:text-primary"
+            >
+              {link.label}
+            </a>
+          ))}
         </div>
       </div>
 
-      <a class={linkClass("gallery")} data-t="nav_gallery" href={`${base}gallery`}>GALLERY</a>
-      <a class={linkClass("contact")} data-t="nav_contact" href={`${home}#contact`}>CONTACT</a>
-      <a class={linkClass("reviews")} data-t="nav_reviews" href={`${home}#reviews`}>REVIEWS</a>
+      <a class={navLink("gallery")} data-t="nav_gallery" href={`${base}gallery`}>GALLERY</a>
+      <a class={navLink("reviews")} data-t="nav_reviews" href={`${home}#reviews`}>REVIEWS</a>
+      <a class={navLink("contact")} data-t="nav_contact" href={`${home}#contact`}>CONTACT</a>
     </nav>
-    <div class="flex items-center gap-stack-md">
-      <div class="relative group">
-        <button class="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors py-2">
+
+    <div class="flex items-center gap-1 sm:gap-2">
+      <div class="relative" data-menu>
+        <button
+          type="button"
+          class="flex min-h-[44px] items-center gap-1 rounded-lg px-2 text-on-surface-variant transition-colors hover:text-primary"
+          data-menu-button
+          aria-expanded="false"
+          aria-haspopup="true"
+          aria-label="Change language"
+        >
           <span class="material-symbols-outlined text-[20px]">language</span>
           <span class="text-label-md font-label-md uppercase" id="current-lang-label">EN</span>
-          <span class="material-symbols-outlined text-[16px]">expand_more</span>
+          <span class="material-symbols-outlined text-[16px]" data-menu-chevron>expand_more</span>
         </button>
-        <div class="absolute right-0 top-full mt-1 bg-surface/90 backdrop-blur-xl shadow-lg rounded-lg border border-outline-variant opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-[60] min-w-[160px] overflow-hidden">
-          <button class="w-full text-left block px-4 py-3 text-label-md hover:bg-surface-container transition-colors border-b border-outline-variant/30" onclick="switchLanguage('en')">English</button>
-          <button class="w-full text-left block px-4 py-3 text-label-md hover:bg-surface-container transition-colors border-b border-outline-variant/30" onclick="switchLanguage('ru')">Русский</button>
-          <button class="w-full text-left block px-4 py-3 text-label-md hover:bg-surface-container transition-colors" onclick="switchLanguage('am')">Հայերեն</button>
+        <div
+          class="invisible absolute right-0 top-full z-[60] mt-2 min-w-[170px] overflow-hidden rounded-xl border border-outline-variant bg-surface-container-lowest opacity-0 shadow-card transition-all duration-150"
+          data-menu-panel
+        >
+          <button type="button" class="block w-full px-4 py-3 text-left text-label-md font-label-md text-on-surface-variant transition-colors hover:bg-surface-container hover:text-primary" data-lang="en">English</button>
+          <button type="button" class="block w-full px-4 py-3 text-left text-label-md font-label-md text-on-surface-variant transition-colors hover:bg-surface-container hover:text-primary" data-lang="ru">Русский</button>
+          <button type="button" class="block w-full px-4 py-3 text-left text-label-md font-label-md text-on-surface-variant transition-colors hover:bg-surface-container hover:text-primary" data-lang="am">Հայերեն</button>
         </div>
       </div>
-      <a class="bg-[#229ED9] hover:bg-[#1b8dc1] text-white px-6 py-2.5 rounded-lg text-label-md font-label-md font-bold scale-95 active:scale-90 transition-transform shadow-sm" data-t="btn_book" href={`${home}#contact`}>Book a Call</a>
-    </div>
-    <button id="hamburger" aria-label="Menu" class="lg:hidden text-primary">
-      <span class="material-symbols-outlined text-3xl">menu</span>
-    </button>
-  </div>
-  <div id="mobile-nav" class="hidden lg:hidden flex-col gap-1 px-margin-mobile pb-4 bg-surface/95">
-    <a class="py-2 border-b border-border-muted text-on-surface-variant" data-t="nav_home" href={home}>HOME</a>
-    <a class="py-2 border-b border-border-muted text-on-surface-variant" data-t="nav_about" href={`${home}#about`}>ABOUT</a>
-    
-    <!-- Mobile TOURS Dropdown -->
-    <div class="py-2 border-b border-border-muted flex flex-col gap-2">
-      <span class="text-on-surface-variant font-bold" data-t="nav_tours">TOURS</span>
-      <div class="flex flex-col pl-4 gap-3 border-l-2 border-border-muted ml-2 mt-1 mb-2">
-        <a href={`${base}tours/day-tours`} class="text-on-surface-variant text-sm">Day Tours</a>
-        <a href={`${base}tours/multi-day-tours`} class="text-on-surface-variant text-sm">Multi-Day Tours</a>
-        <a href={`${base}custom-tour`} class="text-on-surface-variant text-sm">Custom Tours</a>
-      </div>
-    </div>
 
-    <a class="py-2 border-b border-border-muted text-on-surface-variant" data-t="nav_gallery" href={`${base}gallery`}>GALLERY</a>
-    <a class="py-2 border-b border-border-muted text-on-surface-variant" data-t="nav_contact" href={`${home}#contact`}>CONTACT</a>
-    <a class="py-2 text-on-surface-variant" data-t="nav_reviews" href={`${home}#reviews`}>REVIEWS</a>
+      <a
+        class="hidden rounded-lg bg-telegram px-5 py-2.5 text-label-md font-label-md font-bold text-white transition-colors hover:bg-telegram-dark md:inline-flex"
+        data-t="btn_book"
+        href={`${home}#contact`}
+      >
+        Plan Your Trip
+      </a>
+
+      <button
+        id="hamburger"
+        type="button"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="mobile-nav"
+        class="flex h-11 w-11 items-center justify-center rounded-lg text-primary xl:hidden"
+      >
+        <span class="material-symbols-outlined text-3xl" id="hamburger-icon">menu</span>
+      </button>
+    </div>
+  </div>
+
+  <div id="mobile-nav" class="hidden max-h-[calc(100svh-5rem)] overflow-y-auto border-t border-border-muted bg-surface-container-lowest xl:hidden">
+    <nav class="container-page flex flex-col py-2" aria-label="Mobile">
+      <a class="flex min-h-[48px] items-center border-b border-border-muted text-on-surface-variant" data-t="nav_home" href={home}>HOME</a>
+      <a class="flex min-h-[48px] items-center border-b border-border-muted text-on-surface-variant" data-t="nav_about" href={`${home}#about`}>ABOUT</a>
+      <div class="border-b border-border-muted py-3">
+        <span class="text-label-md font-label-md uppercase text-on-surface" data-t="nav_tours">TOURS</span>
+        <div class="mt-1 flex flex-col border-l-2 border-border-muted pl-4">
+          {tourLinks.map((link) => (
+            <a href={link.href} class="flex min-h-[44px] items-center text-body-md text-on-surface-variant">{link.label}</a>
+          ))}
+        </div>
+      </div>
+      <a class="flex min-h-[48px] items-center border-b border-border-muted text-on-surface-variant" data-t="nav_gallery" href={`${base}gallery`}>GALLERY</a>
+      <a class="flex min-h-[48px] items-center border-b border-border-muted text-on-surface-variant" data-t="nav_reviews" href={`${home}#reviews`}>REVIEWS</a>
+      <a class="flex min-h-[48px] items-center text-on-surface-variant" data-t="nav_contact" href={`${home}#contact`}>CONTACT</a>
+
+      <div class="my-4 flex flex-col gap-3 sm:flex-row">
+        <a class="btn-primary sm:flex-1" data-t="btn_book" href={`${home}#contact`}>Plan Your Trip</a>
+        <a class="btn-outline sm:flex-1" href={SITE.whatsapp} target="_blank" rel="noopener">
+          <span class="material-symbols-outlined text-[20px]">chat</span> WhatsApp
+        </a>
+      </div>
+    </nav>
   </div>
 </header>
 
+<style is:global>
+  /* Logo sizing lives here so it can react to scroll state in one place.
+     Header height follows the logo, not the other way round. */
+  .site-logo {
+    height: 3.25rem; /* 52px */
+  }
+  @media (min-width: 768px) {
+    .site-logo {
+      height: 3.75rem; /* 60px */
+    }
+  }
+
+  /* Badge mode needs more height for the arched lettering to be readable. */
+  [data-logo="badge"] .site-logo {
+    height: 4.25rem;
+  }
+  @media (min-width: 768px) {
+    [data-logo="badge"] .site-logo {
+      height: 5.5rem;
+    }
+  }
+
+  /* Once you scroll past the hero the header condenses, so the logo is big
+     where it matters (first impression) without eating the screen after. */
+  [data-header][data-scrolled] .site-logo {
+    height: 2.75rem;
+  }
+  @media (min-width: 768px) {
+    [data-header][data-scrolled] .site-logo {
+      height: 3rem;
+    }
+  }
+  [data-logo="badge"][data-header][data-scrolled] .site-logo {
+    height: 3.25rem;
+  }
+  @media (min-width: 768px) {
+    [data-logo="badge"][data-header][data-scrolled] .site-logo {
+      height: 4rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .site-logo {
+      transition: none !important;
+    }
+  }
+</style>
+
 <script>
-  const btn = document.getElementById("hamburger");
-  const menu = document.getElementById("mobile-nav");
-  btn?.addEventListener("click", () => {
-    menu?.classList.toggle("hidden");
-    menu?.classList.toggle("flex");
+  // --- Dropdowns: click to open, Escape to close, click-away to close. ---
+  const menus = Array.from(document.querySelectorAll<HTMLElement>("[data-menu]"));
+
+  function closeMenu(menu: HTMLElement) {
+    const panel = menu.querySelector<HTMLElement>("[data-menu-panel]");
+    const button = menu.querySelector<HTMLElement>("[data-menu-button]");
+    const chevron = menu.querySelector<HTMLElement>("[data-menu-chevron]");
+    panel?.classList.add("invisible", "opacity-0");
+    chevron?.classList.remove("rotate-180");
+    button?.setAttribute("aria-expanded", "false");
+  }
+
+  menus.forEach((menu) => {
+    const button = menu.querySelector<HTMLElement>("[data-menu-button]");
+    const panel = menu.querySelector<HTMLElement>("[data-menu-panel]");
+    const chevron = menu.querySelector<HTMLElement>("[data-menu-chevron]");
+    if (!button || !panel) return;
+
+    button.addEventListener("click", (event) => {
+      event.stopPropagation();
+      const willOpen = panel.classList.contains("invisible");
+      menus.forEach(closeMenu);
+      if (!willOpen) return;
+      panel.classList.remove("invisible", "opacity-0");
+      chevron?.classList.add("rotate-180");
+      button.setAttribute("aria-expanded", "true");
+    });
+
+    panel.addEventListener("click", () => closeMenu(menu));
   });
+
+  document.addEventListener("click", () => menus.forEach(closeMenu));
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") menus.forEach(closeMenu);
+  });
+
+  // --- Mobile menu ---
+  const hamburger = document.getElementById("hamburger");
+  const hamburgerIcon = document.getElementById("hamburger-icon");
+  const mobileNav = document.getElementById("mobile-nav");
+
+  function setMobileNav(open: boolean) {
+    mobileNav?.classList.toggle("hidden", !open);
+    hamburger?.setAttribute("aria-expanded", String(open));
+    hamburger?.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    if (hamburgerIcon) hamburgerIcon.textContent = open ? "close" : "menu";
+  }
+
+  hamburger?.addEventListener("click", () => {
+    setMobileNav(mobileNav?.classList.contains("hidden") ?? true);
+  });
+
+  mobileNav?.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => setMobileNav(false));
+  });
+
+  // Close the menu if the viewport grows into the desktop nav.
+  window.matchMedia("(min-width: 1280px)").addEventListener("change", (event) => {
+    if (event.matches) setMobileNav(false);
+  });
+
+  // --- Condense on scroll ---
+  const header = document.querySelector<HTMLElement>("[data-header]");
+  if (header) {
+    let ticking = false;
+    const apply = () => {
+      if (window.scrollY > 80) header.setAttribute("data-scrolled", "");
+      else header.removeAttribute("data-scrolled");
+      ticking = false;
+    };
+    apply();
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(apply);
+      },
+      { passive: true }
+    );
+  }
 </script>

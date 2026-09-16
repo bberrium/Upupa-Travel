@@ -1,5 +1,9 @@
 ---
 import BaseLayout from "./BaseLayout.astro";
+import Picture from "../components/Picture.astro";
+import { image } from "../lib/images.js";
+import { SITE } from "../lib/site.js";
+import { priceFor, formatAMD, approxUSD } from "../data/tours.js";
 
 export interface Stop {
   time: string;
@@ -9,13 +13,13 @@ export interface Stop {
   images?: string[];
 }
 export interface Day {
-  dayNumber: string; // "01", "02"
+  dayNumber: string;
   title: string;
   subtitle: string;
   stops: Stop[];
 }
 export interface Tip {
-  icon: string; // material-symbols-outlined icon name
+  icon: string;
   title: string;
   desc: string;
 }
@@ -30,75 +34,155 @@ export interface Pricing {
 }
 
 interface Props {
-  label: string; 
+  label: string;
   title: string;
   summary: string;
   heroImage: string;
   images?: string[];
-  duration?: string; 
-  region?: string; // <-- Add this
-  languages?: string[]; 
-  pricing?: Pricing | null; 
+  duration?: string;
+  region?: string;
+  languages?: string[];
+  pricing?: Pricing | null;
   days: Day[];
   included: string[];
+  notIncluded?: string[];
   tips: Tip[];
 }
 
-// Extract region from Astro.props
-const { label, title, summary, heroImage, images = [], duration, region, languages = [], pricing = null, days, included, tips } = Astro.props;
+const {
+  label,
+  title,
+  summary,
+  heroImage,
+  images = [],
+  duration,
+  region,
+  languages = [],
+  pricing = null,
+  days,
+  included,
+  notIncluded = ["Meals and drinks", "Personal expenses", "Tips for the guide or driver"],
+  tips,
+} = Astro.props;
 
-// Slideshow images: use the tour's curated image set if provided, else just
-// fall back to the single heroImage so older callers keep working.
 const slideImages = images.length > 0 ? images : heroImage ? [heroImage] : [];
-
+const resolvedSlides = slideImages.map((src) => image(src));
 const base = import.meta.env.BASE_URL;
+
+const fromPrice = priceFor(pricing, 2, false);
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "TouristTrip",
+  name: title,
+  description: summary,
+  touristType: "Private tour",
+  provider: { "@type": "TravelAgency", name: SITE.name, url: SITE.url },
+  itinerary: {
+    "@type": "ItemList",
+    itemListElement: days.flatMap((day, dayIndex) =>
+      day.stops.map((stop, stopIndex) => ({
+        "@type": "ListItem",
+        position: dayIndex * 100 + stopIndex + 1,
+        item: { "@type": "TouristAttraction", name: stop.title, description: stop.desc },
+      }))
+    ),
+  },
+  ...(fromPrice
+    ? {
+        offers: {
+          "@type": "Offer",
+          price: fromPrice,
+          priceCurrency: "AMD",
+          description: "Total price for a private group of two, without a guide",
+          availability: "https://schema.org/InStock",
+        },
+      }
+    : {}),
+};
 ---
 
-<BaseLayout title={`${title} — Upupa Travel`} description={summary} current="tours">
+<BaseLayout
+  title={`${title} — Upupa Travel`}
+  description={summary}
+  current="tours"
+  ogImage={resolvedSlides[0]?.missing ? "images/hero/02-highlands.jpg" : slideImages[0]}
+  schema={schema}
+>
+  <!-- Breadcrumb -->
+  <nav class="container-page pt-6 text-caption font-caption text-on-surface-variant" aria-label="Breadcrumb">
+    <ol class="flex flex-wrap items-center gap-2">
+      <li><a class="hover:text-primary" href={base}>Home</a></li>
+      <li aria-hidden="true">/</li>
+      <li><a class="hover:text-primary" href={`${base}tours/day-tours`}>Tours</a></li>
+      <li aria-hidden="true">/</li>
+      <li class="text-on-surface">{title}</li>
+    </ol>
+  </nav>
+
   <!-- Title -->
-  <section class="pt-16 pb-10 px-margin-desktop max-w-container-max mx-auto">
+  <section class="container-page pb-8 pt-6">
     <div class="max-w-3xl">
-      <div class="flex items-center gap-3 mb-4 flex-wrap">
-        <span class="inline-block bg-secondary text-white px-3 py-1 text-label-md font-label-md">{label}</span>
-        {duration && <span class="text-on-surface-variant text-label-md font-label-md">{duration}</span>}
+      <div class="mb-4 flex flex-wrap items-center gap-3">
+        <span class="rounded-full bg-secondary px-3 py-1 text-caption font-caption uppercase tracking-wide text-white">{label}</span>
+        {duration && (
+          <span class="inline-flex items-center gap-1 text-label-md font-label-md text-on-surface-variant">
+            <span class="material-symbols-outlined text-[16px]">schedule</span>{duration}
+          </span>
+        )}
         {region && (
-          <span class="text-on-surface-variant text-label-md font-label-md flex items-center gap-1">
-            <span class="material-symbols-outlined text-[16px]">location_on</span>{region}
+          <span class="inline-flex items-center gap-1 text-label-md font-label-md text-on-surface-variant">
+            <span class="material-symbols-outlined text-[16px]">location_on</span>from {region}
+          </span>
+        )}
+        {languages.length > 0 && (
+          <span class="inline-flex items-center gap-1 text-label-md font-label-md text-on-surface-variant">
+            <span class="material-symbols-outlined text-[16px]">language</span>
+            {languages.map((code) => ({ en: "EN", ru: "RU", am: "AM" })[code] || code.toUpperCase()).join(" · ")}
           </span>
         )}
       </div>
-      <h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-primary mb-stack-md leading-tight" style="font-family: 'Source Serif 4', serif;">{title}</h1>
-      <p class="font-body-lg text-body-lg text-on-surface-variant mb-stack-lg">{summary}</p>
-      <div class="flex gap-4 w-full sm:w-auto flex-wrap">
-        <a href={`${base}#contact`} class="flex-1 sm:flex-none bg-secondary text-white px-8 py-4 font-label-md text-label-md hover:bg-on-secondary-fixed-variant transition-all uppercase tracking-widest text-center">Book Now</a>
-        <a href="https://wa.me/37495988188" target="_blank" rel="noopener" class="flex-1 sm:flex-none border border-primary text-primary px-8 py-4 font-label-md text-label-md hover:bg-primary hover:text-white transition-all text-center uppercase tracking-widest flex items-center justify-center gap-2">
-          <span class="material-symbols-outlined text-[20px]">chat</span> Ask a Question
+
+      <h1 class="font-display text-display-lg-mobile font-display-lg leading-tight text-balance text-primary md:text-display-lg">
+        {title}
+      </h1>
+      <p class="mt-4 text-body-lg text-on-surface-variant">{summary}</p>
+
+      <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+        <a href="#price-calc" class="btn-primary sm:w-auto">Check price &amp; book</a>
+        <a href={SITE.whatsapp} target="_blank" rel="noopener" class="btn-outline sm:w-auto">
+          <span class="material-symbols-outlined text-[20px]">chat</span> Ask a question
         </a>
       </div>
     </div>
   </section>
 
-  <!-- Hero Slideshow -->
-  {slideImages.length > 0 && (
-    <section class="px-margin-desktop max-w-container-max mx-auto mb-stack-lg">
-      <div class="relative rounded-2xl overflow-hidden shadow-xl border border-outline-variant h-[300px] sm:h-[420px] md:h-[520px]" id="tour-hero-slideshow">
-        {slideImages.map((src, i) => (
-          <img
-            src={src}
-            alt={title}
-            fetchpriority={i === 0 ? "high" : "auto"}
-            loading={i === 0 ? "eager" : "lazy"}
-            class={`tour-hero-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${i === 0 ? "opacity-100" : "opacity-0"}`}
-          />
+  <!-- Hero slideshow -->
+  {resolvedSlides.length > 0 && (
+    <section class="container-page mb-12">
+      <div class="relative h-[260px] overflow-hidden rounded-2xl border border-border-muted shadow-card sm:h-[420px] md:h-[520px]" id="tour-hero-slideshow">
+        {resolvedSlides.map((resolved, i) => (
+          <picture>
+            {resolved.webp && <source srcset={resolved.webp} type="image/webp" />}
+            <img
+              src={resolved.src}
+              alt={i === 0 ? title : ""}
+              width="1600"
+              height="1000"
+              fetchpriority={i === 0 ? "high" : "auto"}
+              loading={i === 0 ? "eager" : "lazy"}
+              class={`tour-hero-slide absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${i === 0 ? "opacity-100" : "opacity-0"}`}
+            />
+          </picture>
         ))}
-        {slideImages.length > 1 && (
-          <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10" id="tour-hero-dots">
-            {slideImages.map((_, i) => (
+        {resolvedSlides.length > 1 && (
+          <div class="absolute bottom-4 left-1/2 z-10 flex -translate-x-1/2 gap-2" id="tour-hero-dots">
+            {resolvedSlides.map((_, i) => (
               <button
                 type="button"
                 class={`tour-hero-dot h-1.5 rounded-full transition-all duration-500 ${i === 0 ? "w-8 bg-white" : "w-1.5 bg-white/50 hover:bg-white/80"}`}
                 data-index={i}
-                aria-label={`Go to slide ${i + 1}`}
+                aria-label={`Show photo ${i + 1}`}
               ></button>
             ))}
           </div>
@@ -108,49 +192,58 @@ const base = import.meta.env.BASE_URL;
   )}
 
   <!-- Content -->
-  <section id="itinerary" class="pb-section-padding px-margin-desktop max-w-container-max mx-auto">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+  <section id="itinerary" class="container-page pb-16 md:pb-section-padding">
+    <div class="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-gutter">
       <!-- Itinerary -->
       <div class="lg:col-span-8">
-        <div class="mb-stack-lg border-b border-border-muted pb-stack-sm">
-          <h2 class="font-headline-md text-headline-md text-primary" style="font-family: 'Source Serif 4', serif;">Detailed Itinerary</h2>
+        <div class="mb-8 border-b border-border-muted pb-3">
+          <h2 class="section-title">Detailed Itinerary</h2>
         </div>
 
         {days.map((day) => (
-          <div class="mb-16">
-            <div class="flex items-center gap-4 mb-stack-lg">
-              <div class="bg-primary text-white w-12 h-12 flex items-center justify-center font-headline-sm shrink-0">{day.dayNumber}</div>
+          <div class="mb-14">
+            <div class="mb-8 flex items-center gap-4">
+              <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary font-display text-headline-sm font-headline-sm text-white">
+                {day.dayNumber}
+              </span>
               <div>
-                <h3 class="font-headline-sm text-headline-sm">{day.title}</h3>
-                <p class="text-on-surface-variant font-label-md text-label-md">{day.subtitle}</p>
+                <h3 class="font-display text-headline-sm font-headline-sm text-on-surface">{day.title}</h3>
+                <p class="text-label-md font-label-md text-on-surface-variant">{day.subtitle}</p>
               </div>
             </div>
 
-            <div class="relative pl-8 itin-line">
-              <div class="absolute left-0 top-0 bottom-0 w-px bg-border-muted"></div>
-              <div class="absolute left-0 top-0 w-px bg-secondary itin-fill transition-[height] duration-500 ease-out" style="height: 0px;"></div>
+            <div class="itin-line relative pl-8">
+              <div class="absolute bottom-0 left-0 top-0 w-px bg-border-muted"></div>
+              <div class="itin-fill absolute left-0 top-0 w-px bg-secondary transition-[height] duration-500 ease-out" style="height: 0px;"></div>
               <div class="space-y-10">
-                {day.stops.map((stop) => (
-                  <div class="relative">
-                    <div class="absolute -left-[2.35rem] top-1 w-4 h-4 rounded-full bg-border-muted scale-100 transition-all duration-500 itin-dot"></div>
-                    <h4 class="font-label-md text-label-md text-secondary uppercase mb-2">{stop.time} — {stop.title}</h4>
-                    <p class="font-body-md text-body-md text-on-surface-variant mb-4">{stop.desc}</p>
-                    {(() => {
-                      const stopImages = stop.images?.length ? stop.images : stop.image ? [stop.image] : [];
-                      if (stopImages.length === 0) return null;
-                      const cols = stopImages.length === 1 ? "grid-cols-2 sm:grid-cols-3" : stopImages.length === 2 ? "grid-cols-2" : "grid-cols-2 sm:grid-cols-3";
-                      return (
-                        <div class={`grid ${cols} gap-2`}>
+                {day.stops.map((stop) => {
+                  const stopImages = stop.images?.length ? stop.images : stop.image ? [stop.image] : [];
+                  return (
+                    <div class="relative">
+                      <span class="itin-dot absolute -left-[2.35rem] top-1 h-4 w-4 rounded-full bg-border-muted transition-all duration-500"></span>
+                      <h4 class="mb-2 text-label-md font-label-md uppercase tracking-wide text-secondary">
+                        {stop.time} — {stop.title}
+                      </h4>
+                      <p class="mb-4 text-body-md text-on-surface-variant">{stop.desc}</p>
+                      {stopImages.length > 0 && (
+                        <div class={`grid gap-2 ${stopImages.length === 2 ? "grid-cols-2" : "grid-cols-2 sm:grid-cols-3"}`}>
                           {stopImages.map((src) => (
-                            <div class="aspect-square overflow-hidden rounded-lg">
-                              <img src={src} class="w-full h-full object-cover hover:scale-105 transition-transform duration-700" alt={stop.title} />
+                            <div class="aspect-[4/3] overflow-hidden rounded-lg border border-border-muted">
+                              <Picture
+                                src={src}
+                                alt={stop.title}
+                                width={600}
+                                height={450}
+                                class="h-full w-full object-cover transition-transform duration-700 hover:scale-105 motion-reduce:transform-none"
+                                sizes="(max-width: 640px) 50vw, 240px"
+                              />
                             </div>
                           ))}
                         </div>
-                      );
-                    })()}
-                  </div>
-                ))}
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -160,101 +253,124 @@ const base = import.meta.env.BASE_URL;
       <!-- Sidebar -->
       <div class="lg:col-span-4">
         <div class="lg:sticky lg:top-28">
-        <!-- Price Calculator -->
-        <div class="bg-primary p-8 sm:p-10 shadow-xl flex flex-col" id="price-calc" data-pricing={JSON.stringify(pricing)}>
-          <h3 class="font-headline-md text-headline-md text-white mb-stack-sm">Check Price</h3>
-          <p class="text-white/70 font-body-md text-body-md mb-8">Price adjusts automatically for your group size and guide preference.</p>
+          <div class="flex flex-col rounded-2xl bg-primary p-6 shadow-card sm:p-8" id="price-calc" data-pricing={JSON.stringify(pricing)}>
+            <h2 class="font-display text-headline-md font-headline-md text-white">Check Price</h2>
+            <p class="mb-7 mt-2 text-body-md text-white/75">
+              Total for the whole group, not per person. Adjusts for group size and guide.
+            </p>
 
-          <div class="mb-6">
-            <label class="flex items-center gap-1.5 font-label-md text-label-md text-white mb-3 uppercase">
-              <span>Number of People</span>
-              <span class="relative inline-flex group/tip">
-                <span class="material-symbols-outlined text-[16px] normal-case text-white/60 cursor-help">info</span>
-                <span class="pointer-events-none absolute left-1/2 -translate-x-1/2 bottom-full mb-2 w-52 rounded-md bg-on-surface text-white text-[12px] normal-case font-normal leading-snug px-3 py-2 text-center opacity-0 invisible group-hover/tip:opacity-100 group-hover/tip:visible transition-opacity duration-150 z-50 shadow-lg">Total number of travelers in your group</span>
-              </span>
-            </label>
-            <div class="flex items-center gap-3">
-              <button type="button" id="pc-minus" class="w-10 h-10 bg-white/10 border border-white/20 text-white text-xl hover:bg-white/20 transition-colors" aria-label="Decrease">−</button>
-              <input id="pc-people" type="number" min="1" max="20" value="2" class="w-16 text-center bg-white/10 border border-white/20 text-white px-2 py-2 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />              <button type="button" id="pc-plus" class="w-10 h-10 bg-white/10 border border-white/20 text-white text-xl hover:bg-white/20 transition-colors" aria-label="Increase">+</button>
+            <div class="mb-6">
+              <label class="field-label flex items-center gap-1.5 text-white" for="pc-people">
+                Number of people
+              </label>
+              <div class="flex items-center gap-3">
+                <button type="button" id="pc-minus" class="h-11 w-11 rounded-lg border border-white/20 bg-white/10 text-xl text-white transition-colors hover:bg-white/20" aria-label="One fewer person">−</button>
+                <input
+                  id="pc-people"
+                  name="people"
+                  type="number"
+                  inputmode="numeric"
+                  min="1"
+                  max="20"
+                  value="2"
+                  class="field-on-dark w-20 text-center [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                />
+                <button type="button" id="pc-plus" class="h-11 w-11 rounded-lg border border-white/20 bg-white/10 text-xl text-white transition-colors hover:bg-white/20" aria-label="One more person">+</button>
+              </div>
             </div>
-          </div>
 
-          <div class="mb-6 relative" id="pc-guide-wrap">
-            <label class="block font-label-md text-label-md text-white mb-3 uppercase">Guide</label>
-            <button type="button" id="pc-guide-btn" class="w-full flex items-center justify-between gap-3 bg-white/10 border border-white/20 text-white px-4 py-3 hover:bg-white/20 transition-colors" aria-haspopup="listbox" aria-expanded="false">
-              <span id="pc-guide-label" class="flex items-center gap-2">No guide</span>
-              <span class="material-symbols-outlined text-[20px] transition-transform" id="pc-guide-chevron">expand_more</span>
-            </button>
-            <ul id="pc-guide-list" role="listbox" class="hidden absolute z-30 mt-1 w-full bg-surface-container-lowest border border-border-muted shadow-xl overflow-hidden">
-              <li data-value="noGuide" role="option" class="px-4 py-2.5 flex items-center gap-2 cursor-pointer text-on-surface hover:bg-surface-container transition-colors">No guide</li>
-              <li data-value="guide:en" role="option" class="px-4 py-2.5 flex items-center gap-2 cursor-pointer text-on-surface hover:bg-surface-container transition-colors border-t border-border-muted"><span>🇬🇧</span> Guide — English</li>
-              <li data-value="guide:ru" role="option" class="px-4 py-2.5 flex items-center gap-2 cursor-pointer text-on-surface hover:bg-surface-container transition-colors border-t border-border-muted"><span>🇷🇺</span> Guide — Russian</li>
-              <li data-value="guide:am" role="option" class="px-4 py-2.5 flex items-center gap-2 cursor-pointer text-on-surface hover:bg-surface-container transition-colors border-t border-border-muted"><span>🇦🇲</span> Guide — Armenian</li>
-            </ul>
-          </div>
+            <div class="mb-6">
+              <label class="field-label text-white" for="pc-guide">Guide</label>
+              <select id="pc-guide" name="guide" class="field-on-dark">
+                <option value="noGuide">No guide</option>
+                <option value="guide:en">Guide — English</option>
+                <option value="guide:ru">Guide — Russian</option>
+                <option value="guide:am">Guide — Armenian</option>
+              </select>
+            </div>
 
-          <div class="mb-8 relative" id="pc-vehicle-wrap">
-            <label class="flex items-center gap-2 font-label-md text-label-md text-white mb-3 uppercase">
-              <span>Vehicle</span>
-              <span class="text-white/50 normal-case">–</span>
-              <a href={`${base}gallery`} class="text-secondary-container normal-case hover:underline">Photos</a>
-            </label>
-            <button type="button" id="pc-vehicle-btn" class="w-full flex items-center justify-between gap-3 bg-white/10 border border-white/20 text-white px-4 py-3 hover:bg-white/20 transition-colors" aria-haspopup="listbox" aria-expanded="false">
-              <span id="pc-vehicle-label">Comfort Sedan</span>
-              <span class="material-symbols-outlined text-[20px] transition-transform" id="pc-vehicle-chevron">expand_more</span>
-            </button>
-            <ul id="pc-vehicle-list" role="listbox" class="hidden absolute z-30 mt-1 w-full bg-surface-container-lowest border border-border-muted shadow-xl overflow-hidden">
-              <li data-value="sedan" role="option" class="px-4 py-2.5 cursor-pointer text-on-surface hover:bg-surface-container transition-colors">Comfort Sedan</li>
-              <li data-value="minivan" role="option" class="px-4 py-2.5 cursor-pointer text-on-surface hover:bg-surface-container transition-colors border-t border-border-muted">Minivan (up to 6)</li>
-              <li data-value="minibus" role="option" class="px-4 py-2.5 cursor-pointer text-on-surface hover:bg-surface-container transition-colors border-t border-border-muted">Minibus (up to 14)</li>
-              <li data-value="sprinter" role="option" class="px-4 py-2.5 cursor-pointer text-on-surface hover:bg-surface-container transition-colors border-t border-border-muted">Sprinter (up to 19)</li>
-            </ul>
-          </div>
+            <div class="mb-7">
+              <label class="field-label flex items-center gap-2 text-white" for="pc-vehicle">
+                <span>Vehicle</span>
+                <a href={`${base}gallery`} class="normal-case text-secondary-container underline underline-offset-4">photos</a>
+              </label>
+              <select id="pc-vehicle" name="vehicle" class="field-on-dark">
+                <option value="sedan">Comfort sedan (up to 3)</option>
+                <option value="minivan">Minivan (up to 6)</option>
+                <option value="minibus">Minibus (up to 14)</option>
+                <option value="sprinter">Sprinter (up to 19)</option>
+              </select>
+            </div>
 
-          <div class="mt-auto">
-            <div class="border-t border-white/20 pt-5 pb-6 flex items-end justify-between gap-4">
-              <p class="flex items-center gap-1.5 text-white/70 text-caption font-caption uppercase tracking-wider">
-                <span id="pc-label">Total for 2 persons</span>
-                <span class="relative inline-flex group/tip">
-                  <span class="material-symbols-outlined text-[14px] normal-case cursor-help">info</span>
-                  <span class="pointer-events-none absolute left-1/2 -translate-x-1/2 bottom-full mb-2 w-52 rounded-md bg-on-surface text-white text-[12px] normal-case font-normal leading-snug px-3 py-2 text-center opacity-0 invisible group-hover/tip:opacity-100 group-hover/tip:visible transition-opacity duration-150 z-50 shadow-lg">Total price for your group size, guide, and vehicle</span>
-                </span>
+            <div class="mt-auto">
+              <div class="flex items-end justify-between gap-4 border-t border-white/20 pb-5 pt-5">
+                <p class="text-caption font-caption uppercase tracking-wider text-white/70" id="pc-label">
+                  Total for 2 persons
+                </p>
+                <div class="text-right">
+                  <p class="font-display text-headline-sm font-headline-sm text-white" id="pc-total">
+                    {fromPrice ? formatAMD(fromPrice) : "Contact for price"}
+                  </p>
+                  <p class="text-caption font-caption text-white/60" id="pc-usd">
+                    {fromPrice ? `${approxUSD(fromPrice)} approx.` : ""}
+                  </p>
+                </div>
+              </div>
+
+              <p class="mb-4 text-caption font-caption text-white/60">
+                Larger vehicles are an estimate and are confirmed by email before you pay anything.
               </p>
-              <p class="text-white text-headline-sm font-headline-sm" id="pc-total">Contact for price</p>
-            </div>
 
-            <a href={`${base}#contact`} class="block w-full bg-secondary text-white py-5 font-label-md text-label-md hover:bg-on-secondary-fixed-variant transition-colors uppercase tracking-widest text-center">Book Now</a>
+              <a href={`${base}#contact`} class="btn-primary btn-block">Request this date</a>
+              <a href={SITE.whatsapp} target="_blank" rel="noopener" class="mt-3 block text-center text-label-md font-label-md text-white/80 underline underline-offset-4 hover:text-white">
+                Or message us on WhatsApp
+              </a>
+            </div>
           </div>
-        </div>
         </div>
       </div>
     </div>
 
-    <!-- Included & Tips -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-gutter mt-stack-lg">
-      <div class="bg-surface-container-low p-stack-lg border border-border-muted">
-        <h3 class="font-headline-sm text-headline-sm text-primary mb-stack-md">What's Included</h3>
+    <!-- Included / not included / tips -->
+    <div class="mt-10 grid grid-cols-1 gap-gutter md:grid-cols-3">
+      <div class="panel-muted p-7">
+        <h2 class="font-display mb-5 text-headline-sm font-headline-sm text-primary">What's included</h2>
         <ul class="space-y-3">
           {included.map((item) => (
             <li class="flex items-start gap-3">
-              <span class="material-symbols-outlined text-secondary text-[20px]">check_circle</span>
-              <span class="font-body-md text-body-md text-on-surface-variant">{item}</span>
+              <span class="material-symbols-outlined text-[20px] text-secondary">check_circle</span>
+              <span class="text-body-md text-on-surface-variant">{item}</span>
             </li>
           ))}
         </ul>
       </div>
 
-      <div class="bg-surface-container-high p-stack-lg border border-border-muted">
-        <h3 class="font-headline-sm text-headline-sm text-primary mb-stack-md">Know Before You Go</h3>
-        <div class="space-y-4">
+      <div class="panel-muted p-7">
+        <h2 class="font-display mb-5 text-headline-sm font-headline-sm text-primary">Not included</h2>
+        <ul class="space-y-3">
+          {notIncluded.map((item) => (
+            <li class="flex items-start gap-3">
+              <span class="material-symbols-outlined text-[20px] text-on-surface-variant">remove_circle_outline</span>
+              <span class="text-body-md text-on-surface-variant">{item}</span>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-5 text-caption font-caption text-on-surface-variant">
+          Deposit and cancellation terms: <a class="text-secondary underline underline-offset-4" href={`${base}terms`}>read here</a>.
+        </p>
+      </div>
+
+      <div class="panel-muted p-7">
+        <h2 class="font-display mb-5 text-headline-sm font-headline-sm text-primary">Know before you go</h2>
+        <div class="space-y-5">
           {tips.map((tip) => (
             <div class="flex gap-4">
-              <div class="bg-surface-container-lowest p-2 h-fit">
+              <span class="h-fit rounded-lg bg-surface-container-lowest p-2">
                 <span class="material-symbols-outlined text-primary">{tip.icon}</span>
-              </div>
+              </span>
               <div>
-                <h4 class="font-label-md text-label-md text-primary uppercase">{tip.title}</h4>
-                <p class="font-body-md text-body-md text-on-surface-variant">{tip.desc}</p>
+                <h3 class="text-label-md font-label-md uppercase tracking-wide text-primary">{tip.title}</h3>
+                <p class="text-body-md text-on-surface-variant">{tip.desc}</p>
               </div>
             </div>
           ))}
@@ -262,221 +378,184 @@ const base = import.meta.env.BASE_URL;
       </div>
     </div>
   </section>
+  <!-- Mobile booking bar.
+       On a phone the price calculator sits below a very long itinerary, so the
+       price and the call to action were effectively invisible. This keeps both
+       one thumb away at all times. -->
+  <div
+    class="fixed inset-x-0 bottom-0 z-40 border-t border-border-muted bg-surface-container-lowest shadow-[0_-6px_24px_rgba(26,28,30,0.12)] lg:hidden"
+    style="padding-bottom: env(safe-area-inset-bottom);"
+  >
+    <div class="flex items-center gap-3 px-margin-mobile py-3">
+      <div class="min-w-0">
+        <p class="truncate text-caption font-caption uppercase tracking-wide text-on-surface-variant" id="mb-label">
+          Total for 2 persons
+        </p>
+        <p class="font-display truncate text-headline-sm font-headline-sm text-primary" id="mb-total">
+          {fromPrice ? formatAMD(fromPrice) : "Contact for price"}
+        </p>
+      </div>
+      <a href="#price-calc" class="btn-primary ml-auto shrink-0 px-5 py-3">Check price</a>
+    </div>
+  </div>
+  <!-- keeps the fixed bar from covering the end of the page -->
+  <div class="h-24 lg:hidden" aria-hidden="true"></div>
 </BaseLayout>
 
 <script>
-  import { priceFor, formatAMD } from "../data/tours.js";
+  import { priceFor, formatAMD, approxUSD } from "../data/tours.js";
 
-  // Hero slideshow — crossfades through the tour's image set. If an image
-  // 404s or is blocked (hotlink protection, expired CDN link), it's dropped
-  // from rotation instead of leaving a broken-image icon on screen.
-  const tourHeroSlides = Array.from(document.querySelectorAll(".tour-hero-slide")) as HTMLElement[];
-  const tourHeroDots = Array.from(document.querySelectorAll(".tour-hero-dot")) as HTMLElement[];
-  if (tourHeroSlides.length > 0) {
-    let heroIdx = 0;
-    let heroTimer: number | undefined;
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    function showHeroSlide(next: number) {
-      tourHeroSlides[heroIdx].classList.replace("opacity-100", "opacity-0");
-      tourHeroDots[heroIdx]?.classList.remove("w-8", "bg-white");
-      tourHeroDots[heroIdx]?.classList.add("w-1.5", "bg-white/50");
-      heroIdx = next;
-      tourHeroSlides[heroIdx].classList.replace("opacity-0", "opacity-100");
-      tourHeroDots[heroIdx]?.classList.remove("w-1.5", "bg-white/50");
-      tourHeroDots[heroIdx]?.classList.add("w-8", "bg-white");
+  // --- Hero slideshow ---
+  const slides = Array.from(document.querySelectorAll<HTMLElement>(".tour-hero-slide"));
+  const dots = Array.from(document.querySelectorAll<HTMLElement>(".tour-hero-dot"));
+
+  if (slides.length > 1) {
+    let index = 0;
+    let timer: number | undefined;
+
+    function show(next: number) {
+      slides[index].classList.replace("opacity-100", "opacity-0");
+      dots[index]?.classList.remove("w-8", "bg-white");
+      dots[index]?.classList.add("w-1.5", "bg-white/50");
+      index = next;
+      slides[index].classList.replace("opacity-0", "opacity-100");
+      dots[index]?.classList.remove("w-1.5", "bg-white/50");
+      dots[index]?.classList.add("w-8", "bg-white");
     }
 
-    tourHeroSlides.forEach((slide, i) => {
-      slide.addEventListener("error", () => {
-        slide.classList.add("hidden");
-        tourHeroDots[i]?.classList.add("hidden");
-        if (i === heroIdx) {
-          const next = tourHeroSlides.findIndex((s, j) => j !== i && !s.classList.contains("hidden"));
-          if (next !== -1) showHeroSlide(next);
-        }
+    function start() {
+      timer = window.setInterval(() => show((index + 1) % slides.length), 5000);
+    }
+    start();
+
+    dots.forEach((dot) => {
+      dot.addEventListener("click", () => {
+        if (timer) clearInterval(timer);
+        show(parseInt(dot.dataset.index || "0", 10));
+        start();
       });
     });
 
-    if (tourHeroSlides.length > 1) {
-      function startHeroTimer() {
-        heroTimer = window.setInterval(() => {
-          let next = (heroIdx + 1) % tourHeroSlides.length;
-          let attempts = 0;
-          while (tourHeroSlides[next].classList.contains("hidden") && attempts < tourHeroSlides.length) {
-            next = (next + 1) % tourHeroSlides.length;
-            attempts++;
-          }
-          if (!tourHeroSlides[next].classList.contains("hidden")) showHeroSlide(next);
-        }, 4000);
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) {
+        if (timer) clearInterval(timer);
+      } else {
+        start();
       }
-      startHeroTimer();
-      tourHeroDots.forEach((dot) => {
-        dot.addEventListener("click", () => {
-          if (heroTimer) clearInterval(heroTimer);
-          showHeroSlide(parseInt(dot.dataset.index || "0", 10));
-          startHeroTimer();
-        });
-      });
-    }
+    });
   }
 
-  // Itinerary route line — fills in and lights up dots as the reader scrolls through stops
-  document.querySelectorAll(".itin-line").forEach((line) => {
-    const fill = line.querySelector(".itin-fill") as HTMLElement | null;
-    const dots = Array.from(line.querySelectorAll(".itin-dot")) as HTMLElement[];
-    if (!fill || dots.length === 0) return;
+  // --- Itinerary route line ---
+  document.querySelectorAll<HTMLElement>(".itin-line").forEach((line) => {
+    const fill = line.querySelector<HTMLElement>(".itin-fill");
+    const stopDots = Array.from(line.querySelectorAll<HTMLElement>(".itin-dot"));
+    if (!fill || stopDots.length === 0) return;
+
+    if (reduceMotion || !("IntersectionObserver" in window)) {
+      fill.style.height = "100%";
+      stopDots.forEach((dot) => dot.classList.replace("bg-border-muted", "bg-secondary"));
+      return;
+    }
 
     let deepest = -1;
-    const io = new IntersectionObserver(
+    const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
-          const i = dots.indexOf(entry.target as HTMLElement);
+          const i = stopDots.indexOf(entry.target as HTMLElement);
           if (i <= deepest) return;
           deepest = i;
           const lineTop = line.getBoundingClientRect().top;
-          const dotRect = dots[deepest].getBoundingClientRect();
-          const heightPx = dotRect.top - lineTop + dotRect.height / 2;
-          fill.style.height = `${Math.max(0, heightPx)}px`;
-          for (let j = 0; j <= deepest; j++) {
-            dots[j].classList.remove("bg-border-muted", "scale-100");
-            dots[j].classList.add("bg-secondary", "scale-110");
+          const rect = stopDots[deepest].getBoundingClientRect();
+          fill.style.height = `${Math.max(0, rect.top - lineTop + rect.height / 2)}px`;
+          for (let j = 0; j <= deepest; j += 1) {
+            stopDots[j].classList.remove("bg-border-muted");
+            stopDots[j].classList.add("bg-secondary", "scale-110");
           }
         });
       },
       { threshold: 0.6, rootMargin: "0px 0px -10% 0px" }
     );
-    dots.forEach((dot) => io.observe(dot));
+    stopDots.forEach((dot) => observer.observe(dot));
   });
 
+  // --- Price calculator ---
   const calc = document.getElementById("price-calc");
   if (calc) {
     const pricing = JSON.parse(calc.dataset.pricing || "null");
     const peopleInput = document.getElementById("pc-people") as HTMLInputElement;
-    const minusBtn = document.getElementById("pc-minus");
-    const plusBtn = document.getElementById("pc-plus");
+    const guideSelect = document.getElementById("pc-guide") as HTMLSelectElement;
+    const vehicleSelect = document.getElementById("pc-vehicle") as HTMLSelectElement;
     const totalEl = document.getElementById("pc-total");
+    const usdEl = document.getElementById("pc-usd");
     const labelEl = document.getElementById("pc-label");
 
-    // Combined guide + language dropdown
-    const guideWrap = document.getElementById("pc-guide-wrap")!;
-    const guideBtn = document.getElementById("pc-guide-btn")!;
-    const guideLabel = document.getElementById("pc-guide-label")!;
-    const guideChevron = document.getElementById("pc-guide-chevron")!;
-    const guideList = document.getElementById("pc-guide-list")!;
-    const guideItems = Array.from(guideList.querySelectorAll("li"));
-    let guideValue = "noGuide"; // noGuide | guide:en | guide:ru | guide:am
-
-    function closeGuideList() {
-      guideList.classList.add("hidden");
-      guideChevron.classList.remove("rotate-180");
-      guideBtn.setAttribute("aria-expanded", "false");
-    }
-
-    guideBtn.addEventListener("click", () => {
-      const willOpen = guideList.classList.contains("hidden");
-      guideList.classList.toggle("hidden");
-      guideChevron.classList.toggle("rotate-180", willOpen);
-      guideBtn.setAttribute("aria-expanded", String(willOpen));
-    });
-
-    guideItems.forEach((li) => {
-      li.addEventListener("click", () => {
-        guideValue = li.getAttribute("data-value") || "noGuide";
-        guideLabel.innerHTML = li.innerHTML;
-        guideItems.forEach((o) => o.classList.toggle("bg-surface-container", o === li));
-        closeGuideList();
-        update();
-      });
-    });
-
-    document.addEventListener("click", (e) => {
-      if (!guideWrap.contains(e.target as Node)) closeGuideList();
-    });
-
-    // Vehicle dropdown — placeholder multiplier algorithm until real
-    // per-vehicle pricing is provided; swap VEHICLE_MULTIPLIERS for real
-    // numbers later.
+    // Placeholder multipliers until real per-vehicle pricing is supplied.
     const VEHICLE_MULTIPLIERS: Record<string, number> = {
       sedan: 1,
       minivan: 1.15,
       minibus: 1.35,
       sprinter: 1.6,
     };
-    const vehicleWrap = document.getElementById("pc-vehicle-wrap")!;
-    const vehicleBtn = document.getElementById("pc-vehicle-btn")!;
-    const vehicleLabel = document.getElementById("pc-vehicle-label")!;
-    const vehicleChevron = document.getElementById("pc-vehicle-chevron")!;
-    const vehicleList = document.getElementById("pc-vehicle-list")!;
-    const vehicleItems = Array.from(vehicleList.querySelectorAll("li"));
-    let vehicleValue = "sedan";
-
-    function closeVehicleList() {
-      vehicleList.classList.add("hidden");
-      vehicleChevron.classList.remove("rotate-180");
-      vehicleBtn.setAttribute("aria-expanded", "false");
-    }
-
-    vehicleBtn.addEventListener("click", () => {
-      const willOpen = vehicleList.classList.contains("hidden");
-      vehicleList.classList.toggle("hidden");
-      vehicleChevron.classList.toggle("rotate-180", willOpen);
-      vehicleBtn.setAttribute("aria-expanded", String(willOpen));
-    });
-
-    vehicleItems.forEach((li) => {
-      li.addEventListener("click", () => {
-        vehicleValue = li.getAttribute("data-value") || "sedan";
-        vehicleLabel.textContent = li.textContent;
-        vehicleItems.forEach((o) => o.classList.toggle("bg-surface-container", o === li));
-        closeVehicleList();
-        update();
-      });
-    });
-
-    document.addEventListener("click", (e) => {
-      if (!vehicleWrap.contains(e.target as Node)) closeVehicleList();
-    });
 
     let lastTotal: number | null = null;
+
     function animateTotal(from: number, to: number) {
+      if (reduceMotion) {
+        if (totalEl) totalEl.textContent = formatAMD(to);
+        return;
+      }
       const start = performance.now();
-      const duration = 400;
       function tick(now: number) {
-        const t = Math.min(1, (now - start) / duration);
+        const t = Math.min(1, (now - start) / 400);
         const eased = 1 - Math.pow(1 - t, 3);
-        const val = Math.round(from + (to - from) * eased);
-        totalEl!.textContent = formatAMD(val);
+        if (totalEl) totalEl.textContent = formatAMD(Math.round(from + (to - from) * eased));
         if (t < 1) requestAnimationFrame(tick);
       }
       requestAnimationFrame(tick);
     }
 
     function update() {
-      const people = Math.max(1, Math.min(20, parseInt(peopleInput.value, 10) || 1));      peopleInput.value = String(people);
-      const withGuide = guideValue.startsWith("guide:");
-      const base = priceFor(pricing, people, withGuide);
-      const total = base == null ? null : Math.round((base * VEHICLE_MULTIPLIERS[vehicleValue]) / 100) * 100;
-      labelEl!.textContent = `Total for ${people} ${people === 1 ? "person" : "persons"}`;
+      const people = Math.max(1, Math.min(20, parseInt(peopleInput.value, 10) || 1));
+      peopleInput.value = String(people);
+      const withGuide = guideSelect.value.startsWith("guide:");
+      const basePrice = priceFor(pricing, people, withGuide);
+      const total =
+        basePrice == null
+          ? null
+          : Math.round((basePrice * VEHICLE_MULTIPLIERS[vehicleSelect.value]) / 100) * 100;
+
+      const peopleLabel = `Total for ${people} ${people === 1 ? "person" : "persons"}`;
+      if (labelEl) labelEl.textContent = peopleLabel;
+      const barLabel = document.getElementById("mb-label");
+      const barTotal = document.getElementById("mb-total");
+      if (barLabel) barLabel.textContent = peopleLabel;
+      if (barTotal) barTotal.textContent = total == null ? "Contact for price" : formatAMD(total);
 
       if (total == null) {
-        totalEl!.textContent = "Contact for price";
-      } else if (lastTotal == null) {
-        totalEl!.textContent = formatAMD(total);
+        if (totalEl) totalEl.textContent = "Contact for price";
+        if (usdEl) usdEl.textContent = "";
       } else {
-        animateTotal(lastTotal, total);
+        if (lastTotal == null && totalEl) totalEl.textContent = formatAMD(total);
+        else animateTotal(lastTotal as number, total);
+        if (usdEl) usdEl.textContent = `${approxUSD(total)} approx.`;
       }
       lastTotal = total;
     }
 
-    minusBtn?.addEventListener("click", () => {
-      peopleInput.value = String(Math.max(1, parseInt(peopleInput.value, 10) - 1));
+    document.getElementById("pc-minus")?.addEventListener("click", () => {
+      peopleInput.value = String(Math.max(1, (parseInt(peopleInput.value, 10) || 1) - 1));
       update();
     });
-    plusBtn?.addEventListener("click", () => {
-      peopleInput.value = String(Math.min(20, parseInt(peopleInput.value, 10) + 1));      update();
+    document.getElementById("pc-plus")?.addEventListener("click", () => {
+      peopleInput.value = String(Math.min(20, (parseInt(peopleInput.value, 10) || 1) + 1));
+      update();
     });
     peopleInput.addEventListener("input", update);
+    guideSelect.addEventListener("change", update);
+    vehicleSelect.addEventListener("change", update);
     update();
   }
 </script>

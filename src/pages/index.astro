@@ -1,687 +1,378 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { TOURS, priceFor, formatAMD } from "../data/tours.js";
+import Picture from "../components/Picture.astro";
+import TourSearch from "../components/TourSearch.astro";
+import EnquiryForm from "../components/EnquiryForm.astro";
+import ReviewForm from "../components/ReviewForm.astro";
+import { REVIEWS } from "../data/reviews.js";
+import { SITE } from "../lib/site.js";
+import { image } from "../lib/images.js";
+import PricingCalculator from "../components/PricingCalculator.astro";
 
 const base = import.meta.env.BASE_URL;
 
-// Add your 4 image URLs here:
+// Four hero images, not nine: each one is a full-screen download, and nobody
+// waits through nine slides.
 const HERO_IMAGES = [
-  `${base}images/cathedral.png`,
-  `${base}images/church.png`,
-  `${base}images/hall.png`,
-  `${base}images/aram-YHW3oGai3Dg-unsplash.jpg`,
-  `${base}images/ani1.jpg`,
-  `${base}images/ani2.jpg`,
-  `${base}images/levon-vardanyan-9KG32efejAo-unsplash.jpg`,
-  `${base}images/ani3.jpg`,
-  `${base}images/alex.jpg`
+  { src: "images/hero/01-cathedral.jpg", alt: "Cathedral interior in Armenia" },
+  { src: "images/hero/02-highlands.jpg", alt: "Armenian highlands at sunset" },
+  { src: "images/hero/03-monastery.jpg", alt: "Monastery in the mountains" },
+  { src: "images/hero/04-lake.jpg", alt: "Alpine lake in Armenia" },
+].map((entry) => ({ ...entry, resolved: image(entry.src) }));
+
+const CATEGORIES = [
+  { key: "cat_1", title: "Day Tours", desc: "One-day private trips across Armenia.", href: `${base}tours/day-tours`, img: "images/categories/day-tours.jpg" },
+  { key: "cat_2", title: "Multi-Day", desc: "Explore heritage in depth over 2-4 days.", href: `${base}tours/multi-day-tours`, img: "images/categories/multi-day.jpg" },
+  { key: "cat_3", title: "Custom", desc: "Routes built around your specific dates.", href: `${base}custom-tour`, img: "images/categories/custom.jpg" },
+  { key: "cat_4", title: "Transfers", desc: "Private drivers & airport shuttle services.", href: `${base}private-transfer`, img: "images/categories/transfers.jpg" },
 ];
 ---
 
 <BaseLayout title="Upupa Travel — Private Guides in Armenia" current="home">
-<!-- Hero Section -->
-<section class="relative h-[85vh] flex items-center overflow-hidden">
-  <!-- Carousel Background Images -->
-  <div class="absolute inset-0 z-0" id="hero-carousel">
-    <div class="absolute inset-0 bg-black/40 z-10"></div>
-      {HERO_IMAGES.map((imgUrl, index) => (
-        <img
-          src={imgUrl}
-          alt="Armenia Travel"
-          fetchpriority={index === 0 ? "high" : "auto"}
-          loading={index === 0 ? "eager" : "lazy"}
-          decoding={index === 0 ? "sync" : "async"}
-          class={`hero-slide absolute inset-0 w-full h-full object-cover [image-rendering:crisp-edges] ${index === 0 ? 'opacity-100' : 'opacity-0'}`}
-        />
+  <!-- ================= Hero ================= -->
+  <section class="relative flex min-h-[78vh] min-h-[78svh] items-center overflow-hidden lg:min-h-[82vh] lg:min-h-[82svh]">
+    <div class="absolute inset-0 z-0" id="hero-carousel">
+      {HERO_IMAGES.map((entry, index) => (
+        <picture>
+          {entry.resolved.webp && <source srcset={entry.resolved.webp} type="image/webp" />}
+          <img
+            src={entry.resolved.src}
+            alt={index === 0 ? entry.alt : ""}
+            width="2000"
+            height="1200"
+            fetchpriority={index === 0 ? "high" : "auto"}
+            loading={index === 0 ? "eager" : "lazy"}
+            decoding={index === 0 ? "sync" : "async"}
+            class={`hero-slide absolute inset-0 h-full w-full object-cover ${index === 0 ? "opacity-100" : "opacity-0"}`}
+          />
+        </picture>
       ))}
-  </div>
-
-  <div class="relative z-20 w-full px-margin-desktop max-w-container-max mx-auto">
-    <div class="max-w-3xl">
-      <h1 class="text-white text-display-lg-mobile md:text-display-lg font-display-lg mb-stack-md leading-tight text-glow" style="font-family: 'Source Serif 4', serif;" data-t="hero_title">Travel boldly with Upupa</h1>
-      <div class="flex flex-wrap gap-4">
-        <a class="bg-secondary text-white px-8 py-4 rounded-lg font-bold hover:bg-secondary/90 transition-all flex items-center gap-2" href="#tours">
-          <span data-t="hero_cta_explore" class="">Explore Tours</span> <span class="material-symbols-outlined">arrow_forward</span>
-        </a>
-        <a class="bg-white/10 backdrop-blur-md border border-white/20 text-white px-8 py-4 rounded-lg font-bold hover:bg-white/20 transition-all" data-t="hero_cta_story" href="#about">
-          Our Story
-        </a>
-      </div>
+      <div class="absolute inset-0 z-10 bg-gradient-to-r from-black/70 via-black/45 to-black/25"></div>
     </div>
 
-    <div class="flex gap-2 mt-10" id="hero-dots">
-      {HERO_IMAGES.map((_, index) => (
-        <button
-          type="button"
-          class={`hero-dot h-1.5 rounded-full transition-all duration-500 ${index === 0 ? 'w-8 bg-white' : 'w-1.5 bg-white/40 hover:bg-white/70'}`}
-          data-index={index}
-          aria-label={`Go to slide ${index + 1}`}
-        ></button>
-      ))}
-    </div>
-  </div>
-
-<!-- Category Quick-links -->
-<div class="absolute bottom-0 left-0 right-0 z-30 transform translate-y-1/2 hidden md:block">
-<div class="max-w-container-max mx-auto px-margin-desktop">
-<div class="grid grid-cols-4 gap-6" id="category-grid">
-<!-- Box 1 -->
-<a class="block bg-surface shadow-xl rounded-xl border border-outline-variant hover:-translate-y-2 hover:scale-105 transition-all duration-300 cursor-pointer h-64 relative overflow-hidden group/card" href="#tours">
-<div class="relative z-20 h-full flex flex-col p-6">
-<h3 class="font-headline-md text-primary mb-2 text-2xl leading-tight" data-t="cat_1_title">Day Tours</h3>
-<p class="text-on-surface-variant text-sm" data-t="cat_1_desc">One-day private trips across Armenia.</p>
-<div class="mt-auto h-28 -mx-6 -mb-6 overflow-hidden">
-<img alt="Day Tours" class="w-full h-full object-cover transition-transform duration-500 group-hover/card:scale-110" src={`${base}images/hp1.jpg`}>
-</div>
-</div>
-</a>
-<!-- Box 2 -->
-<a class="block bg-surface shadow-xl rounded-xl border border-outline-variant hover:-translate-y-2 hover:scale-105 transition-all duration-300 cursor-pointer h-64 relative overflow-hidden group/card" href="#tours">
-<div class="relative z-20 h-full flex flex-col p-6">
-<h3 class="font-headline-md text-primary mb-2 text-2xl leading-tight" data-t="cat_2_title">Multi-Day</h3>
-<p class="text-on-surface-variant text-sm" data-t="cat_2_desc">Explore heritage in depth over 2-4 days.</p>
-<div class="mt-auto h-28 -mx-6 -mb-6 overflow-hidden">
-<img alt="Multi-Day" class="w-full h-full object-cover transition-transform duration-500 group-hover/card:scale-110" src={`${base}images/hp2.jpg`}>
-</div>
-</div>
-</a>
-<!-- Box 3 -->
-<a class="block bg-surface shadow-xl rounded-xl border border-outline-variant hover:-translate-y-2 hover:scale-105 transition-all duration-300 cursor-pointer h-64 relative overflow-hidden group/card" href={`${base}custom-tour`}>
-<div class="relative z-20 h-full flex flex-col p-6">
-<h3 class="font-headline-md text-primary mb-2 text-2xl leading-tight" data-t="cat_3_title">Custom</h3>
-<p class="text-on-surface-variant text-sm" data-t="cat_3_desc">Routes built around your specific dates.</p>
-<div class="mt-auto h-28 -mx-6 -mb-6 overflow-hidden">
-<img alt="Custom" class="w-full h-full object-cover transition-transform duration-500 group-hover/card:scale-110" src={`${base}images/hp3.jpg`}>
-</div>
-</div>
-</a>
-<!-- Box 4 -->
-<a class="block bg-surface shadow-xl rounded-xl border border-outline-variant hover:-translate-y-2 hover:scale-105 transition-all duration-300 cursor-pointer h-64 relative overflow-hidden group/card" href={`${base}private-transfer`}>
-<div class="relative z-20 h-full flex flex-col p-6">
-<h3 class="font-headline-md text-primary mb-2 text-2xl leading-tight" data-t="cat_4_title">Transfers</h3>
-<p class="text-on-surface-variant text-sm" data-t="cat_4_desc">Private drivers &amp; airport shuttle services.</p>
-<div class="mt-auto h-28 -mx-6 -mb-6 overflow-hidden">
-<img alt="Transfers" class="w-full h-full object-cover transition-transform duration-500 group-hover/card:scale-110" src={`${base}images/ararat1.jpg`}>
-</div>
-</div>
-</a>
-</div>
-</div>
-</div>
-</section>
-
-<!-- Category Quick-links (mobile) — the desktop version above is absolutely
-     positioned to straddle the hero/about seam, which doesn't translate to
-     mobile, so phones get their own in-flow version instead of nothing. -->
-<div class="px-margin-desktop mt-8 md:hidden">
-  <div class="grid grid-cols-2 gap-4" id="category-grid-mobile">
-    <a class="block bg-surface shadow-lg rounded-xl border border-outline-variant h-36 relative overflow-hidden" href="#tours">
-      <img alt="Day Tours" class="absolute inset-0 w-full h-full object-cover" src={`${base}images/hp1.jpg`} />
-      <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
-      <div class="absolute inset-x-0 bottom-0 p-3">
-        <h3 class="text-white font-headline-sm text-sm leading-tight" data-t="cat_1_title">Day Tours</h3>
-      </div>
-    </a>
-    <a class="block bg-surface shadow-lg rounded-xl border border-outline-variant h-36 relative overflow-hidden" href="#tours">
-      <img alt="Multi-Day" class="absolute inset-0 w-full h-full object-cover" src={`${base}images/hp2.jpg`} />
-      <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
-      <div class="absolute inset-x-0 bottom-0 p-3">
-        <h3 class="text-white font-headline-sm text-sm leading-tight" data-t="cat_2_title">Multi-Day</h3>
-      </div>
-    </a>
-    <a class="block bg-surface shadow-lg rounded-xl border border-outline-variant h-36 relative overflow-hidden" href={`${base}custom-tour`}>
-      <img alt="Custom" class="absolute inset-0 w-full h-full object-cover" src={`${base}images/hp3.jpg`} />
-      <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
-      <div class="absolute inset-x-0 bottom-0 p-3">
-        <h3 class="text-white font-headline-sm text-sm leading-tight" data-t="cat_3_title">Custom</h3>
-      </div>
-    </a>
-    <a class="block bg-surface shadow-lg rounded-xl border border-outline-variant h-36 relative overflow-hidden" href={`${base}private-transfer`}>
-      <img alt="Transfers" class="absolute inset-0 w-full h-full object-cover" src={`${base}images/ararat1.jpg`} />
-      <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
-      <div class="absolute inset-x-0 bottom-0 p-3">
-        <h3 class="text-white font-headline-sm text-sm leading-tight" data-t="cat_4_title">Transfers</h3>
-      </div>
-    </a>
-  </div>
-</div>
-
-<!-- Minimalist About Section -->
-<section class="bg-surface text-on-surface py-20 relative overflow-hidden" id="about">
-  <div class="max-w-container-max mx-auto px-margin-desktop">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-      
-      <!-- Single Clean Hero Photo -->
-      <div class="lg:col-span-6">
-        <div class="rounded-2xl overflow-hidden shadow-xl border border-border-muted">
-          <img 
-            alt="Armenian Mountain Landscape" 
-            class="w-full h-[400px] md:h-[480px] object-cover" 
-            src="https://traveltoarmenia.am/wp-content/uploads/2019/02/AdobeStock_196618948-1024x677.jpeg"
-          >
+    <div class="container-page relative z-20 py-20">
+      <div class="max-w-3xl">
+        <p class="mb-3 text-label-md font-label-md uppercase tracking-widest text-white/80">
+          {SITE.city}, Armenia
+          <span class="hidden sm:inline"> · English · Русский · Հայերեն</span>
+        </p>
+        <h1
+          class="font-display text-display-lg-mobile font-display-lg leading-tight text-balance text-white md:text-display-lg"
+          data-t="hero_title"
+        >
+          Travel boldly with Upupa
+        </h1>
+        <p class="mt-5 max-w-xl text-body-lg text-white/85">
+          Private day trips and multi-day journeys across Armenia, planned around you and led by
+          guides who grew up here.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a class="btn-primary" href="#tours">
+            <span data-t="hero_cta_explore">Explore Tours</span>
+            <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+          </a>
+          <a class="btn-ghost-light backdrop-blur-md" data-t="hero_cta_story" href="#about">Our Story</a>
         </div>
       </div>
 
-      <!-- Minimalist Content Column -->
-      <div class="lg:col-span-6 flex flex-col justify-center">
-        <span class="text-[#229ED9] font-label-md text-xs tracking-widest uppercase font-bold mb-2" data-t="about_subtitle">
-          Who We Are
-        </span>
+      <div class="mt-10 flex items-center gap-3" id="hero-dots">
+        {HERO_IMAGES.map((_, index) => (
+          <button
+            type="button"
+            class={`hero-dot relative h-1.5 rounded-full transition-all duration-500 before:absolute before:-inset-x-1 before:-inset-y-3 before:content-[''] ${index === 0 ? "w-8 bg-white" : "w-1.5 bg-white/40 hover:bg-white/70"}`}
+            data-index={index}
+            aria-label={`Show photo ${index + 1}`}
+          ></button>
+        ))}
+      </div>
+    </div>
+  </section>
 
-        <h2 class="text-3xl md:text-4xl font-display-lg font-bold mb-6 text-primary leading-tight" style="font-family: 'Source Serif 4', serif;" data-t="about_title">
-          About Upupa Travel
-        </h2>
+  <!-- ================= Categories =================
+       One responsive grid instead of a desktop-only absolutely-positioned
+       strip plus a separate mobile copy of the same four cards. -->
+  <section class="container-page mt-8 pb-4 md:-mt-16" aria-label="What we offer">
+    <div class="grid grid-cols-2 gap-3 md:gap-6 lg:grid-cols-4" id="category-grid">
+      {CATEGORIES.map((category, index) => (
+        <a
+          href={category.href}
+          class="reveal group relative flex h-44 flex-col overflow-hidden rounded-xl border border-border-muted bg-surface-container-lowest shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover motion-reduce:hover:translate-y-0 md:h-64"
+          style={`transition-delay:${index * 80}ms`}
+        >
+          <div class="relative z-20 flex h-full flex-col p-4 md:p-6">
+            <h2 class="font-display text-headline-sm font-headline-sm leading-tight text-primary" data-t={`${category.key}_title`}>
+              {category.title}
+            </h2>
+            <p class="mt-1 hidden text-body-md text-on-surface-variant md:block" data-t={`${category.key}_desc`}>
+              {category.desc}
+            </p>
+            <div class="-mx-4 -mb-4 mt-3 min-h-0 flex-1 overflow-hidden md:-mx-6 md:-mb-6 md:mt-auto md:h-28 md:flex-none">
+              <Picture
+                src={category.img}
+                alt=""
+                width={600}
+                height={400}
+                class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 motion-reduce:transform-none"
+                sizes="(max-width: 1024px) 50vw, 300px"
+              />
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
 
-        <p class="text-on-surface-variant text-body-lg leading-relaxed mb-8" data-t="about_desc">
-          Upupa Travel is a private guide service based in Yerevan. We design personal day trips and multi-day journeys to Armenia's ancient monasteries, volcanic highlands, and hidden valleys — planned around you, and led by guides who grew up here.
+  <!-- ================= About ================= -->
+  <section class="section-y" id="about">
+    <div class="container-page grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-16">
+      <div class="reveal lg:col-span-6">
+        <div class="overflow-hidden rounded-2xl border border-border-muted shadow-card">
+          <!-- Our own photo. The previous one was hot-linked from another
+               travel company's server. -->
+          <Picture
+            src="images/about/armenia-highlands.jpg"
+            alt="Armenian mountain landscape"
+            width={1200}
+            height={800}
+            class="h-[320px] w-full object-cover md:h-[460px]"
+            sizes="(max-width: 1024px) 100vw, 600px"
+          />
+        </div>
+      </div>
+
+      <div class="reveal flex flex-col justify-center lg:col-span-6">
+        <span class="eyebrow text-telegram" data-t="about_subtitle">Who We Are</span>
+        <h2 class="section-title text-balance" data-t="about_title">About Upupa Travel</h2>
+        <p class="mt-5 text-body-lg text-on-surface-variant" data-t="about_desc">
+          Upupa Travel is a private guide service based in Yerevan. We design personal day trips and
+          multi-day journeys to Armenia's ancient monasteries, volcanic highlands, and hidden
+          valleys — planned around you, and led by guides who grew up here.
         </p>
 
-        <!-- Streamlined Minimal Highlights -->
-        <div class="space-y-4">
-          <div class="flex items-center gap-3">
-            <span class="material-symbols-outlined text-secondary text-xl">language</span>
-            <span class="text-on-surface text-sm font-medium">Local, native guides (English, Russian, Armenian)</span>
-          </div>
-
-          <div class="flex items-center gap-3">
-            <span class="material-symbols-outlined text-secondary text-xl">groups</span>
-            <span class="text-on-surface text-sm font-medium">Small, private groups tailored to your rhythm</span>
-          </div>
-
-          <div class="flex items-center gap-3">
-            <span class="material-symbols-outlined text-secondary text-xl">map</span>
-            <span class="text-on-surface text-sm font-medium">Custom-built itineraries based on your interests</span>
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-  </div>
-</section>
-
-
-<!-- Tours & Packages Section -->
-<section class="py-section-padding px-margin-desktop max-w-container-max mx-auto mt-20" id="tours">
-<div class="text-center mb-16">
-<span class="text-secondary font-label-md text-label-md tracking-widest uppercase mb-2 block" data-t="tours_subtitle">Curated Experiences</span>
-<h2 class="text-headline-md font-headline-md text-primary mb-4" style="font-family: 'Source Serif 4', serif;" data-t="tours_title">Tours &amp; Packages</h2>
-<div class="w-12 h-1 bg-secondary mx-auto mb-6"></div>
-<p class="text-on-surface-variant max-w-2xl mx-auto text-body-md" data-t="tours_desc">Discover the heart of Armenia through our specialized language-inclusive routes.</p>
-</div>
-
-<!-- Search / Filter Bar -->
-<div class="flex flex-wrap gap-6 justify-center mb-12" id="tours-search">
-  <!-- Box 1: People -->
-  <div class="bg-surface-container-low border border-border-muted rounded-lg p-6">
-    <label class="block text-label-md font-label-md text-primary uppercase mb-3">Number of people</label>
-    <div class="flex items-center gap-2">
-      <button type="button" id="ts-minus" class="w-9 h-9 border border-border-muted text-primary hover:bg-surface-container transition-colors" aria-label="Decrease">−</button>
-      <input id="ts-people" type="number" min="1" max="20" value="2" class="w-14 text-center border border-border-muted rounded p-2 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />
-      <button type="button" id="ts-plus" class="w-9 h-9 border border-border-muted text-primary hover:bg-surface-container transition-colors" aria-label="Increase">+</button>
-    </div>
-  </div>
-
-  <!-- Box 2: Unified Guide & Language Dropdown -->
-  <div class="bg-surface-container-low border border-border-muted rounded-lg p-6 min-w-[220px]">
-    <label class="block text-label-md font-label-md text-primary uppercase mb-3">Guide</label>
-    <select id="ts-guide-lang" class="border border-border-muted rounded p-2.5 w-full bg-white text-primary font-medium focus:ring-2 focus:ring-secondary focus:outline-none">
-      <option value="noGuide">No guide</option>
-      <option value="en">🇬🇧 English</option>
-      <option value="ru">🇷🇺 Russian</option>
-      <option value="am">🇦🇲 Armenian</option>
-    </select>
-  </div>
-</div>
-
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter" id="tours-grid"></div>
-</section>
-
-<script>
-  import { TOURS, priceFor, formatAMD } from "../data/tours.js";
-  const base = import.meta.env.BASE_URL;
-
-  const grid = document.getElementById("tours-grid");
-  const peopleInput = document.getElementById("ts-people");
-  const minusBtn = document.getElementById("ts-minus");
-  const plusBtn = document.getElementById("ts-plus");
-  const guideLangSelect = document.getElementById("ts-guide-lang");
-
-  // Background Hero Carousel
-  const slides = document.querySelectorAll('.hero-slide');
-  const dots = document.querySelectorAll('.hero-dot');
-  let currentSlide = 0;
-  let heroTimer = null;
-
-  function goToSlide(next) {
-    slides[currentSlide].classList.remove('opacity-100', 'kb-active');
-    slides[currentSlide].classList.add('opacity-0');
-    if (dots[currentSlide]) {
-      dots[currentSlide].classList.remove('w-8', 'bg-white');
-      dots[currentSlide].classList.add('w-1.5', 'bg-white/40');
-    }
-
-    currentSlide = next;
-
-    slides[currentSlide].classList.remove('opacity-0');
-    slides[currentSlide].classList.add('opacity-100');
-    requestAnimationFrame(() => requestAnimationFrame(() => {
-      slides[currentSlide].classList.add('kb-active');
-    }));
-    if (dots[currentSlide]) {
-      dots[currentSlide].classList.remove('w-1.5', 'bg-white/40');
-      dots[currentSlide].classList.add('w-8', 'bg-white');
-    }
-  }
-
-  function startHeroTimer() {
-    heroTimer = setInterval(() => {
-      goToSlide((currentSlide + 1) % slides.length);
-    }, 5000);
-  }
-
-  if (slides.length > 1) {
-    slides[0].classList.add('kb-active');
-    startHeroTimer();
-
-    dots.forEach((dot) => {
-      dot.addEventListener('click', () => {
-        clearInterval(heroTimer);
-        goToSlide(parseInt(dot.dataset.index, 10));
-        startHeroTimer();
-      });
-    });
-  }
-
-  // Category staggered reveal
-  function staggerReveal(container, step = 90) {
-    if (!container) return;
-    const kids = Array.from(container.children);
-    kids.forEach((el, i) => {
-      el.classList.add('stagger-item');
-      el.style.transitionDelay = `${i * step}ms`;
-    });
-    const io = new IntersectionObserver((entries, obs) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          kids.forEach((el) => el.classList.add('stagger-in'));
-          obs.disconnect();
-        }
-      });
-    }, { threshold: 0.15 });
-    io.observe(container);
-  }
-  staggerReveal(document.getElementById('category-grid'));
-
-  // Auto-advancing slideshows for each tour card. Timers are tracked so they
-  // can be torn down before every re-render (filter change) — otherwise old
-  // intervals pile up and keep firing against DOM nodes that no longer exist.
-  let cardTimers = [];
-  function clearCardTimers() {
-    cardTimers.forEach((id) => clearInterval(id));
-    cardTimers = [];
-  }
-  function initCardSlideshow(card) {
-    const slides = Array.from(card.querySelectorAll(".card-slide"));
-    const dots = Array.from(card.querySelectorAll(".card-dot"));
-    if (slides.length === 0) return;
-
-    let idx = 0;
-    function show(next) {
-      slides[idx].classList.replace("opacity-100", "opacity-0");
-      dots[idx]?.classList.remove("w-6", "bg-white");
-      dots[idx]?.classList.add("w-1.5", "bg-white/50");
-      idx = next;
-      slides[idx].classList.replace("opacity-0", "opacity-100");
-      dots[idx]?.classList.remove("w-1.5", "bg-white/50");
-      dots[idx]?.classList.add("w-6", "bg-white");
-    }
-
-    // If an image 404s or is blocked by hotlink protection, drop it from
-    // rotation instead of leaving a broken-image icon on screen.
-    slides.forEach((slide, i) => {
-      slide.addEventListener("error", () => {
-        slide.classList.add("hidden");
-        dots[i]?.classList.add("hidden");
-        if (i === idx) {
-          const next = slides.findIndex((s, j) => j !== i && !s.classList.contains("hidden"));
-          if (next !== -1) show(next);
-        }
-      });
-    });
-
-    if (slides.length <= 1) return;
-
-    const timer = setInterval(() => {
-      let next = (idx + 1) % slides.length;
-      let attempts = 0;
-      while (slides[next].classList.contains("hidden") && attempts < slides.length) {
-        next = (next + 1) % slides.length;
-        attempts++;
-      }
-      if (!slides[next].classList.contains("hidden")) show(next);
-    }, 4000);
-    cardTimers.push(timer);
-
-    dots.forEach((dot) => {
-      dot.addEventListener("click", () => {
-        clearInterval(timer);
-        cardTimers = cardTimers.filter((id) => id !== timer);
-        show(parseInt(dot.dataset.index || "0", 10));
-        const restarted = setInterval(() => show((idx + 1) % slides.length), 4000);
-        cardTimers.push(restarted);
-      });
-    });
-  }
-
-  function render() {
-    const people = Math.max(1, Math.min(20, parseInt(peopleInput.value, 10) || 1));
-    const selectedOption = guideLangSelect.value;
-    const withGuide = selectedOption !== "noGuide";
-
-    const visible = TOURS.filter((t) => {
-      if (selectedOption !== "noGuide") {
-        if (!t.languages?.includes(selectedOption)) return false;
-      }
-      return true;
-    });
-
-    clearCardTimers();
-    grid.innerHTML = "";
-
-    if (visible.length === 0) {
-      grid.innerHTML = `<p class="col-span-full text-center text-on-surface-variant py-8">No tours match those filters yet — try different options.</p>`;
-      return;
-    }
-
-    visible.forEach((t) => {
-      const total = priceFor(t.pricing, people, withGuide);
-      const personLabel = people === 1 ? "person" : "persons";
-      const priceLine = total
-        ? `Price for ${people} ${personLabel}: ${formatAMD(total)}`
-        : `Contact for price`;
-
-      const tourHref = `${base}tours/${t.slug}`;
-
-      let slidesHtml = "";
-      let dotsHtml = "";
-      if (t.images && t.images.length > 0) {
-        t.images.forEach((img, i) => {
-          slidesHtml += `<img alt="${t.title}" loading="lazy" class="card-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${i === 0 ? "opacity-100" : "opacity-0"}" src="${img}">`;
-        });
-        if (t.images.length > 1) {
-          t.images.forEach((_, i) => {
-            dotsHtml += `<span class="card-dot h-1.5 rounded-full cursor-pointer transition-all duration-500 ${i === 0 ? "w-6 bg-white" : "w-1.5 bg-white/50"}" data-index="${i}"></span>`;
-          });
-        }
-      }
-
-      const card = document.createElement("div");
-      card.className = "group bg-surface border border-border-muted rounded-lg overflow-hidden transition-all hover:shadow-lg hover:-translate-y-1 flex flex-col";
-      card.innerHTML = `
-        <div class="h-64 relative overflow-hidden bg-surface-container">
-          <div class="absolute top-4 left-4 z-20 pointer-events-none">
-            <span class="bg-secondary text-white text-caption px-3 py-1 rounded-full uppercase">${t.label}</span>
-          </div>
-
-          <a href="${tourHref}" class="block w-full h-full group/slide" aria-label="View ${t.title} itinerary">
-            ${slidesHtml}
-            <div class="absolute inset-0 bg-black/0 group-hover/slide:bg-black/30 transition-colors duration-300 flex items-center justify-center z-10">
-              <span class="opacity-0 group-hover/slide:opacity-100 translate-y-2 group-hover/slide:translate-y-0 transition-all duration-300 bg-white text-primary font-label-md text-label-md px-5 py-2.5 rounded-full flex items-center gap-1.5 shadow-lg">
-                View Itinerary <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
-              </span>
-            </div>
-          </a>
-
-          ${dotsHtml ? `<div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-20 pointer-events-auto">${dotsHtml}</div>` : ""}
-        </div>
-        <div class="p-6 flex flex-col flex-grow">
-          <a href="${tourHref}" class="inline-block">
-            <h3 class="font-headline-sm text-primary mb-2 group-hover:text-secondary transition-colors cursor-pointer">${t.title}</h3>
-          </a>
-          <p class="text-on-surface-variant text-body-md mb-4 flex-grow">${t.desc}</p>
-          <p class="text-primary font-label-md text-label-md price-pop">${priceLine}</p>
-        </div>
-      `;
-      grid.appendChild(card);
-      initCardSlideshow(card);
-    });
-  }
-
-  // Event Listeners
-  minusBtn.addEventListener("click", () => {
-    peopleInput.value = String(Math.max(1, parseInt(peopleInput.value, 10) - 1));
-    render();
-  });
-  plusBtn.addEventListener("click", () => {
-    peopleInput.value = String(Math.min(20, parseInt(peopleInput.value, 10) + 1));
-    render();
-  });
-  peopleInput.addEventListener("input", render);
-  guideLangSelect.addEventListener("change", render);
-
-  render();
-</script>
-
-
-<!-- Reviews Section -->
-<section class="py-section-padding px-margin-desktop max-w-container-max mx-auto" id="reviews">
-<div class="text-center mb-16">
-<span class="text-secondary font-label-md text-label-md tracking-widest uppercase mb-2 block" data-t="reviews_subtitle">Testimonials</span>
-<h2 class="text-headline-md font-headline-md text-primary mb-4" style="font-family: 'Source Serif 4', serif;" data-t="reviews_title">What Our Guests Say</h2>
-<div class="w-12 h-1 bg-secondary mx-auto mb-6"></div>
-<p class="text-on-surface-variant max-w-2xl mx-auto text-body-md" data-t="reviews_desc">Real stories from travelers who explored Armenia with us.</p>
-</div>
-
-<!-- Testimonials -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter mb-16" id="testimonial-grid">
-  {[
-    // reviews here
-   ].map((r) => (
-    <div class="bg-surface border border-border-muted rounded-lg p-8 flex flex-col">
-      <div class="flex gap-1 text-secondary mb-4">
-        <span class="material-symbols-outlined text-[18px]">star</span>
-        <span class="material-symbols-outlined text-[18px]">star</span>
-        <span class="material-symbols-outlined text-[18px]">star</span>
-        <span class="material-symbols-outlined text-[18px]">star</span>
-        <span class="material-symbols-outlined text-[18px]">star</span>
-      </div>
-      <p class="text-on-surface font-body-md text-body-md leading-relaxed mb-6 flex-grow" style="font-family: 'Source Serif 4', serif;">&ldquo;{r.quote}&rdquo;</p>
-      <div class="flex items-center gap-3 pt-4 border-t border-border-muted">
-        <div class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-label-md text-label-md shrink-0">
-          {r.name.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase()}
-        </div>
-        <div>
-          <p class="font-label-md text-label-md text-primary">{r.name}</p>
-          <p class="text-caption text-on-surface-variant">{r.trip}</p>
-        </div>
+        <ul class="mt-8 space-y-4">
+          <li class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-secondary">language</span>
+            <span class="text-body-md text-on-surface">Local, native guides (English, Russian, Armenian)</span>
+          </li>
+          <li class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-secondary">groups</span>
+            <span class="text-body-md text-on-surface">Small, private groups tailored to your rhythm</span>
+          </li>
+          <li class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-secondary">map</span>
+            <span class="text-body-md text-on-surface">Custom-built itineraries based on your interests</span>
+          </li>
+          <li class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-secondary">payments</span>
+            <span class="text-body-md text-on-surface">Clear total pricing per group — no per-head surprises</span>
+          </li>
+        </ul>
       </div>
     </div>
-  ))}
-</div>
+  </section>
 
-<!-- Share Experience CTA -->
-<div class="bg-primary rounded-2xl p-8 md:p-12 text-center relative overflow-hidden">
-<div class="absolute inset-0 bg-white/5 backdrop-blur-sm"></div>
-<div class="relative z-10">
-<h3 class="text-white font-headline-md mb-2" data-t="review_form_title">Share Your Experience</h3>
-<p class="text-white/80 max-w-xl mx-auto mb-8" data-t="review_form_desc">How was your journey? Your feedback helps us grow and helps others discover Armenia.</p>
-<form class="max-w-xl mx-auto text-left space-y-6">
-<div class="flex flex-col items-center gap-2 mb-4">
-  <label class="text-white/90 text-label-md uppercase tracking-wider" data-t="label_rating">Your Rating</label>
-  
-  <input type="hidden" id="review-rating" name="rating" value="5">
-  
-  <div class="flex gap-1" id="star-container">
-    <span class="star-btn material-symbols-outlined cursor-pointer hover:scale-110 transition-transform text-secondary-container" data-value="1" style="font-variation-settings: 'FILL' 1;">star</span>
-    <span class="star-btn material-symbols-outlined cursor-pointer hover:scale-110 transition-transform text-secondary-container" data-value="2" style="font-variation-settings: 'FILL' 1;">star</span>
-    <span class="star-btn material-symbols-outlined cursor-pointer hover:scale-110 transition-transform text-secondary-container" data-value="3" style="font-variation-settings: 'FILL' 1;">star</span>
-    <span class="star-btn material-symbols-outlined cursor-pointer hover:scale-110 transition-transform text-secondary-container" data-value="4" style="font-variation-settings: 'FILL' 1;">star</span>
-    <span class="star-btn material-symbols-outlined cursor-pointer hover:scale-110 transition-transform text-secondary-container" data-value="5" style="font-variation-settings: 'FILL' 1;">star</span>
-  </div>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-<div class="flex flex-col gap-1.5">
-<label class="text-white/90 text-label-md uppercase tracking-wider" data-t="label_name">Your Name</label>
-<input class="bg-white/10 border-white/20 rounded-lg p-3 text-white placeholder:text-white/40 focus:ring-2 focus:ring-secondary-container outline-none" placeholder="Alex Johnson" type="text">
-</div>
-<div class="flex flex-col gap-1.5">
-<label class="text-white/90 text-label-md uppercase tracking-wider" data-t="label_tour">Tour Taken</label>
-<select class="bg-white/10 border-white/20 rounded-lg p-3 text-black/50 focus:ring-2 focus:ring-secondary-container outline-none appearance-none">
-  <option data-t="opt_choose">Choose...</option>
-  {TOURS.map((t) => (
-    <option>{t.title}</option>
-  ))}
-  <option>Custom Route</option>
-</select>
-</div>
-</div>
-<div class="flex flex-col gap-1.5">
-<label class="text-white/90 text-label-md uppercase tracking-wider" data-t="label_review">Your Review</label>
-<textarea class="bg-white/10 border-white/20 rounded-lg p-3 text-white placeholder:text-white/40 focus:ring-2 focus:ring-secondary-container outline-none" placeholder="Tell us about your favorite moments..." rows="4"></textarea>
-</div>
-<button class="w-full bg-secondary text-white py-4 rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-secondary/90 transition-all shadow-lg" type="submit">
-<span data-t="btn_submit_review" class="">Submit Review</span> <span class="material-symbols-outlined">send</span>
-</button>
-</form>
-</div>
-</div>
-</section>
-<!-- CTA / Inquiry Section -->
-<section class="bg-primary text-white py-section-padding" id="contact">
-<div class="max-w-container-max mx-auto px-margin-desktop">
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-stack-lg">
-<div>
-<span class="text-secondary-container font-label-md text-label-md tracking-widest uppercase mb-2 block" data-t="contact_subtitle">Ready to Explore?</span>
-<h2 class="text-headline-md font-headline-md mb-6" style="font-family: 'Source Serif 4', serif;" data-t="contact_title">Let's plan your Armenia trip.</h2>
-<p class="text-white/80 text-body-lg mb-12" data-t="contact_desc">Tell us your dates, interests, and group size. We reply within hours with availability — then a small deposit locks your date instantly.</p>
-<div class="space-y-8">
-<div class="flex gap-6">
-<div class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center shrink-0 font-bold border border-white/20">1</div>
-<div>
-<h4 class="font-headline-sm mb-1" data-t="step_1_title">Send your enquiry</h4>
-<p class="text-white/60" data-t="step_1_desc">Takes 2 minutes. No account needed.</p>
-</div>
-</div>
-<div class="flex gap-6">
-<div class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center shrink-0 font-bold border border-white/20">2</div>
-<div>
-<h4 class="font-headline-sm mb-1" data-t="step_2_title">We confirm availability</h4>
-<p class="text-white/60" data-t="step_2_desc">Typically within a few hours.</p>
-</div>
-</div>
-<div class="flex gap-6">
-<div class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center shrink-0 font-bold border border-white/20">3</div>
-<div>
-<h4 class="font-headline-sm mb-1" data-t="step_3_title">Pay a deposit to lock your date</h4>
-<p class="text-white/60" data-t="step_3_desc">Secure and instant. Balance on the day.</p>
-</div>
-</div>
-</div>
-<div class="mt-16 pt-16 border-t border-white/10">
-<p class="text-caption text-secondary-container uppercase mb-4" data-t="contact_direct">Or reach us directly</p>
-<p class="text-body-lg mb-2"><a class="hover:text-secondary-container transition-colors" href="mailto:info@upupa-travel.am">info@upupa-travel.am</a></p>
-<p class="text-body-lg"><a class="hover:text-secondary-container transition-colors" href="tel:+37495988188">WhatsApp: +374 95 988 188</a></p>
-</div>
-</div>
-<!-- Inquiry Form -->
-<div class="bg-white text-on-surface p-8 rounded-2xl shadow-2xl self-start">
-<h3 class="font-headline-sm text-primary mb-6" data-t="form_title">Request a Tour or Custom Itinerary</h3>
-<form class="space-y-4">
-<div class="flex flex-col gap-1.5">
-<label class="text-label-md font-label-md text-primary uppercase" data-t="label_full_name">FULL NAME</label>
-<input class="border-muted rounded-lg p-3 w-full" placeholder="Jane Smith" type="text">
-</div>
-<div class="flex flex-col gap-1.5">
-<label class="text-label-md font-label-md text-primary uppercase" data-t="label_whatsapp">EMAIL OR WHATSAPP</label>
-<input class="border-muted rounded-lg p-3 w-full" placeholder="email or +1..." type="text">
-</div>
-<div class="grid grid-cols-2 gap-4">
-<div class="flex flex-col gap-1.5">
-<label class="text-label-md font-label-md text-primary uppercase" data-t="label_tour_sel">TOUR</label>
-<select class="border-muted rounded-lg p-3 w-full">
-<option data-t="opt_choose">Choose...</option>
-<option>Garni, Geghard &amp; Symphony of Stones</option>
-<option>Lake Sevan, Dilijan &amp; Monasteries</option>
-<option>Custom Route</option>
-</select>
-</div>
-<div class="flex flex-col gap-1.5">
-<label class="text-label-md font-label-md text-primary uppercase" data-t="label_date">DESIRED DATE</label>
-<input class="border-muted rounded-lg p-3 w-full" type="date">
-</div>
-</div>
-<div class="flex flex-col gap-1.5">
-<label class="text-label-md font-label-md text-primary uppercase" data-t="label_group_notes">GROUP SIZE &amp; NOTES</label>
-<textarea class="border-muted rounded-lg p-3 w-full" placeholder="How many people? Dietary needs, interests..." rows="3"></textarea>
-</div>
-<button class="w-full bg-secondary text-white py-4 rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-secondary/90 transition-all shadow-lg mt-4">
-<span data-t="btn_send_enquiry" class="">Send Enquiry</span> <span class="material-symbols-outlined">send</span>
-</button>
-<p class="text-center text-caption text-on-surface-variant mt-4" data-t="form_note">No payment now. We confirm availability first.</p>
-</form>
-</div>
-</div>
-</div>
-</section>
+  <!-- ================= Tours ================= -->
+  <section class="section-y bg-surface-container-low/60" id="tours">
+    <div class="container-page">
+      <div class="reveal mx-auto mb-12 max-w-2xl text-center">
+        <span class="eyebrow" data-t="tours_subtitle">Curated Experiences</span>
+        <h2 class="section-title text-balance" data-t="tours_title">Tours &amp; Packages</h2>
+        <div class="mx-auto my-5 h-1 w-12 rounded-full bg-secondary"></div>
+        <p class="text-body-md text-on-surface-variant" data-t="tours_desc">
+          Discover the heart of Armenia through our specialized language-inclusive routes.
+        </p>
+      </div>
+
+      <TourSearch />
+
+      <div class="mt-16 reveal">
+        <PricingCalculator />
+      </div>
+
+      <p class="mt-10 text-center text-body-md text-on-surface-variant">
+        Looking for something else?
+        <a class="text-secondary underline underline-offset-4" href={`${base}custom-tour`}>Build a custom route</a>.
+      </p>
+    </div>
+  </section>
+
+  <!-- ================= Reviews =================
+       The section only renders once there are real reviews in
+       src/data/reviews.js. No empty heading, no invented quotes. -->
+  <section class="section-y" id="reviews">
+    <div class="container-page">
+      {REVIEWS.length > 0 && (
+        <>
+          <div class="reveal mx-auto mb-12 max-w-2xl text-center">
+            <span class="eyebrow" data-t="reviews_subtitle">Testimonials</span>
+            <h2 class="section-title text-balance" data-t="reviews_title">What Our Guests Say</h2>
+            <div class="mx-auto my-5 h-1 w-12 rounded-full bg-secondary"></div>
+            <p class="text-body-md text-on-surface-variant" data-t="reviews_desc">
+              Real stories from travelers who explored Armenia with us.
+            </p>
+          </div>
+
+          <div class="mb-16 grid grid-cols-1 gap-gutter md:grid-cols-3">
+            {REVIEWS.map((review) => (
+              <figure class="panel flex flex-col p-7">
+                <div class="mb-4 flex gap-0.5 text-secondary" aria-label={`${review.rating} out of 5`}>
+                  {Array.from({ length: review.rating || 5 }).map(() => (
+                    <span class="material-symbols-outlined text-[18px]" style="font-variation-settings:'FILL' 1;">star</span>
+                  ))}
+                </div>
+                <blockquote class="font-display flex-grow text-body-md leading-relaxed text-on-surface">
+                  &ldquo;{review.quote}&rdquo;
+                </blockquote>
+                <figcaption class="mt-6 flex items-center gap-3 border-t border-border-muted pt-4">
+                  <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-label-md font-label-md text-primary">
+                    {review.name.split(" ").map((word) => word[0]).join("").slice(0, 2).toUpperCase()}
+                  </span>
+                  <span>
+                    <span class="block text-label-md font-label-md text-primary">{review.name}</span>
+                    <span class="block text-caption font-caption text-on-surface-variant">
+                      {review.trip}{review.source ? ` · ${review.source}` : ""}
+                    </span>
+                  </span>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </>
+      )}
+
+      <ReviewForm />
+    </div>
+  </section>
+
+  <!-- ================= Contact ================= -->
+  <section class="bg-primary py-16 text-white md:py-section-padding" id="contact">
+    <div class="container-page grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
+      <div>
+        <span class="eyebrow text-secondary-container" data-t="contact_subtitle">Ready to Explore?</span>
+        <h2 class="font-display text-headline-md font-headline-md text-balance" data-t="contact_title">
+          Let's plan your Armenia trip.
+        </h2>
+        <p class="mt-5 max-w-lg text-body-lg text-white/80" data-t="contact_desc">
+          Tell us your dates, interests, and group size. We reply within hours with availability —
+          then a small deposit locks your date.
+        </p>
+
+        <ol class="mt-10 space-y-7">
+          <li class="flex gap-5">
+            <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 font-bold">1</span>
+            <span>
+              <span class="block font-display text-headline-sm font-headline-sm" data-t="step_1_title">Send your enquiry</span>
+              <span class="block text-white/70" data-t="step_1_desc">Takes 2 minutes. No account needed.</span>
+            </span>
+          </li>
+          <li class="flex gap-5">
+            <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 font-bold">2</span>
+            <span>
+              <span class="block font-display text-headline-sm font-headline-sm" data-t="step_2_title">We confirm availability</span>
+              <span class="block text-white/70" data-t="step_2_desc">Typically within a few hours.</span>
+            </span>
+          </li>
+          <li class="flex gap-5">
+            <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 font-bold">3</span>
+            <span>
+              <span class="block font-display text-headline-sm font-headline-sm" data-t="step_3_title">Pay a deposit to lock your date</span>
+              <span class="block text-white/70" data-t="step_3_desc">Balance on the day. Cancellation terms apply.</span>
+            </span>
+          </li>
+        </ol>
+
+        <div class="mt-12 border-t border-white/10 pt-10">
+          <p class="mb-4 text-caption font-caption uppercase tracking-wider text-secondary-container" data-t="contact_direct">
+            Or reach us directly
+          </p>
+          <p class="mb-2 text-body-lg">
+            <a class="transition-colors hover:text-secondary-container" href={`mailto:${SITE.email}`}>{SITE.email}</a>
+          </p>
+          <p class="text-body-lg">
+            <a class="inline-flex items-center gap-2 transition-colors hover:text-secondary-container" href={SITE.whatsapp} target="_blank" rel="noopener">
+              <span class="material-symbols-outlined text-[20px]">chat</span>
+              WhatsApp {SITE.phoneDisplay}
+            </a>
+          </p>
+          <p class="mt-4 text-caption font-caption text-white/60">
+            Booking and cancellation terms:
+            <a class="underline underline-offset-4" href={`${base}terms`}>read here</a>.
+          </p>
+        </div>
+      </div>
+
+      <EnquiryForm />
+    </div>
+  </section>
 </BaseLayout>
 
 <style>
-  /* Hero Ken Burns drift */
   .hero-slide {
     transform: scale(1);
-    transition: opacity 1.2s ease-in-out, transform 6s ease-out;
+    transition: opacity 1.2s ease-in-out, transform 7s ease-out;
   }
   .hero-slide.kb-active {
-    transform: scale(1.12);
+    transform: scale(1.08);
   }
-
-  /* Category quick-links staggered entrance */
-  .stagger-item {
-    opacity: 0;
-    transform: translateY(24px);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-  }
-  .stagger-in {
-    opacity: 1;
-    transform: translateY(0);
-  }
-</style>
-
-<style is:global>
-  /* Tour card price line animation */
-  @keyframes price-pop {
-    from { opacity: 0.3; transform: scale(0.94); }
-    to { opacity: 1; transform: scale(1); }
-  }
-  .price-pop {
-    animation: price-pop 0.35s ease-out;
+  @media (prefers-reduced-motion: reduce) {
+    .hero-slide,
+    .hero-slide.kb-active {
+      transition: opacity 0.2s linear;
+      transform: none;
+    }
   }
 </style>
 
 <script>
-  // --- Interactive Review Stars Logic ---
-  const ratingInput = document.getElementById('review-rating');
-  const stars = document.querySelectorAll('.star-btn');
+  const slides = Array.from(document.querySelectorAll<HTMLElement>(".hero-slide"));
+  const dots = Array.from(document.querySelectorAll<HTMLElement>(".hero-dot"));
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  if (ratingInput && stars.length > 0) {
-    stars.forEach((star, index) => {
-      star.addEventListener('click', () => {
-        const ratingValue = index + 1;
-        ratingInput.value = ratingValue;
-        
-        stars.forEach((s, i) => {
-          if (i < ratingValue) {
-            s.style.fontVariationSettings = '"FILL" 1';
-            s.classList.add('text-secondary-container');
-            s.classList.remove('text-white/40');
-          } else {
-            s.style.fontVariationSettings = '"FILL" 0';
-            s.classList.add('text-white/40');
-            s.classList.remove('text-secondary-container');
-          }
-        });
+  if (slides.length > 1) {
+    let current = 0;
+    let timer: number | undefined;
+
+    function goToSlide(next: number) {
+      slides[current].classList.remove("opacity-100", "kb-active");
+      slides[current].classList.add("opacity-0");
+      dots[current]?.classList.remove("w-8", "bg-white");
+      dots[current]?.classList.add("w-1.5", "bg-white/40");
+
+      current = next;
+
+      slides[current].classList.remove("opacity-0");
+      slides[current].classList.add("opacity-100");
+      if (!reduceMotion) {
+        requestAnimationFrame(() =>
+          requestAnimationFrame(() => slides[current].classList.add("kb-active"))
+        );
+      }
+      dots[current]?.classList.remove("w-1.5", "bg-white/40");
+      dots[current]?.classList.add("w-8", "bg-white");
+    }
+
+    function start() {
+      timer = window.setInterval(() => goToSlide((current + 1) % slides.length), 6000);
+    }
+
+    if (!reduceMotion) slides[0].classList.add("kb-active");
+    start();
+
+    dots.forEach((dot) => {
+      dot.addEventListener("click", () => {
+        if (timer) clearInterval(timer);
+        goToSlide(parseInt(dot.dataset.index || "0", 10));
+        start();
       });
+    });
+
+    // Pause while the tab is hidden — no point burning cycles in the background.
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) {
+        if (timer) clearInterval(timer);
+      } else {
+        start();
+      }
     });
   }
 </script>

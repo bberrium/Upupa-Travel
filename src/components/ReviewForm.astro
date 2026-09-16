@@ -1,0 +1,119 @@
+---
+import { SITE } from "../lib/site.js";
+import { TOURS } from "../data/tours.js";
+---
+
+<div class="relative overflow-hidden rounded-2xl bg-primary p-8 md:p-12">
+  <div class="relative z-10">
+    <h3 class="font-display text-headline-md font-headline-md text-white" data-t="review_form_title">
+      Share Your Experience
+    </h3>
+    <p class="mx-auto mt-2 max-w-xl text-white/80" data-t="review_form_desc">
+      How was your journey? Your feedback helps us grow and helps others discover Armenia.
+    </p>
+
+    <form
+      class="mx-auto mt-8 max-w-xl space-y-5 text-left"
+      id="review-form"
+      name="review"
+      method="POST"
+      action={SITE.formEndpoint || undefined}
+      data-netlify={SITE.netlifyForms ? "true" : undefined}
+      data-endpoint={SITE.formEndpoint}
+      data-email={SITE.email}
+      data-subject="New guest review"
+    >
+      {SITE.netlifyForms && <input type="hidden" name="form-name" value="review" />}
+      <p class="hidden" aria-hidden="true">
+        <label>Leave this empty<input name="company" tabindex="-1" autocomplete="off" /></label>
+      </p>
+
+      <fieldset class="flex flex-col items-center gap-2">
+        <legend class="mb-2 text-center text-label-md font-label-md uppercase tracking-wider text-white/90" data-t="label_rating">
+          Your Rating
+        </legend>
+        <input type="hidden" id="review-rating" name="rating" value="5" />
+        <div class="flex gap-1" id="star-container" role="radiogroup" aria-label="Rating out of 5">
+          {[1, 2, 3, 4, 5].map((value) => (
+            <button
+              type="button"
+              class="star-btn material-symbols-outlined cursor-pointer text-secondary-container transition-transform hover:scale-110 motion-reduce:transform-none"
+              data-value={value}
+              aria-label={`${value} ${value === 1 ? "star" : "stars"}`}
+              aria-pressed={value === 5 ? "true" : "false"}
+              style="font-variation-settings: 'FILL' 1;"
+            >star</button>
+          ))}
+        </div>
+      </fieldset>
+
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div data-field>
+          <label class="field-label text-white/90" for="rev-name" data-t="label_name">Your Name</label>
+          <input class="field-on-dark" id="rev-name" name="name" type="text" autocomplete="name" placeholder="Alex Johnson" required />
+          <p class="field-error text-error-container" data-error></p>
+        </div>
+
+        <div data-field>
+          <label class="field-label text-white/90" for="rev-tour" data-t="label_tour">Tour Taken</label>
+          <select class="field-on-dark" id="rev-tour" name="tour" required data-error-message="Which tour did you take?">
+            <option value="" data-t="opt_choose">Choose…</option>
+            {TOURS.map((tour) => <option value={tour.title}>{tour.title}</option>)}
+            <option value="Custom Route">Custom Route</option>
+          </select>
+          <p class="field-error text-error-container" data-error></p>
+        </div>
+      </div>
+
+      <div data-field>
+        <label class="field-label text-white/90" for="rev-text" data-t="label_review">Your Review</label>
+        <textarea class="field-on-dark" id="rev-text" name="review" rows="4" placeholder="Tell us about your favourite moments…" required></textarea>
+        <p class="field-error text-error-container" data-error></p>
+      </div>
+
+      <p class="form-status" data-form-status role="status" aria-live="polite"></p>
+
+      <button class="btn-primary btn-block" type="submit">
+        <span data-t="btn_submit_review">Submit Review</span>
+        <span class="material-symbols-outlined text-[20px]">send</span>
+      </button>
+    </form>
+  </div>
+</div>
+
+<script>
+  import { initForm } from "../lib/forms.js";
+
+  const form = document.getElementById("review-form");
+  if (form) {
+    initForm(form, {
+      endpoint: form.dataset.endpoint || "",
+      email: form.dataset.email || "",
+      subject: form.dataset.subject || "New guest review",
+      netlify: form.dataset.netlify === "true",
+    });
+  }
+
+  const ratingInput = document.getElementById("review-rating") as HTMLInputElement | null;
+  const stars = Array.from(document.querySelectorAll<HTMLButtonElement>(".star-btn"));
+
+  function paint(rating: number) {
+    stars.forEach((star, index) => {
+      const on = index < rating;
+      star.style.fontVariationSettings = on ? '"FILL" 1' : '"FILL" 0';
+      star.classList.toggle("text-secondary-container", on);
+      star.classList.toggle("text-white/40", !on);
+      star.setAttribute("aria-pressed", String(on));
+    });
+  }
+
+  if (ratingInput && stars.length) {
+    stars.forEach((star, index) => {
+      star.addEventListener("click", () => {
+        ratingInput.value = String(index + 1);
+        paint(index + 1);
+      });
+    });
+    paint(5);
+  }
+</script>

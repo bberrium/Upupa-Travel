@@ -3,40 +3,79 @@ import { translations } from "../data/translations";
 ---
 
 <script define:vars={{ translations }}>
-  function switchLanguage(lang) {
-    const label = document.getElementById("current-lang-label");
-    if (label) label.innerText = lang.toUpperCase();
-    document.documentElement.lang = lang;
+  // ---------------------------------------------------------------------
+  // Language switching
+  //
+  // Still a client-side text swap, but it now writes to a text node instead
+  // of innerText, so elements that contain an icon or a nested span are no
+  // longer wiped out. (The durable fix is Astro i18n routes — see README.)
+  // ---------------------------------------------------------------------
+  const SUPPORTED = ["en", "ru", "am"];
+
+  function applyTranslations(lang) {
+    const dict = translations[lang];
+    if (!dict) return;
 
     document.querySelectorAll("[data-t]").forEach((el) => {
-      const key = el.getAttribute("data-t");
-      if (translations[lang] && translations[lang][key]) {
-        el.innerText = translations[lang][key];
-      }
+      const value = dict[el.getAttribute("data-t")];
+      if (!value) return;
+      // Replace only the element's own text, keeping child elements intact.
+      const textNode = Array.from(el.childNodes).find((n) => n.nodeType === Node.TEXT_NODE && n.textContent.trim());
+      if (textNode) textNode.textContent = value;
+      else el.textContent = value;
     });
-
-    localStorage.setItem("preferredLang", lang);
   }
-  // Expose for inline onclick="switchLanguage('en')" handlers in the header
-  window.switchLanguage = switchLanguage;
 
-  document.addEventListener("DOMContentLoaded", () => {
-    const savedLang = localStorage.getItem("preferredLang") || "en";
-    switchLanguage(savedLang);
+  function switchLanguage(lang) {
+    if (!SUPPORTED.includes(lang)) lang = "en";
+    const label = document.getElementById("current-lang-label");
+    if (label) label.textContent = lang.toUpperCase();
+    document.documentElement.lang = lang === "am" ? "hy" : lang;
+    applyTranslations(lang);
+    try {
+      localStorage.setItem("preferredLang", lang);
+    } catch (err) {
+      /* private mode — language just won't persist */
+    }
+  }
 
-    const observerOptions = { threshold: 0.1 };
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("opacity-100", "translate-y-0");
-          entry.target.classList.remove("opacity-0", "translate-y-10");
-        }
-      });
-    }, observerOptions);
-
-    document.querySelectorAll("section").forEach((section) => {
-      section.classList.add("transition-all", "duration-1000", "opacity-0", "translate-y-10");
-      observer.observe(section);
-    });
+  document.querySelectorAll("[data-lang]").forEach((btn) => {
+    btn.addEventListener("click", () => switchLanguage(btn.getAttribute("data-lang")));
   });
+
+  let saved = "en";
+  try {
+    saved = localStorage.getItem("preferredLang") || "en";
+  } catch (err) {
+    /* ignore */
+  }
+  if (saved !== "en") switchLanguage(saved);
+
+  // ---------------------------------------------------------------------
+  // Scroll reveal
+  //
+  // Only elements explicitly marked .reveal animate, and only when the
+  // visitor hasn't asked for reduced motion. Nothing above the fold is
+  // hidden, so the hero paints immediately.
+  // ---------------------------------------------------------------------
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const revealables = document.querySelectorAll(".reveal");
+
+  if (prefersReducedMotion || !("IntersectionObserver" in window)) {
+    revealables.forEach((el) => el.classList.add("is-visible"));
+  } else {
+    const observer = new IntersectionObserver(
+      (entries, obs) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("is-visible");
+          obs.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
+    );
+    revealables.forEach((el) => observer.observe(el));
+    // Safety net: if anything is still hidden after 3s, show it.
+    window.setTimeout(() => revealables.forEach((el) => el.classList.add("is-visible")), 3000);
+  }
 </script>

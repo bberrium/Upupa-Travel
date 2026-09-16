@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://bberrium.github.io/Upupa-Travel/sitemap-index.xml

@@ -3,36 +3,116 @@ import "../styles/global.css";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import SiteScripts from "../components/SiteScripts.astro";
+import { SITE } from "../lib/site.js";
+import { asset } from "../lib/assets.js";
 
 interface Props {
   title: string;
   description?: string;
   home?: string;
   current?: "home" | "about" | "tours" | "gallery" | "reviews" | "contact";
+  /** Path (relative to /public) of the image used when the page is shared. */
+  ogImage?: string;
+  /** Extra JSON-LD to merge into the page, e.g. a TouristTrip for a tour. */
+  schema?: Record<string, unknown> | null;
+  noindex?: boolean;
 }
 
 const {
   title,
-  description = "Premium private guide service in Armenia. Explore ancient monasteries, volcanic highlands, and hidden valleys with local experts.",
+  description = SITE.description,
   home = import.meta.env.BASE_URL,
   current = "home",
+  ogImage = "images/hero/02-highlands.jpg",
+  schema = null,
+  noindex = false,
 } = Astro.props;
+
+const origin = (Astro.site?.href ?? SITE.url).replace(/\/+$/, "");
+const canonical = new URL(Astro.url.pathname, origin + "/").href;
+const ogImageUrl = new URL(asset(ogImage), origin + "/").href;
+
+const organisation = {
+  "@context": "https://schema.org",
+  "@type": "TravelAgency",
+  name: SITE.name,
+  description: SITE.description,
+  url: origin,
+  email: SITE.email,
+  telephone: SITE.phoneE164,
+  image: ogImageUrl,
+  areaServed: "Armenia",
+  availableLanguage: SITE.languages,
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: SITE.city,
+    addressCountry: SITE.country,
+  },
+  ...(Object.values(SITE.social).filter(Boolean).length
+    ? { sameAs: Object.values(SITE.social).filter(Boolean) }
+    : {}),
+};
 ---
 
 <!doctype html>
-<html class="scroll-smooth" lang="en">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content={description} />
     <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex,nofollow" />}
+
+    <!-- Favicons: these files already exist in /public but were never linked,
+         which is why the browser tab showed a blank page icon. -->
+    <link rel="icon" href={asset("favicon.svg")} type="image/svg+xml" />
+    <link rel="alternate icon" href={asset("favicon.ico")} sizes="any" />
+    <link rel="apple-touch-icon" href={asset("images/brand/mark.png")} />
+    <meta name="theme-color" content="#0088CC" />
+
+    <!-- Link previews: without these, a link shared on WhatsApp, Instagram or
+         Facebook renders as a bare URL with no image. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:alt" content={SITE.name} />
+    <meta property="og:locale" content="en" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..700&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=block" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400..700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Only the axes actually used are requested, which is a much smaller
+         download than the full variable font. display=block keeps the raw
+         ligature text ("expand_more") from flashing before the font lands. -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0..1,0&display=block"
+      rel="stylesheet"
+    />
+
+    <script is:inline>
+      // Reveal animations only run once JS is known to be alive. Without this
+      // flag a script error would leave every section stuck at opacity 0.
+      document.documentElement.classList.add("js");
+    </script>
+
+    <script type="application/ld+json" set:html={JSON.stringify(organisation)} />
+    {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
   </head>
-  <body class="bg-background text-on-background font-body-md overflow-x-hidden">
+  <body class="bg-background text-on-background font-body-md text-body-md">
+    <a class="skip-link" href="#main">Skip to content</a>
     <Header home={home} current={current} />
-    <main>
+    <main id="main">
       <slot />
     </main>
     <Footer />
