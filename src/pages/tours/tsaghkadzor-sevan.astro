@@ -1,0 +1,80 @@
+---
+import TourLayout from "../../layouts/TourLayout.astro";
+import { TOURS } from "../../data/tours.js";
+
+const base = import.meta.env.BASE_URL;
+
+const tour = TOURS.find((t) => t.slug === "tsaghkadzor-sevan")!;
+
+const days = [
+  {
+    dayNumber: "01",
+    title: "Tsaghkadzor, Kecharis Monastery, Ropeway & Lake Sevan",
+    subtitle: "Alpine Resort & Armenia's Sacred Lake",
+    stops: [
+      {
+        time: "40 minutes",
+        title: "Kecharis Monastery, Tsaghkadzor",
+        desc: "Tsaghkadzor is a popular mountain resort town in Armenia, surrounded by forests and the slopes of Mount Teghenis, famous for its ski resort and cable car. Kecharis Monastery, founded in the 11th century, was an important religious and cultural center, its churches and khachkars set against the surrounding mountains and forests.",
+        images: [
+          "images/tours/tsaghkadzor-sevan/kecharis1.jpg",
+          "images/tours/tsaghkadzor-sevan/kecharis2.webp",
+          "images/tours/tsaghkadzor-sevan/kecharis3.webp",
+          "images/tours/tsaghkadzor-sevan/kecharis4.webp",
+        ],
+      },
+      {
+        time: "60 minutes",
+        title: "Tsaghkadzor Ropeway",
+        desc: "One of Armenia's most popular mountain attractions, taking visitors up the slopes of Mount Teghenis with panoramic views across the Kotayk landscape. It operates year-round for skiing, hiking, and scenery.",
+        images: [
+          "images/tours/tsaghkadzor-sevan/ropeway1.jpg",
+          "images/tours/tsaghkadzor-sevan/ropeway2.jpg",
+          "images/tours/tsaghkadzor-sevan/ropeway3.jpg",
+          "images/tours/tsaghkadzor-sevan/ropeway4.jpg",
+        ],
+      },
+      {
+        time: "50-60 minutes",
+        title: "Lunch Stop",
+        desc: "Optional lunch at a traditional local restaurant, at your own expense.",
+      },
+      {
+        time: "120 minutes",
+        title: "Lake Sevan & Sevanavank Monastery",
+        desc: "Lake Sevan, the 'Blue Pearl of Armenia,' sits almost 1,900 meters above sea level as the country's largest lake. Sevanavank, founded in 874 AD by Princess Mariam, stands on a rocky peninsula and is known for its two surviving churches, Surp Arakelots and Surp Astvatsatsin.",
+        images: [
+          "images/tours/sevan-dilijan/sevan1.jpg",
+          "images/tours/sevan-dilijan/sevan2.jpg",
+          "images/tours/sevan-dilijan/sevanavank1.jpg",
+          "images/tours/sevan-dilijan/sevanavank2.jpg",
+          "images/tours/sevan-dilijan/sevanavank3.jpg",
+        ],
+      },
+    ],
+  },
+];
+
+const included = [
+  // PLACEHOLDER — form's "What's Included" section was left blank
+];
+
+const tips = [
+  // PLACEHOLDER — form's "Know Before You Go" section was left blank
+];
+---
+
+<TourLayout
+  label={tour.label}
+  title={tour.title}
+  summary={tour.desc}
+  heroImage={tour.images[0]}
+  images={tour.images}
+  duration={tour.duration}
+  region={tour.region}
+  languages={tour.languages}
+  pricing={tour.pricing}
+  days={days}
+  included={included}
+  tips={tips}
+/>

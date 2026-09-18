@@ -71,7 +71,37 @@ export const TOURS = [
       },
     },
   },
+  {
+    slug: "tsaghkadzor-sevan",
+    label: "Day Tour",
+    category: "day",
+    title: "Tsaghkadzor, Kecharis Monastery, Ropeway & Lake Sevan",
+    desc: "Ride a mountain ropeway above Tsaghkadzor, then unwind at Lake Sevan's ancient clifftop monastery.",
+    images: [
+          "images/tours/tsaghkadzor-sevan/kecharis3.webp",
+          "images/tours/tsaghkadzor-sevan/ropeway1.jpg",
+          "images/tours/sevan-dilijan/sevan2.jpg",
+          "images/tours/sevan-dilijan/sevanavank2.jpg",
+          "images/tours/tsaghkadzor-sevan/kecharis2.webp"
+    ],
+    languages: ["en", "ru", "am"],
+    duration: "7-8 hours",
+    region: "Yerevan",
+    pricing: {
+      noGuide: {
+        1: 34000, 2: 34000, 3: 36000, 4: 38000, 5: 44000, 6: 46000,
+        7: 48000, 8: 48000, 9: 50000, 10: 72000,
+        extraPerPerson: 2000, maxPeople: 20,
+      },
+      guide: {
+        1: 64000, 2: 64000, 3: 66000, 4: 68000, 5: 74000, 6: 76000,
+        7: 78000, 8: 78000, 9: 80000, 10: 102000,
+        extraPerPerson: 2000, maxPeople: 20,
+      },
+    },
+  },
 ];
+
 
 export function priceFor(pricing, people, withGuide) {
   if (!pricing) return null;
