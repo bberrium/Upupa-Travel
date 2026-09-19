@@ -24,8 +24,8 @@ interface Props {
 }
 
 const { href, size = "h-12 md:h-14", variant = "header" } = Astro.props;
-const mark = image("images/brand/mark.png");
-const badge = image("images/brand/logo-badge.png");
+const mark = image("images/brand/mark.webp");
+const badge = image("images/brand/logo-badge.webp");
 const onDark = variant === "footer";
 const useBadge = SITE.logo.style === "badge" && variant === "header";
 ---

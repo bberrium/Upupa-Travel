@@ -19,7 +19,7 @@ function existsInPublic(relPath) {
 }
 
 /**
- * @param {string} src local path relative to /public, e.g. "images/hero/01.jpg"
+ * @param {string} src local path relative to /public, e.g. "images/hero/01.webp"
  * @returns {{src: string, webp: string|null, missing: boolean}}
  */
 export function image(src) {

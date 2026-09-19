@@ -14,17 +14,17 @@ const base = import.meta.env.BASE_URL;
 // Four hero images, not nine: each one is a full-screen download, and nobody
 // waits through nine slides.
 const HERO_IMAGES = [
-  { src: "images/hero/01-cathedral.jpg", alt: "Cathedral interior in Armenia" },
-  { src: "images/hero/02-highlands.jpg", alt: "Armenian highlands at sunset" },
-  { src: "images/hero/03-monastery.jpg", alt: "Monastery in the mountains" },
-  { src: "images/hero/04-lake.jpg", alt: "Alpine lake in Armenia" },
+  { src: "images/hero/01-cathedral.webp", alt: "Cathedral interior in Armenia" },
+  { src: "images/hero/02-highlands.webp", alt: "Armenian highlands at sunset" },
+  { src: "images/hero/03-monastery.webp", alt: "Monastery in the mountains" },
+  { src: "images/hero/04-lake.webp", alt: "Alpine lake in Armenia" },
 ].map((entry) => ({ ...entry, resolved: image(entry.src) }));
 
 const CATEGORIES = [
-  { key: "cat_1", title: "Day Tours", desc: "One-day private trips across Armenia.", href: `${base}tours/day-tours`, img: "images/categories/day-tours.jpg" },
-  { key: "cat_2", title: "Multi-Day", desc: "Explore heritage in depth over 2-4 days.", href: `${base}tours/multi-day-tours`, img: "images/categories/multi-day.jpg" },
-  { key: "cat_3", title: "Custom", desc: "Routes built around your specific dates.", href: `${base}custom-tour`, img: "images/categories/custom.jpg" },
-  { key: "cat_4", title: "Transfers", desc: "Private drivers & airport shuttle services.", href: `${base}private-transfer`, img: "images/categories/transfers.jpg" },
+  { key: "cat_1", title: "Day Tours", desc: "One-day private trips across Armenia.", href: `${base}tours/day-tours`, img: "images/categories/day-tours.webp" },
+  { key: "cat_2", title: "Multi-Day", desc: "Explore heritage in depth over 2-4 days.", href: `${base}tours/multi-day-tours`, img: "images/categories/multi-day.webp" },
+  { key: "cat_3", title: "Custom", desc: "Routes built around your specific dates.", href: `${base}custom-tour`, img: "images/categories/custom.webp" },
+  { key: "cat_4", title: "Transfers", desc: "Private drivers & airport shuttle services.", href: `${base}private-transfer`, img: "images/categories/transfers.webp" },
 ];
 ---
 
@@ -130,7 +130,7 @@ const CATEGORIES = [
           <!-- Our own photo. The previous one was hot-linked from another
                travel company's server. -->
           <Picture
-            src="images/about/armenia-highlands.jpg"
+            src="images/about/armenia-highlands.webp"
             alt="Armenian mountain landscape"
             width={1200}
             height={800}

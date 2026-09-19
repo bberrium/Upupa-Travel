@@ -106,7 +106,7 @@ const schema = {
   title={`${title} — Upupa Travel`}
   description={summary}
   current="tours"
-  ogImage={resolvedSlides[0]?.missing ? "images/hero/02-highlands.jpg" : slideImages[0]}
+  ogImage={resolvedSlides[0]?.missing ? "images/hero/02-highlands.webp" : slideImages[0]}
   schema={schema}
 >
   <!-- Breadcrumb -->
@@ -157,39 +157,6 @@ const schema = {
     </div>
   </section>
 
-  <!-- Hero slideshow -->
-  {resolvedSlides.length > 0 && (
-    <section class="container-page mb-12">
-      <div class="relative h-[260px] overflow-hidden rounded-2xl border border-border-muted shadow-card sm:h-[420px] md:h-[520px]" id="tour-hero-slideshow">
-        {resolvedSlides.map((resolved, i) => (
-          <picture>
-            {resolved.webp && <source srcset={resolved.webp} type="image/webp" />}
-            <img
-              src={resolved.src}
-              alt={i === 0 ? title : ""}
-              width="1600"
-              height="1000"
-              fetchpriority={i === 0 ? "high" : "auto"}
-              loading={i === 0 ? "eager" : "lazy"}
-              class={`tour-hero-slide absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${i === 0 ? "opacity-100" : "opacity-0"}`}
-            />
-          </picture>
-        ))}
-        {resolvedSlides.length > 1 && (
-          <div class="absolute bottom-4 left-1/2 z-10 flex -translate-x-1/2 gap-2" id="tour-hero-dots">
-            {resolvedSlides.map((_, i) => (
-              <button
-                type="button"
-                class={`tour-hero-dot h-1.5 rounded-full transition-all duration-500 ${i === 0 ? "w-8 bg-white" : "w-1.5 bg-white/50 hover:bg-white/80"}`}
-                data-index={i}
-                aria-label={`Show photo ${i + 1}`}
-              ></button>
-            ))}
-          </div>
-        )}
-      </div>
-    </section>
-  )}
 
   <!-- Content -->
   <section id="itinerary" class="container-page pb-16 md:pb-section-padding">
