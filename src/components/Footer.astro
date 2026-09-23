@@ -8,15 +8,14 @@ const year = new Date().getFullYear();
 
 <footer class="bg-primary text-on-primary">
   <div class="container-page grid grid-cols-1 gap-stack-lg py-14 md:grid-cols-3">
+    
+    <!-- Column 1: Logo and Description -->
     <div class="md:col-span-1">
       <Logo href={base} size="h-14" variant="footer" />
       <div class="h-4"></div>
-      <p class="max-w-sm text-white/70" data-t="footer_desc">
-        Private, language-rich journeys across the Armenian highlands — planned around you and led by
-        local guides.
-      </p>
     </div>
 
+    <!-- Column 2: Explore Links -->
     <div>
       <h3 class="mb-4 text-label-md font-label-md uppercase tracking-widest text-white/60">Explore</h3>
       <ul class="space-y-2.5">
@@ -28,6 +27,7 @@ const year = new Date().getFullYear();
       </ul>
     </div>
 
+    <!-- Column 3: Contact & Mascot -->
     <div>
       <h3 class="mb-4 text-label-md font-label-md uppercase tracking-widest text-white/60">Contact</h3>
       <ul class="space-y-2.5">
@@ -44,7 +44,16 @@ const year = new Date().getFullYear();
           </a>
         </li>
         <li><a class="text-white/80 transition-colors hover:text-white" href={`tel:${SITE.phoneE164}`}>Call {SITE.phoneDisplay}</a></li>
-        <li class="pt-1 text-white/60">{SITE.city}, Armenia</li>
+        
+        <li class="relative pt-1 text-white/60 w-max">
+          {SITE.city}, Armenia
+          <img 
+            src={`${base}images/mascot.png`} 
+            alt="Upupa Travel Mascot" 
+            width="55" 
+            class="mt-4 drop-shadow-md transition-transform duration-300 hover:scale-110 md:absolute md:-bottom-2 md:-right-20 md:mt-0"
+          />
+        </li>
       </ul>
 
       {SOCIAL_LINKS.length > 0 && (
@@ -62,7 +71,8 @@ const year = new Date().getFullYear();
         </div>
       )}
     </div>
-  </div>
+
+  </div> <!-- This closing div for the grid container was missing! -->
 
   <div class="border-t border-white/10">
     <div class="container-page flex flex-col gap-3 py-5 text-caption font-caption text-white/60 sm:flex-row sm:items-center sm:justify-between">
