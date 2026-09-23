@@ -36,6 +36,125 @@ const ideas = [
   "Photography: sunrise at Khor Virap, golden hour at Garni gorge",
   "Pilgrimage: Echmiadzin, Zvartnots and Khor Virap in one day",
 ];
+
+// Stops pulled from the day tour pages, trimmed to one line each for the
+// picker. Kept here rather than imported so this page has no dependency on
+// how those pages structure their own itineraries — if a tour's stops
+// change, update the matching entry below too.
+const stopLibrary = {
+  "charents-arch": {
+    title: "Charents' Arch",
+    desc: "A viewpoint with sweeping views across to Mount Ararat.",
+    image: "images/tours/garni-geghard/arch1.webp",
+  },
+  "geghard-monastery": {
+    title: "Geghard Monastery",
+    desc: "A UNESCO-listed monastery carved into the cliffs, founded in the 4th century.",
+    image: "images/tours/garni-geghard/monastery1.webp",
+  },
+  "symphony-of-stones": {
+    title: "Symphony of Stones",
+    desc: "Hexagonal basalt columns shaped by ancient lava in the Azat River Gorge.",
+    image: "images/tours/garni-geghard/stones1.webp",
+  },
+  "garni-temple": {
+    title: "Garni Temple",
+    desc: "Armenia's only surviving pagan temple, a 1st-century Greco-Roman monument.",
+    image: "images/tours/garni-geghard/garni1.webp",
+  },
+  "lavash-baking": {
+    title: "Lavash Baking",
+    desc: "Watch lavash baked in a traditional tonir and taste it fresh off the wall.",
+    image: "images/tours/garni-geghard/lavash1.webp",
+  },
+  "lake-sevan": {
+    title: "Lake Sevan",
+    desc: "Armenia's largest lake, almost 1,900 metres above sea level.",
+    image: "images/tours/sevan-dilijan/sevan1.webp",
+  },
+  "sevanavank-monastery": {
+    title: "Sevanavank Monastery",
+    desc: "A 9th-century monastery on a peninsula overlooking Lake Sevan.",
+    image: "images/tours/sevan-dilijan/sevanavank1.webp",
+  },
+  "dilijan-town": {
+    title: "Dilijan",
+    desc: "A forested resort town known as the \"Armenian Switzerland.\"",
+    image: "images/tours/sevan-dilijan/dilijan2.webp",
+  },
+  "dilijan-old-town": {
+    title: "Dilijan Old Town",
+    desc: "Restored 19th-century streets with carved balconies and craft workshops.",
+    image: "images/tours/sevan-dilijan/dilijan6.webp",
+  },
+  "goshavank-monastery": {
+    title: "Goshavank Monastery",
+    desc: "A 12th-century monastery and former centre of learning in Tavush.",
+    image: "images/tours/sevan-dilijan/goshavank.webp",
+  },
+  "haghartsin-monastery": {
+    title: "Haghartsin Monastery",
+    desc: "A monastic complex hidden in the forests near Dilijan.",
+    image: "images/tours/sevan-dilijan/haghartsin1.webp",
+  },
+  "kecharis-monastery": {
+    title: "Kecharis Monastery",
+    desc: "An 11th-century monastery in the mountain resort town of Tsaghkadzor.",
+    image: "images/tours/tsaghkadzor-sevan/kecharis1.webp",
+  },
+  "tsaghkadzor-ropeway": {
+    title: "Tsaghkadzor Ropeway",
+    desc: "A cable car ride up Mount Teghenis for panoramic views.",
+    image: "images/tours/tsaghkadzor-sevan/ropeway1.webp",
+  },
+  "sevan-boat-trip": {
+    title: "Boat Trip on Lake Sevan",
+    desc: "A short ride out onto the lake from the peninsula shore.",
+    image: null,
+  },
+};
+
+// Groups mirror the real day tour pages, so "See full itinerary" always
+// links somewhere real. The same stop id can appear in more than one group
+// on purpose (e.g. Lake Sevan) — the picker below treats it as one stop no
+// matter where it was checked.
+const tourGroups = [
+  {
+    slug: "garni-geghard",
+    title: "Garni, Geghard & Symphony of Stones",
+    stopIds: ["charents-arch", "geghard-monastery", "symphony-of-stones", "garni-temple", "lavash-baking"],
+  },
+  {
+    slug: "garni-geghard-sevan",
+    title: "Garni, Geghard & Lake Sevan",
+    stopIds: [
+      "charents-arch",
+      "geghard-monastery",
+      "symphony-of-stones",
+      "garni-temple",
+      "lavash-baking",
+      "lake-sevan",
+      "sevanavank-monastery",
+    ],
+  },
+  {
+    slug: "sevan-dilijan",
+    title: "Lake Sevan & Dilijan",
+    stopIds: [
+      "lake-sevan",
+      "sevanavank-monastery",
+      "dilijan-town",
+      "dilijan-old-town",
+      "goshavank-monastery",
+      "haghartsin-monastery",
+    ],
+  },
+  {
+    slug: "tsaghkadzor-sevan",
+    title: "Tsaghkadzor & Lake Sevan",
+    stopIds: ["kecharis-monastery", "tsaghkadzor-ropeway", "lake-sevan", "sevanavank-monastery", "sevan-boat-trip"],
+  },
+];
 ---
 
 <BaseLayout
@@ -54,6 +173,305 @@ const ideas = [
         route around you rather than the other way round.
       </p>
     </div>
+  </section>
+
+  <section class="section-y border-b border-border-muted">
+    <div class="container-page">
+      <div class="mx-auto max-w-2xl text-center">
+        <span class="eyebrow">Build It Yourself</span>
+        <h2 class="section-title">Pick stops from our day tours</h2>
+        <p class="mx-auto mt-4 max-w-2xl text-body-lg text-on-surface-variant">
+          Tap anything that catches your eye across the tours below — check as many stops as you like,
+          then send us the list. Prefer to just describe it?
+          <a class="text-secondary underline underline-offset-4" href="#contact">Skip straight to the form</a>.
+        </p>
+      </div>
+
+      <div class="mt-10 grid grid-cols-1 gap-8 lg:grid-cols-12">
+        <aside class="lg:sticky lg:top-24 lg:col-span-4 lg:order-2 lg:self-start">
+          <div class="panel p-6 shadow-card">
+            <div class="flex items-center justify-between gap-3">
+              <h3 class="font-display text-headline-sm font-headline-sm text-primary">Your route</h3>
+              <span id="route-count" class="text-caption text-on-surface-variant"></span>
+            </div>
+            <p id="route-empty" class="mt-3 text-body-sm text-on-surface-variant">
+              Nothing picked yet — tap a stop to add it here.
+            </p>
+            <ol id="route-list" class="mt-3 space-y-2" hidden></ol>
+            <a href="#contact" class="btn-primary btn-block mt-6">
+              Continue to enquiry
+              <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+            </a>
+            <p class="mt-3 text-caption text-on-surface-variant">
+              This fills in the form below — you can still edit or add to it there.
+            </p>
+          </div>
+        </aside>
+
+        <div class="space-y-4 lg:col-span-8 lg:order-1">
+          {tourGroups.map((group, groupIndex) => (
+            <details class="route-group reveal panel overflow-hidden" open={groupIndex === 0}>
+<             <summary class="route-group-summary flex cursor-pointer items-center justify-between gap-4 p-5">
+                <div>
+                  <div class="flex flex-col items-start gap-2 md:flex-row md:items-center">
+                    <span class="rounded-full bg-secondary px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
+                      Tour {groupIndex + 1}
+                    </span>
+                    <h3 class="font-display text-headline-sm font-headline-sm text-on-surface">{group.title}</h3>
+                  </div>
+                  <p class="mt-1 text-caption text-on-surface-variant">
+                    {group.stopIds.length} {group.stopIds.length === 1 ? "stop" : "stops"} ·
+                    <a class="route-group-link underline underline-offset-4 hover:text-secondary" href={`${base}tours/${group.slug}`}>
+                      See full itinerary
+                    </a>
+                  </p>
+                </div>
+                <span class="route-group-chevron material-symbols-outlined shrink-0 text-on-surface-variant">
+                  expand_more
+                </span>
+              </summary>
+
+              <div class="grid grid-cols-2 gap-3 p-5 pt-0 sm:grid-cols-3 xl:grid-cols-4">
+                {group.stopIds.map((id) => {
+                  const stop = stopLibrary[id];
+                  return (
+                    <label class="stop-card" data-stop-id={id}>
+                      <input type="checkbox" class="sr-only" data-stop-id={id} data-stop-title={stop.title} />
+                      <span class="stop-card-media">
+                        {stop.image ? (
+                          <Picture
+                            src={stop.image}
+                            alt={stop.title}
+                            width={320}
+                            height={240}
+                            class="h-full w-full object-cover"
+                            sizes="(max-width: 640px) 45vw, 220px"
+                          />
+                        ) : (
+                          <span class="flex h-full w-full items-center justify-center">
+                            <span class="material-symbols-outlined text-[28px] text-secondary/50">near_me</span>
+                          </span>
+                        )}
+                        <span class="stop-card-check material-symbols-outlined">check</span>
+                      </span>
+                      <span class="stop-card-body">
+                        <span class="text-body-sm font-medium text-on-surface">{stop.title}</span>
+                        <span class="mt-0.5 text-caption text-on-surface-variant line-clamp-2">{stop.desc}</span>
+                      </span>
+                    </label>
+                  );
+                })}
+              </div>
+            </details>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <style>
+      .route-group summary {
+        list-style: none;
+      }
+      .route-group summary::-webkit-details-marker {
+        display: none;
+      }
+      .route-group-chevron {
+        transition: transform 0.2s ease;
+      }
+      .route-group[open] .route-group-chevron {
+        transform: rotate(180deg);
+      }
+
+      .stop-card {
+        @apply relative flex cursor-pointer flex-col overflow-hidden rounded-xl border border-border-muted bg-surface-container-low/30 transition-colors duration-150;
+      }
+      .stop-card:hover {
+        @apply border-secondary/60;
+      }
+      .stop-card:has(input:focus-visible) {
+        @apply outline outline-2 outline-offset-2 outline-secondary;
+      }
+      .stop-card.is-selected {
+        @apply border-primary bg-primary/5;
+      }
+      .stop-card-media {
+        @apply relative block aspect-[4/3] w-full overflow-hidden bg-surface-container-low;
+      }
+      .stop-card-check {
+        @apply pointer-events-none absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-surface-container-low/90 text-[16px] text-on-surface-variant opacity-0 transition-opacity duration-150;
+      }
+      .stop-card.is-selected .stop-card-check {
+        @apply bg-primary text-on-primary opacity-100;
+      }
+      .stop-card-body {
+        @apply flex flex-1 flex-col gap-0.5 p-3;
+      }
+
+      .route-item {
+        @apply flex items-center gap-1.5 rounded-lg bg-surface-container-low/60 px-2.5 py-2;
+      }
+      .route-item-controls {
+        @apply flex shrink-0 items-center gap-0.5;
+      }
+      .route-item-btn {
+        @apply flex h-7 w-7 items-center justify-center rounded-md text-on-surface-variant transition-colors hover:bg-surface-container-low hover:text-primary disabled:pointer-events-none disabled:opacity-30;
+      }
+      .route-item-btn .material-symbols-outlined {
+        font-size: 16px;
+      }
+    </style>
+
+    <script>
+      const stopTitles = new Map();
+      let selectedOrder: string[] = [];
+      let tourManuallySet = false;
+      let lastAutoNotes = "";
+
+      const tourSelect = document.getElementById("enq-tour");
+      const notesField = document.getElementById("enq-notes");
+
+      tourSelect?.addEventListener("change", () => {
+        tourManuallySet = true;
+      });
+
+      // Stop the "See full itinerary" link from also toggling the <details>
+      // it sits inside.
+      document.querySelectorAll(".route-group-link").forEach((link) => {
+        link.addEventListener("click", (event) => event.stopPropagation());
+      });
+
+      document.querySelectorAll<HTMLInputElement>("input[data-stop-id]").forEach((input) => {
+        input.addEventListener("change", () => {
+          const id = input.dataset.stopId;
+          if (!id) return;
+          if (input.checked) {
+            addStop(id, input.dataset.stopTitle ?? id);
+          } else {
+            removeStop(id);
+          }
+        });
+      });
+
+      document.getElementById("route-list")?.addEventListener("click", (event) => {
+        const target = event.target as HTMLElement | null;
+        const btn = target?.closest<HTMLButtonElement>("button[data-action]");
+        if (!btn) return;
+        const id = btn.dataset.id;
+        const action = btn.dataset.action;
+        if (!id) return;
+
+        if (action === "remove") {
+          removeStop(id);
+        } else if (action === "up" || action === "down") {
+          const idx = selectedOrder.indexOf(id);
+          const swapIdx = action === "up" ? idx - 1 : idx + 1;
+          if (idx > -1 && swapIdx > -1 && swapIdx < selectedOrder.length) {
+            [selectedOrder[idx], selectedOrder[swapIdx]] = [selectedOrder[swapIdx], selectedOrder[idx]];
+            renderTray();
+            syncNotes();
+          }
+        }
+      });
+
+      function addStop(id: string, title: string) {
+        if (!selectedOrder.includes(id)) selectedOrder.push(id);
+        stopTitles.set(id, title);
+        syncCheckboxes();
+        renderTray();
+        syncNotes();
+        syncTourSelect();
+      }
+
+      function removeStop(id: string) {
+        selectedOrder = selectedOrder.filter((existing) => existing !== id);
+        syncCheckboxes();
+        renderTray();
+        syncNotes();
+      }
+
+      function syncCheckboxes() {
+        document.querySelectorAll<HTMLInputElement>("input[data-stop-id]").forEach((input) => {
+          const id = input.dataset.stopId;
+          const checked = id ? selectedOrder.includes(id) : false;
+          input.checked = checked;
+          input.closest(".stop-card")?.classList.toggle("is-selected", checked);
+        });
+      }
+
+      function renderTray() {
+        const list = document.getElementById("route-list");
+        const empty = document.getElementById("route-empty");
+        const countEl = document.getElementById("route-count");
+        if (!list || !empty || !countEl) return;
+
+        countEl.textContent = selectedOrder.length
+          ? `${selectedOrder.length} ${selectedOrder.length === 1 ? "stop" : "stops"}`
+          : "";
+        empty.hidden = selectedOrder.length > 0;
+        list.hidden = selectedOrder.length === 0;
+        list.innerHTML = "";
+
+        selectedOrder.forEach((id, index) => {
+          const title = stopTitles.get(id) ?? id;
+
+          const li = document.createElement("li");
+          li.className = "route-item";
+
+          const label = document.createElement("span");
+          label.className = "flex-1 truncate text-body-sm text-on-surface";
+          label.textContent = `${index + 1}. ${title}`;
+
+          const controls = document.createElement("span");
+          controls.className = "route-item-controls";
+          const up = makeIconButton("arrow_upward", `Move ${title} up`, id, "up");
+          const down = makeIconButton("arrow_downward", `Move ${title} down`, id, "down");
+          const remove = makeIconButton("close", `Remove ${title}`, id, "remove");
+          up.disabled = index === 0;
+          down.disabled = index === selectedOrder.length - 1;
+          controls.append(up, down, remove);
+
+          li.append(label, controls);
+          list.appendChild(li);
+        });
+      }
+
+      function makeIconButton(icon: string, label: string, id: string, action: string) {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "route-item-btn";
+        btn.dataset.id = id;
+        btn.dataset.action = action;
+        btn.setAttribute("aria-label", label);
+        const span = document.createElement("span");
+        span.className = "material-symbols-outlined";
+        span.textContent = icon;
+        btn.appendChild(span);
+        return btn;
+      }
+
+      // Keeps an auto-generated block at the top of the notes field in sync
+      // with the picker. If the visitor edits or deletes that block, we stop
+      // touching it rather than overwrite what they typed.
+      function syncNotes() {
+        if (!(notesField instanceof HTMLTextAreaElement)) return;
+        const autoText = selectedOrder.length
+          ? `Stops I'd like included:\n${selectedOrder
+              .map((id, index) => `${index + 1}. ${stopTitles.get(id) ?? id}`)
+              .join("\n")}\n\n`
+          : "";
+        if (notesField.value.startsWith(lastAutoNotes)) {
+          notesField.value = autoText + notesField.value.slice(lastAutoNotes.length);
+          lastAutoNotes = autoText;
+        }
+      }
+
+      function syncTourSelect() {
+        if (!(tourSelect instanceof HTMLSelectElement)) return;
+        if (tourManuallySet || selectedOrder.length === 0) return;
+        const customOption = Array.from(tourSelect.options).find((opt) => opt.value === "Custom Route");
+        if (customOption) tourSelect.value = "Custom Route";
+      }
+    </script>
   </section>
 
   <section class="section-y">

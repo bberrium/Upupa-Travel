@@ -22,10 +22,10 @@ export const TOURS = [
     title: "Garni, Geghard & Symphony of Stones",
     desc: "Temple, cliffside monastery & basalt gorge in a day. Discover the pre-Christian roots and unique geology of Armenia.",
     images: [
-      "images/tours/garni-geghard/garni2.webp",
       "images/tours/garni-geghard/monastery3.webp",
-      "images/tours/garni-geghard/stones1.webp",
-      "images/tours/garni-geghard/arch1.webp",
+      "images/tours/garni-geghard/stones2.webp",
+      "images/tours/garni-geghard/arch2.webp",
+      "images/tours/garni-geghard/lavash2.webp"
     ],
     languages: ["en", "ru", "am"],
     duration: "6-7 hours",
@@ -81,10 +81,10 @@ export const TOURS = [
     title: "Charents' Arch, Garni, Geghard, Symphony of Stones, Lavash & Lake Sevan",
     desc: "The full pre-Christian-to-medieval route in one day: Garni Temple, Geghard Monastery, the Symphony of Stones and a lavash-baking stop, capped off at Lake Sevan and Sevanavank.",
     images: [
-      "images/tours/garni-geghard/garni1.webp",
-      "images/tours/garni-geghard/monastery3.webp",
-      "images/tours/sevan-dilijan/sevanavank3.webp",
       "images/tours/sevan-dilijan/sevan1.webp",
+      "images/tours/garni-geghard/stones1.webp",
+      "images/tours/garni-geghard/arch1.webp",
+      "images/tours/garni-geghard/lavash1.webp"
     ],
     languages: ["en", "ru", "am"],
     duration: "9-10 hours",

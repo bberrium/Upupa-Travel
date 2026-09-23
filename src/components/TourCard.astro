@@ -43,7 +43,7 @@ const initial = priceFor(tour.pricing, 2, false);
     ))}
 
     <span class="absolute left-4 top-4 z-20 rounded-full bg-secondary px-3 py-1 text-caption font-caption uppercase tracking-wide text-white">
-      {tour.tourNumber ? `Tour Number ${tour.tourNumber}` : tour.label}
+      {tour.tourNumber ? `Tour ${tour.tourNumber}` : tour.label}
     </span>
     
     {tour.images && tour.images.length > 1 && (
