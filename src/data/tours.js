@@ -16,6 +16,7 @@
 export const TOURS = [
   {
     slug: "garni-geghard",
+    tourNumber: 1,
     label: "Day Tour",
     category: "day",
     title: "Garni, Geghard & Symphony of Stones",
@@ -27,7 +28,7 @@ export const TOURS = [
       "images/tours/garni-geghard/arch1.webp",
     ],
     languages: ["en", "ru", "am"],
-    duration: "5-6 hours",
+    duration: "6-7 hours",
     region: "Yerevan",
     pricing: {
       noGuide: {
@@ -43,42 +44,12 @@ export const TOURS = [
     },
   },
   {
-    slug: "sevan-dilijan",
-    label: "Day Tour",
-    category: "day",
-    title: "Lake Sevan, Sevanavank, Dilijan, Goshavank, Haghartsin",
-    desc: "Explore the 'Blue Pearl of Armenia' and discover medieval monasteries hidden deep within the lush forests of the Armenian Switzerland.",
-    images: [
-          "images/tours/sevan-dilijan/sevanavank3.webp",
-          "images/tours/sevan-dilijan/dilijan4.webp",
-          "images/tours/sevan-dilijan/dilijan5.webp",
-          "images/tours/sevan-dilijan/goshavank2.webp",
-          "images/tours/sevan-dilijan/haghartsin1.webp",
-          "images/tours/sevan-dilijan/haghartsin9.webp"
-
-        ],
-    languages: ["en", "ru", "am"],
-    duration: "9-10 hours",
-    region: "Yerevan",
-    pricing: {
-      noGuide: {
-        1: 44000, 2: 44000, 3: 46000, 4: 48000, 5: 54000,
-        6: 56000, 7: 66000, 8: 68000, 9: 70000, 10: 78000,
-        extraPerPerson: 2000, maxPeople: 20,
-      },
-      guide: {
-        1: 74000, 2: 74000, 3: 76000, 4: 78000, 5: 84000,
-        6: 86000, 7: 96000, 8: 98000, 9: 100000, 10: 108000,
-        extraPerPerson: 2000, maxPeople: 20,
-      },
-    },
-  },
-  {
     slug: "tsaghkadzor-sevan",
+    tourNumber: 2,
     label: "Day Tour",
     category: "day",
     title: "Tsaghkadzor, Kecharis Monastery, Ropeway & Lake Sevan",
-    desc: "Ride a mountain ropeway above Tsaghkadzor, then unwind at Lake Sevan's ancient clifftop monastery.",
+    desc: "Ride a mountain ropeway above Tsaghkadzor, then unwind at Lake Sevan's ancient clifftop monastery — with time on the water.",
     images: [
           "images/tours/tsaghkadzor-sevan/kecharis1.webp",
           "images/tours/tsaghkadzor-sevan/ropeway1.webp",
@@ -102,6 +73,73 @@ export const TOURS = [
       },
     },
   },
+  {
+    slug: "garni-geghard-sevan",
+    tourNumber: 3,
+    label: "Day Tour",
+    category: "day",
+    title: "Charents' Arch, Garni, Geghard, Symphony of Stones, Lavash & Lake Sevan",
+    desc: "The full pre-Christian-to-medieval route in one day: Garni Temple, Geghard Monastery, the Symphony of Stones and a lavash-baking stop, capped off at Lake Sevan and Sevanavank.",
+    images: [
+      "images/tours/garni-geghard/garni1.webp",
+      "images/tours/garni-geghard/monastery3.webp",
+      "images/tours/sevan-dilijan/sevanavank3.webp",
+      "images/tours/sevan-dilijan/sevan1.webp",
+    ],
+    languages: ["en", "ru", "am"],
+    duration: "9-10 hours",
+    region: "Yerevan",
+    pricing: {
+      // NOTE: the source form gave a base price for 2 people (no guide) but
+      // no 1-person price, and guide pricing only from 3 people up (no
+      // 2-person guide price). Those cells are left out on purpose —
+      // priceFor() returns null below the table's lowest key, so the site
+      // shows "Contact for price" for 1 person (no guide) and for 2 people
+      // with a guide until real numbers come in.
+      noGuide: {
+        2: 40000, 3: 42000, 4: 44000, 5: 50000, 6: 52000,
+        7: 60000, 8: 62000, 9: 64000, 10: 74000,
+        extraPerPerson: 2000, maxPeople: 20,
+      },
+      guide: {
+        2: 70000, 3: 72000, 4: 74000, 5: 80000, 6: 82000,
+        7: 90000, 8: 92000, 9: 94000, 10: 104000,
+        extraPerPerson: 2000, maxPeople: 20,
+      },
+    },
+  },
+  {
+    slug: "sevan-dilijan",
+    tourNumber: 4,
+    label: "Day Tour",
+    category: "day",
+    title: "Lake Sevan, Sevanavank, Dilijan, Goshavank, Haghartsin",
+    desc: "Explore the 'Blue Pearl of Armenia' and discover medieval monasteries hidden deep within the lush forests of the Armenian Switzerland.",
+    images: [
+          "images/tours/sevan-dilijan/sevanavank3.webp",
+          "images/tours/sevan-dilijan/dilijan4.webp",
+          "images/tours/sevan-dilijan/dilijan5.webp",
+          "images/tours/sevan-dilijan/goshavank2.webp",
+          "images/tours/sevan-dilijan/haghartsin1.webp",
+          "images/tours/sevan-dilijan/haghartsin9.webp"
+
+        ],
+    languages: ["en", "ru", "am"],
+    duration: "10-11 hours",
+    region: "Yerevan",
+    pricing: {
+      noGuide: {
+        1: 44000, 2: 44000, 3: 46000, 4: 48000, 5: 54000,
+        6: 56000, 7: 66000, 8: 68000, 9: 70000, 10: 78000,
+        extraPerPerson: 2000, maxPeople: 20,
+      },
+      guide: {
+        1: 74000, 2: 74000, 3: 76000, 4: 78000, 5: 84000,
+        6: 86000, 7: 96000, 8: 98000, 9: 100000, 10: 108000,
+        extraPerPerson: 2000, maxPeople: 20,
+      },
+    },
+  },
 ];
 
 
@@ -110,8 +148,13 @@ export function priceFor(pricing, people, withGuide) {
   const table = withGuide ? pricing.guide : pricing.noGuide;
   if (!table) return null;
   if (people < 1 || people > table.maxPeople) return null;
-  if (people <= 10) return table[people];
-  return table[10] + (people - 10) * table.extraPerPerson;
+  if (people <= 10) {
+    const val = table[people];
+    return val == null ? null : val;
+  }
+  const base = table[10];
+  if (base == null) return null;
+  return base + (people - 10) * table.extraPerPerson;
 }
 
 export function formatAMD(n) {

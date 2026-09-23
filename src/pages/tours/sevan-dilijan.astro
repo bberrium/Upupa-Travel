@@ -40,9 +40,16 @@ const days = [
           "images/tours/sevan-dilijan/dilijan3.webp",
           "images/tours/sevan-dilijan/dilijan4.webp",
           "images/tours/sevan-dilijan/dilijan5.webp",
+          "images/tours/sevan-dilijan/dilijan8.webp",
+        ],
+      },
+      {
+        time: "30-40 minutes",
+        title: "Dilijan Old Town",
+        desc: "The restored old quarter of Dilijan, with its carved wooden balconies and cobbled streets lined with craft workshops and galleries — a slower-paced stroll through the town's 19th-century character.",
+        images: [
           "images/tours/sevan-dilijan/dilijan6.webp",
           "images/tours/sevan-dilijan/dilijan7.webp",
-          "images/tours/sevan-dilijan/dilijan8.webp",
         ],
       },
       {
@@ -111,7 +118,7 @@ const tips = [
   {
     icon: "schedule",
     title: "Long day",
-    desc: "This route runs 9-10 hours door to door. Tell us if you'd prefer a shorter version and we'll trim a stop.",
+    desc: "This route runs 10-11 hours door to door. Tell us if you'd prefer a shorter version and we'll trim a stop.",
   },
 ];
 
@@ -122,6 +129,7 @@ const allItineraryImages = days.flatMap(day => day.stops.flatMap(stop => stop.im
 
 <TourLayout
   label={tour.label}
+  tourNumber={tour.tourNumber}
   title={tour.title}
   summary={tour.desc}
   heroImage={allItineraryImages[0]}

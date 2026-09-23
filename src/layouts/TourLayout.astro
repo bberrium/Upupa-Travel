@@ -35,13 +35,13 @@ export interface Pricing {
 
 interface Props {
   label: string;
+  tourNumber?: number;
   title: string;
   summary: string;
   heroImage: string;
   images?: string[];
   duration?: string;
   region?: string;
-  languages?: string[];
   pricing?: Pricing | null;
   days: Day[];
   included: string[];
@@ -51,13 +51,13 @@ interface Props {
 
 const {
   label,
+  tourNumber,
   title,
   summary,
   heroImage,
   images = [],
   duration,
   region,
-  languages = [],
   pricing = null,
   days,
   included,
@@ -123,6 +123,9 @@ const schema = {
   <!-- Title -->
   <section class="container-page pb-8 pt-6">
     <div class="max-w-3xl">
+      {tourNumber && (
+        <p class="mb-2 text-label-md font-label-md uppercase tracking-widest text-secondary">Tour Number {tourNumber}</p>
+      )}
       <div class="mb-4 flex flex-wrap items-center gap-3">
         <span class="rounded-full bg-secondary px-3 py-1 text-caption font-caption uppercase tracking-wide text-white">{label}</span>
         {duration && (
@@ -133,12 +136,6 @@ const schema = {
         {region && (
           <span class="inline-flex items-center gap-1 text-label-md font-label-md text-on-surface-variant">
             <span class="material-symbols-outlined text-[16px]">location_on</span>from {region}
-          </span>
-        )}
-        {languages.length > 0 && (
-          <span class="inline-flex items-center gap-1 text-label-md font-label-md text-on-surface-variant">
-            <span class="material-symbols-outlined text-[16px]">language</span>
-            {languages.map((code) => ({ en: "EN", ru: "RU", am: "AM" })[code] || code.toUpperCase()).join(" · ")}
           </span>
         )}
       </div>
@@ -170,9 +167,6 @@ const schema = {
         {days.map((day) => (
           <div class="mb-14">
             <div class="mb-8 flex items-center gap-4">
-              <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary font-display text-headline-sm font-headline-sm text-white">
-                {day.dayNumber}
-              </span>
               <div>
                 <h3 class="font-display text-headline-sm font-headline-sm text-on-surface">{day.title}</h3>
                 <p class="text-label-md font-label-md text-on-surface-variant">{day.subtitle}</p>

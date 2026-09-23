@@ -27,11 +27,11 @@ const hasMultiDay = TOURS.some((tour) => tour.category === "multi");
 
   <section class="section-y">
     <div class="container-page">
+      {/* Honest empty state. A nav link that lands on "no results" reads as
+           a broken site; this reads as a service that's being scheduled. */}
       {hasMultiDay ? (
         <TourSearch category="multi" />
       ) : (
-        <!-- Honest empty state. A nav link that lands on "no results" reads as
-             a broken site; this reads as a service that's being scheduled. -->
         <div class="panel mx-auto max-w-2xl p-8 text-center md:p-12">
           <span class="material-symbols-outlined text-[40px] text-secondary">event_upcoming</span>
           <h2 class="font-display mt-3 text-headline-md font-headline-md text-primary">

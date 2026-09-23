@@ -50,6 +50,11 @@ const days = [
           "images/tours/sevan-dilijan/sevanavank3.webp",
         ],
       },
+      {
+        time: "30-40 minutes",
+        title: "Boat Trip on Lake Sevan",
+        desc: "A short boat ride out onto Lake Sevan, taking in the open water and the mountains ringing the shoreline from a different angle than the peninsula offers.",
+      },
     ],
   },
 ];
@@ -65,6 +70,7 @@ const tips = [
 
 <TourLayout
   label={tour.label}
+  tourNumber={tour.tourNumber}
   title={tour.title}
   summary={tour.desc}
   heroImage={tour.images[0]}

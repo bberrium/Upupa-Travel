@@ -58,7 +58,7 @@ import { TOURS } from "../data/tours.js";
           <label class="field-label text-white/90" for="rev-tour" data-t="label_tour">Tour Taken</label>
           <select class="field-on-dark" id="rev-tour" name="tour" required data-error-message="Which tour did you take?">
             <option value="" data-t="opt_choose">Choose…</option>
-            {TOURS.map((tour) => <option value={tour.title}>{tour.title}</option>)}
+            {TOURS.map((tour, i) => <option value={tour.title}>{String(i + 1).padStart(2, "0")} — {tour.title}</option>)}
             <option value="Custom Route">Custom Route</option>
           </select>
           <p class="field-error text-error-container" data-error></p>

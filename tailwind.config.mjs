@@ -9,7 +9,7 @@ export default {
         primary: "#0088CC",
         "ocean-blue": "#0088CC",
         secondary: "#fc8803",
-        tertiary: "#730014",
+        tertiary: "#ed032a",
         // Previously hard-coded in Header.astro / index.astro / gallery.astro.
         // Same hex values, now reachable as tokens.
         telegram: "#229ED9",

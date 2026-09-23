@@ -2,7 +2,7 @@
 import TourLayout from "../../layouts/TourLayout.astro";
 import { TOURS } from "../../data/tours.js";
 
-const tour = TOURS.find((t) => t.slug === "garni-geghard")!;
+const tour = TOURS.find((t) => t.slug === "garni-geghard-sevan")!;
 
 // Image paths are local (see /public/images/tours/...). Run
 // `npm run images:fetch` once to pull them in, or drop your own files at these
@@ -10,8 +10,8 @@ const tour = TOURS.find((t) => t.slug === "garni-geghard")!;
 const days = [
   {
     dayNumber: "01",
-    title: "Garni Temple, Symphony of Stones, Geghard Monastery, Lavash Baking",
-    subtitle: "Pre-Christian Roots & Volcanic Geology",
+    title: "Garni Temple, Symphony of Stones, Geghard Monastery, Lake Sevan",
+    subtitle: "Pre-Christian Roots to the Blue Pearl of Armenia",
     stops: [
       {
         time: "15-20 minutes",
@@ -54,9 +54,9 @@ const days = [
         ],
       },
       {
-        time: "40 minutes",
-        title: "Lavash baking",
-        desc: "A stop at a village home to watch lavash being baked in a tonir — the clay oven sunk into the floor — and to taste it straight off the wall of the oven with local cheese and herbs.",
+        time: "70-80 minutes",
+        title: "Lavash Baking Master Class & Optional Lunch",
+        desc: "A lavash-baking master class at one of the best traditional family restaurants in Garni, with the option to stay on for lunch at the same restaurant. Lunch is at your own expense.",
         images: [
           "images/tours/garni-geghard/lavash1.webp",
           "images/tours/garni-geghard/lavash2.webp",
@@ -64,10 +64,23 @@ const days = [
           "images/tours/garni-geghard/lavash4.webp",
         ],
       },
+      {
+        time: "80 minutes",
+        title: "Lake Sevan & Sevanavank Monastery",
+        desc: "Lake Sevan is the Blue Pearl of Armenia. Located almost 1,900 meters above sea level, it is the largest lake in the country and one of the highest large freshwater lakes in the world, surrounded by mountains and open skies. Sevanavank, founded in 874 AD by Princess Mariam, stands on a rocky peninsula overlooking the lake and is known for its two surviving churches, Surp Arakelots and Surp Astvatsatsin, and for its panoramic views.",
+        images: [
+          "images/tours/sevan-dilijan/sevan1.webp",
+          "images/tours/sevan-dilijan/sevanavank1.webp",
+          "images/tours/sevan-dilijan/sevanavank2.webp",
+          "images/tours/sevan-dilijan/sevanavank3.webp",
+        ],
+      },
     ],
   },
 ];
 
+// PLACEHOLDER — form's "What's Included" section was left blank. Drafted to
+// match the other Garni/Geghard day tour; confirm or edit before publishing.
 const included = [
   "Private vehicle and driver for the whole route",
   "English, Russian or Armenian speaking guide (when selected)",
@@ -77,10 +90,13 @@ const included = [
 
 const notIncluded = [
   "Lunch and drinks",
-  "Lavash baking experience if booked separately",
+  "Boat trips on Lake Sevan",
   "Tips for the guide or driver",
 ];
 
+// PLACEHOLDER — form's "Know Before You Go" section was left blank. Drafted
+// from the other two tours this route combines; confirm or edit before
+// publishing.
 const tips = [
   {
     icon: "hiking",
@@ -90,23 +106,20 @@ const tips = [
   {
     icon: "checkroom",
     title: "Monastery dress code",
-    desc: "Shoulders and knees covered inside Geghard. A light scarf is enough.",
+    desc: "Shoulders and knees covered inside Geghard and Sevanavank. A light scarf is enough.",
   },
   {
-    icon: "thermostat",
-    title: "Gorge temperature",
-    desc: "The Azat gorge stays cooler than Yerevan even in summer. Bring a light layer.",
+    icon: "schedule",
+    title: "Long day",
+    desc: "This route runs 9-10 hours door to door and covers two regions. Tell us if you'd prefer a shorter version and we'll trim a stop.",
   },
 ];
 
 // 1. List the filenames of any images that are too low-quality for the big screen
 const lowResImages = [
   "images/tours/garni-geghard/arch1.webp",
-  "images/tours/garni-geghard/arch2.webp",// Add any others here!
+  "images/tours/garni-geghard/arch2.webp",
   "images/tours/garni-geghard/garni3.webp",
-  "public/images/tours/garni-geghard/garni4.webp",
-  "public/images/tours/garni-geghard/monastery3.webp"
-
 ];
 
 // 2. Flatten the itinerary images, but filter OUT the ones in the list above

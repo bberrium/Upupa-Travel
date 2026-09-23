@@ -43,7 +43,7 @@ const initial = priceFor(tour.pricing, 2, false);
     ))}
 
     <span class="absolute left-4 top-4 z-20 rounded-full bg-secondary px-3 py-1 text-caption font-caption uppercase tracking-wide text-white">
-      {tour.label}
+      {tour.tourNumber ? `Tour Number ${tour.tourNumber}` : tour.label}
     </span>
     
     {tour.images && tour.images.length > 1 && (
@@ -128,15 +128,32 @@ const initial = priceFor(tour.pricing, 2, false);
       }
 
       function start() {
-        timer = window.setInterval(() => showSlide((current + 1) % slides.length), 4000);
+        if (timer) clearInterval(timer);
+        timer = window.setInterval(() => showSlide((current + 1) % slides.length), 1500);
       }
 
-      start();
+      function stop() {
+        if (timer) clearInterval(timer);
+        timer = undefined;
+      }
+
+      // Only cycle while the card is hovered — otherwise it sits on a single
+      // still image. Reset back to the first slide when the pointer leaves.
+      card.addEventListener("mouseenter", start);
+      card.addEventListener("focusin", start);
+      card.addEventListener("mouseleave", () => {
+        stop();
+        if (current !== 0) showSlide(0);
+      });
+      card.addEventListener("focusout", () => {
+        stop();
+        if (current !== 0) showSlide(0);
+      });
 
       dots.forEach((dot) => {
         dot.addEventListener("click", (e) => {
           e.preventDefault(); // Prevents the link from triggering when clicking a dot
-          if (timer) clearInterval(timer);
+          stop();
           showSlide(parseInt((dot as HTMLElement).dataset.index || "0", 10));
           start();
         });

@@ -48,7 +48,7 @@ const tours = category ? TOURS.filter((t) => t.category === category) : TOURS;
 </div>
 
 <div class="grid grid-cols-1 gap-gutter md:grid-cols-2 lg:grid-cols-3" id="tours-grid">
-  {tours.map((tour, i) => <TourCard tour={tour} eager={i === 0} />)}
+  {tours.map((tour, i) => <TourCard tour={tour} eager={i === 0} number={i + 1} />)}
 </div>
 
 <p class="hidden py-10 text-center text-on-surface-variant" id="tours-empty">{emptyMessage}</p>
