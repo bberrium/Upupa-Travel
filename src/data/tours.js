@@ -150,7 +150,7 @@ export const TOURS = [
     // DRAFT teaser — the client left this blank.
     desc: "Two UNESCO-listed monasteries and a fortress with Byzantine frescoes, in the forested canyons of Lori.",
     images: [
-      "images/tours/sanahin-haghpat-akhtala/sanahin6.webp",
+      "images/tours/sanahin-haghpat-akhtala/sanahin4.webp",
       "images/tours/sanahin-haghpat-akhtala/haghpat1.webp",
       "images/tours/sanahin-haghpat-akhtala/akhtala1.webp",
       "images/tours/sanahin-haghpat-akhtala/sanahin2.webp",
