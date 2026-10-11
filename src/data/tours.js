@@ -2,9 +2,10 @@
 // Used by the tour listings AND each tour page's price calculator, so pricing
 // lives in exactly one place.
 //
-// Pricing tables are keyed by exact headcount 1-10 (AMD, total group price —
-// not per person). Beyond 10 people, `extraPerPerson` AMD is added per extra
-// person, up to `maxPeople`.
+// Pricing tables are keyed by exact headcount (AMD, total group price —
+// not per person). If a headcount has its own key (e.g. 11: 110000), that
+// price is used. Otherwise, beyond 10 people, `extraPerPerson` AMD is added
+// per extra person on top of the 10-person price, up to `maxPeople`.
 //
 // `pricing: null` means real numbers aren't in yet — the site shows
 // "Contact for price" for that tour until they are.
@@ -140,6 +141,43 @@ export const TOURS = [
       },
     },
   },
+  {
+    slug: "haghpat-sanahin-akhtala",
+    tourNumber: 5,
+    label: "Day Tour",
+    category: "day",
+    title: "Haghpat and Sanahin Monasteries, Akhtala Fortress",
+    // DRAFT teaser — the client left this blank.
+    desc: "Two UNESCO-listed monasteries and a fortress with Byzantine frescoes, in the forested canyons of Lori.",
+    images: [
+      "images/tours/sanahin-haghpat-akhtala/sanahin6.webp",
+      "images/tours/sanahin-haghpat-akhtala/haghpat1.webp",
+      "images/tours/sanahin-haghpat-akhtala/akhtala1.webp",
+      "images/tours/sanahin-haghpat-akhtala/sanahin2.webp",
+    ],
+    languages: ["en", "ru", "am"],
+    duration: "11-12 hours",
+    region: "Yerevan",
+    pricing: {
+      // NOTE: the client gave no 1-person price, so 1 person shows
+      // "Contact for price". From 11 people the client gave a separate price
+      // for every headcount, so each one is listed explicitly.
+      noGuide: {
+        2: 50000, 3: 52000, 4: 54000, 5: 66000, 6: 68000,
+        7: 88000, 8: 90000, 9: 92000, 10: 94000,
+        11: 110000, 12: 112000, 13: 114000, 14: 116000, 15: 118000,
+        16: 120000, 17: 122000, 18: 124000, 19: 126000, 20: 128000,
+        extraPerPerson: 2000, maxPeople: 20,
+      },
+      guide: {
+        2: 84000, 3: 86000, 4: 100000, 5: 102000, 6: 122000,
+        7: 124000, 8: 126000, 9: 128000, 10: 144000,
+        11: 146000, 12: 148000, 13: 150000, 14: 152000, 15: 154000,
+        16: 156000, 17: 158000, 18: 160000, 19: 162000,
+        extraPerPerson: 2000, maxPeople: 19,
+      },
+    },
+  },
 ];
 
 
@@ -148,13 +186,37 @@ export function priceFor(pricing, people, withGuide) {
   const table = withGuide ? pricing.guide : pricing.noGuide;
   if (!table) return null;
   if (people < 1 || people > table.maxPeople) return null;
-  if (people <= 10) {
-    const val = table[people];
-    return val == null ? null : val;
-  }
+  // An explicit price for this exact headcount always wins.
+  if (table[people] != null) return table[people];
+  if (people <= 10) return null;
   const base = table[10];
   if (base == null) return null;
   return base + (people - 10) * table.extraPerPerson;
+}
+
+// Vehicles, smallest first. `maxSeats` counts EVERYONE who rides in the
+// vehicle (travellers + the guide, if there is one; the driver is not counted).
+// These limits follow the price jumps in Tour 5's table — change them here and
+// every page (tour pages + home calculator) follows.
+export const VEHICLES = [
+  { id: "sedan", label: "Comfort sedan", maxSeats: 4 },
+  { id: "minivan", label: "Minivan", maxSeats: 6 },
+  { id: "minibus", label: "Minibus", maxSeats: 10 },
+  { id: "sprinter", label: "Sprinter", maxSeats: 20 },
+];
+
+// A guide takes a seat, so a tour with a guide needs one seat more.
+export function seatsNeeded(people, withGuide) {
+  return people + (withGuide ? 1 : 0);
+}
+
+export function vehicleFor(people, withGuide) {
+  const seats = seatsNeeded(people, withGuide);
+  return VEHICLES.find((v) => seats <= v.maxSeats) || VEHICLES[VEHICLES.length - 1];
+}
+
+export function vehicleLabel(vehicle) {
+  return `${vehicle.label} (up to ${vehicle.maxSeats})`;
 }
 
 export function formatAMD(n) {

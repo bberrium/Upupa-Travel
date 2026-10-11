@@ -3,7 +3,7 @@ import BaseLayout from "./BaseLayout.astro";
 import Picture from "../components/Picture.astro";
 import { image } from "../lib/images.js";
 import { SITE } from "../lib/site.js";
-import { priceFor, formatAMD, approxUSD } from "../data/tours.js";
+import { priceFor, formatAMD, approxUSD, vehicleFor, vehicleLabel } from "../data/tours.js";
 
 export interface Stop {
   time: string;
@@ -70,6 +70,7 @@ const resolvedSlides = slideImages.map((src) => image(src));
 const base = import.meta.env.BASE_URL;
 
 const fromPrice = priceFor(pricing, 2, false);
+const initialVehicle = vehicleLabel(vehicleFor(2, false));
 
 const schema = {
   "@context": "https://schema.org",
@@ -251,16 +252,15 @@ const schema = {
             </div>
 
             <div class="mb-7">
-              <label class="field-label flex items-center gap-2 text-white" for="pc-vehicle">
+              <p class="field-label flex items-center gap-2 text-white">
                 <span>Vehicle</span>
                 <a href={`${base}gallery`} class="normal-case text-secondary-container underline underline-offset-4">photos</a>
-              </label>
-              <select id="pc-vehicle" name="vehicle" class="field-on-dark">
-                <option value="sedan">Comfort sedan (up to 3)</option>
-                <option value="minivan">Minivan (up to 6)</option>
-                <option value="minibus">Minibus (up to 14)</option>
-                <option value="sprinter">Sprinter (up to 19)</option>
-              </select>
+              </p>
+              <!-- Chosen automatically from the group size (a guide takes a seat). -->
+              <div id="pc-vehicle" class="rounded-lg border border-white/20 bg-white/10 px-4 py-3 text-white" aria-live="polite">
+                {initialVehicle}
+              </div>
+              <p id="pc-seats" class="mt-2 text-caption font-caption text-white/60">2 seats needed</p>
             </div>
 
             <div class="mt-auto">
@@ -279,7 +279,7 @@ const schema = {
               </div>
 
               <p class="mb-4 text-caption font-caption text-white/60">
-                Larger vehicles are an estimate and are confirmed by email before you pay anything.
+                The vehicle is chosen automatically for your group size. Everything is confirmed by email before you pay anything.
               </p>
 
               <a href={`${base}#contact`} class="btn-primary btn-block">Request this date</a>
@@ -364,7 +364,7 @@ const schema = {
 </BaseLayout>
 
 <script>
-  import { priceFor, formatAMD, approxUSD } from "../data/tours.js";
+  import { priceFor, formatAMD, approxUSD, vehicleFor, vehicleLabel, seatsNeeded } from "../data/tours.js";
 
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -448,18 +448,11 @@ const schema = {
     const pricing = JSON.parse(calc.dataset.pricing || "null");
     const peopleInput = document.getElementById("pc-people") as HTMLInputElement;
     const guideSelect = document.getElementById("pc-guide") as HTMLSelectElement;
-    const vehicleSelect = document.getElementById("pc-vehicle") as HTMLSelectElement;
+    const vehicleEl = document.getElementById("pc-vehicle");
+    const seatsEl = document.getElementById("pc-seats");
     const totalEl = document.getElementById("pc-total");
     const usdEl = document.getElementById("pc-usd");
     const labelEl = document.getElementById("pc-label");
-
-    // Placeholder multipliers until real per-vehicle pricing is supplied.
-    const VEHICLE_MULTIPLIERS: Record<string, number> = {
-      sedan: 1,
-      minivan: 1.15,
-      minibus: 1.35,
-      sprinter: 1.6,
-    };
 
     let lastTotal: number | null = null;
 
@@ -482,11 +475,17 @@ const schema = {
       const people = Math.max(1, Math.min(20, parseInt(peopleInput.value, 10) || 1));
       peopleInput.value = String(people);
       const withGuide = guideSelect.value.startsWith("guide:");
-      const basePrice = priceFor(pricing, people, withGuide);
-      const total =
-        basePrice == null
-          ? null
-          : Math.round((basePrice * VEHICLE_MULTIPLIERS[vehicleSelect.value]) / 100) * 100;
+      // The tables in tours.js already include the vehicle cost, so the price
+      // comes straight from them. The vehicle shown follows the same rule:
+      // travellers + guide (if any) = seats needed.
+      const total = priceFor(pricing, people, withGuide);
+      const seats = seatsNeeded(people, withGuide);
+      if (vehicleEl) vehicleEl.textContent = vehicleLabel(vehicleFor(people, withGuide));
+      if (seatsEl) {
+        seatsEl.textContent = withGuide
+          ? `${people} ${people === 1 ? "traveller" : "travellers"} + guide = ${seats} seats needed`
+          : `${seats} ${seats === 1 ? "seat" : "seats"} needed`;
+      }
 
       const peopleLabel = `Total for ${people} ${people === 1 ? "person" : "persons"}`;
       if (labelEl) labelEl.textContent = peopleLabel;
@@ -516,7 +515,6 @@ const schema = {
     });
     peopleInput.addEventListener("input", update);
     guideSelect.addEventListener("change", update);
-    vehicleSelect.addEventListener("change", update);
     update();
   }
 </script>

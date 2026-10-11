@@ -1,0 +1,122 @@
+---
+import TourLayout from "../../layouts/TourLayout.astro";
+import { TOURS } from "../../data/tours.js";
+
+const tour = TOURS.find((t) => t.slug === "haghpat-sanahin-akhtala")!;
+
+// Image paths are local (see /public/images/tours/sanahin-haghpat-akhtala/). Drop the .webp files
+// at these paths — anything missing falls back to a neutral placeholder.
+const days = [
+  {
+    dayNumber: "01",
+    title: "Sanahin Monastery, Haghpat Monastery, Akhtala Fortress",
+    subtitle: "UNESCO Monasteries & Byzantine Frescoes of Lori",
+    stops: [
+      {
+        time: "60 minutes",
+        title: "Sanahin Monastery",
+        desc: "Sanahin Monastery is a 10th-century Armenian masterpiece located in the Lori Province of Armenia. It is a UNESCO World Heritage Site and served as a major medieval center of learning, housing an influential school, scriptorium, and library.",
+        images: [
+          "images/tours/sanahin-haghpat-akhtala/sanahin1.webp",
+          "images/tours/sanahin-haghpat-akhtala/sanahin2.webp",
+          "images/tours/sanahin-haghpat-akhtala/sanahin3.webp",
+          "images/tours/sanahin-haghpat-akhtala/sanahin4.webp",
+          "images/tours/sanahin-haghpat-akhtala/sanahin5.webp",
+          "images/tours/sanahin-haghpat-akhtala/sanahin6.webp",
+        ],
+      },
+      {
+        time: "50-60 minutes",
+        title: "Lunch stop",
+        desc: "Optional lunch at a traditional local restaurant, at your own expense.",
+        images: [],
+      },
+      {
+        time: "60 minutes",
+        title: "Haghpat Monastery",
+        desc: "Haghpat Monastery is a stunning 10th-century complex located on a high plateau in the Lori Province of Armenia, overlooking the Debed River canyon. Founded by Queen Khosrovanuysh around 976 AD, it is a UNESCO World Heritage Site that represents the absolute pinnacle of medieval Armenian religious architecture. For centuries, it was a thriving spiritual and educational hub, famous for its scriptorium where beautifully illuminated manuscripts were created, and as the home of the legendary 18th-century poet-musician Sayat-Nova.",
+        images: [
+          "images/tours/sanahin-haghpat-akhtala/haghpat1.webp",
+          "images/tours/sanahin-haghpat-akhtala/haghpat2.webp",
+          "images/tours/sanahin-haghpat-akhtala/haghpat3.webp",
+          "images/tours/sanahin-haghpat-akhtala/haghpat4.webp",
+          "images/tours/sanahin-haghpat-akhtala/haghpat5.webp",
+          "images/tours/sanahin-haghpat-akhtala/haghpat6.webp",
+        ],
+      },
+      {
+        time: "40 minutes",
+        title: "Akhtala Fortress",
+        desc: "The Akhtala fortress, located in the Lori Province of Armenia, is a 10th-century medieval fortification built on a high rocky peninsula surrounded by deep canyons. It served as a vital strategic outpost protecting the northern regions of the country and is famous for housing the magnificent Akhtala Monastery (Holy Mother of God Church) within its walls. The interior of the church features some of the finest, most well-preserved 13th-century Byzantine-style frescoes in the entire South Caucasus.",
+        images: [
+          "images/tours/sanahin-haghpat-akhtala/akhtala1.webp",
+          "images/tours/sanahin-haghpat-akhtala/akhtala2.webp",
+          "images/tours/sanahin-haghpat-akhtala/akhtala3.webp",
+          "images/tours/sanahin-haghpat-akhtala/akhtala4.webp",
+          "images/tours/sanahin-haghpat-akhtala/akhtala5.webp",
+          "images/tours/sanahin-haghpat-akhtala/akhtala6.webp",
+        ],
+      },
+    ],
+  },
+];
+
+// DRAFT — the client left "What's included", "Not included" and "Know before
+// you go" blank, so these are based on the other tours. Check with the client.
+const included = [
+  "Private vehicle and driver for the whole route",
+  "English, Russian or Armenian speaking guide (when selected)",
+  "Hotel pickup and drop-off in Yerevan",
+];
+
+const notIncluded = [
+  "Lunch and drinks",
+  "Tips for the guide or driver",
+];
+
+const tips = [
+  {
+    icon: "hiking",
+    title: "Footwear",
+    desc: "Wear comfortable walking shoes with good grip — the monastery grounds have uneven stone paths and steps, and Akhtala's rocky hill can be slippery after rain.",
+  },
+  {
+    icon: "checkroom",
+    title: "Monastery dress code",
+    desc: "Shoulders and knees covered inside the churches. A light scarf is enough.",
+  },
+  {
+    icon: "directions_car",
+    title: "A long day",
+    desc: "This is an 11-12 hour day with long drives between stops. Bring water, a snack and a phone charger, and a light jacket — the weather in Lori can differ from Yerevan.",
+  },
+];
+
+// 1. List the filenames of any images that are too low-quality for the big screen
+//    (use the exact same path as in the stops above)
+const lowResImages: string[] = [
+  // "images/tours/sanahin-haghpat-akhtala/sanahin3.webp",
+];
+
+// 2. Flatten the itinerary images, but filter OUT the ones in the list above
+const allItineraryImages = days
+  .flatMap((day) => day.stops.flatMap((stop) => stop.images || []))
+  .filter((img) => !lowResImages.includes(img));
+---
+
+<TourLayout
+  label={tour.label}
+  tourNumber={tour.tourNumber}
+  title={tour.title}
+  summary={tour.desc}
+  heroImage={allItineraryImages[0]}
+  images={allItineraryImages}
+  duration={tour.duration}
+  region={tour.region}
+  languages={tour.languages}
+  pricing={tour.pricing}
+  days={days}
+  included={included}
+  notIncluded={notIncluded}
+  tips={tips}
+/>

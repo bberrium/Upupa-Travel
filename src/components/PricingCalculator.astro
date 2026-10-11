@@ -68,7 +68,7 @@ import { TOURS } from "../data/tours.js";
 </div>
 
 <script>
-  import { TOURS, priceFor, formatAMD } from "../data/tours.js";
+  import { TOURS, priceFor, formatAMD, vehicleFor, vehicleLabel, seatsNeeded } from "../data/tours.js";
 
   function initCalculator() {
     const container = document.getElementById("tour-calculator");
@@ -140,8 +140,11 @@ import { TOURS } from "../data/tours.js";
           animateValue(priceDisplay, startVal, total, 500); // 500ms duration
           currentPrice = total;
 
-          const guideText = withGuide ? "With guide" : "Driver only";
-          noteDisplay.textContent = `${state.count} travellers · ${guideText}`;
+          // The guide takes a seat too, so a guided tour needs one seat more.
+          const seats = seatsNeeded(state.count, withGuide);
+          const vehicle = vehicleLabel(vehicleFor(state.count, withGuide));
+          const guideText = withGuide ? `+ guide (${seats} seats)` : "· driver only";
+          noteDisplay.textContent = `${state.count} travellers ${guideText} · ${vehicle}`;
         } else {
           priceDisplay.textContent = "Contact us";
           noteDisplay.textContent = "Custom pricing required for this group size";
