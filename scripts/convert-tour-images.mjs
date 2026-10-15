@@ -3,6 +3,11 @@
 //   node scripts/convert-tour-images.mjs public/images/tours/tour5
 // Originals are left untouched. Needs `sharp` (Astro normally installs it;
 // otherwise: npm i -D sharp).
+// node scripts/convert-tour-images.mjs public/images/tours/noravank-shaki-tatev
+// sed -i 's/\.jpg/.webp/g' src/pages/tours/noravank-shaki-tatev.astro src/data/tours.js
+// ls public/images/tours/noravank-shaki-tatev/*.webp | wc -l
+// rm public/images/tours/noravank-shaki-tatev/*.jpg
+
 import { readdir } from "node:fs/promises";
 import path from "node:path";
 import sharp from "sharp";

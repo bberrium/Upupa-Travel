@@ -1,0 +1,101 @@
+---
+import TourLayout from "../../layouts/TourLayout.astro";
+import { TOURS } from "../../data/tours.js";
+
+const tour = TOURS.find((t) => t.slug === "khorvirap-birdscave-noravank")!;
+
+// Own photos: /public/images/tours/khorvirap-birdscave-noravank/
+// Noravank photos are reused from the Noravank-Shaki-Tatev tour folder.
+const ownDir = "images/tours/khorvirap-birdscave-noravank";
+const noravankDir = "images/tours/noravank-shaki-tatev";
+const photos = (dir: string, name: string, from: number, to: number) =>
+  Array.from({ length: to - from + 1 }, (_, i) => `${dir}/${name}${from + i}.webp`);
+
+const days = [
+  {
+    dayNumber: "01",
+    title: "Khor Virap Monastery, Birds' Cave (Areni-1), Noravank Monastery",
+    subtitle: "Ararat Views, Ancient Winemaking & Red Cliffs",
+    stops: [
+      {
+        time: "60-70 minutes",
+        title: "Khor Virap Monastery",
+        desc: "One of Armenia's most sacred Christian sanctuaries. Its name means \"deep dungeon\": this historic fortress-monastery is built over the underground pit where Saint Gregory the Illuminator was imprisoned for over a decade. His release led to Armenia becoming the world's first nation to adopt Christianity as its state religion, in 301 AD. Set on a hilltop in the Ararat Plain near the closed border with Turkey, it offers the most iconic, unobstructed views of Mount Ararat. Visitors can explore the 17th-century Holy Mother of God Church and climb down a narrow ladder into the historic pit.",
+        images: photos(ownDir, "khorvirap", 1, 7),
+      },
+      {
+        time: "60 minutes",
+        title: "Lunch stop",
+        desc: "Optional lunch at Hin Areni restaurant.",
+      },
+      {
+        time: "30-40 minutes",
+        title: "Birds' Cave (Areni-1)",
+        desc: "A famous archaeological site in the cliffs of Armenia's Vayots Dzor region. Thanks to the dry climate inside, the cave has protected ancient objects for over 5,000 years. It became famous worldwide when scientists found the world's oldest winery here, with an ancient grape press and clay storage jars. Archaeologists also found the world's oldest leather shoe and unique ritual items. Today the cave is a museum, with safe pathways right next to the excavation areas.",
+        images: photos(ownDir, "birdscave", 1, 7),
+      },
+      {
+        time: "60-70 minutes",
+        title: "Noravank Monastery",
+        desc: "A masterpiece of 13th-century medieval Armenian architecture, dramatically nestled at the end of a winding gorge carved by the Amaghu River. The complex is renowned for its landscape of towering, sheer brick-red cliffs. Its most iconic structure is the two-story Surb Astvatsatsin (Holy Mother of God) Church, crafted by the legendary master sculptor and architect Momik. The site is also celebrated for its intricate stone carvings, including a rare medieval relief that depicts God the Father.",
+        images: photos(noravankDir, "noravank", 1, 10),
+      },
+    ],
+  },
+];
+
+// DRAFT: the client left this section blank. Confirm before going live,
+// especially which entrance tickets are included.
+const included = [
+  "Private vehicle and driver for the whole route",
+  "English, Russian or Armenian speaking guide (when selected)",
+  "Hotel pickup and drop-off in Yerevan",
+];
+
+const notIncluded = [
+  "Lunch and drinks",
+  "Tips for the guide or driver",
+];
+
+// DRAFT: the client left this section blank.
+const tips = [
+  {
+    icon: "hiking",
+    title: "Footwear",
+    desc: "Wear comfortable shoes with good grip. The pit at Khor Virap is reached by a narrow ladder, and the cave paths are uneven.",
+  },
+  {
+    icon: "checkroom",
+    title: "Monastery dress code",
+    desc: "Shoulders and knees covered inside Khor Virap and Noravank. A light scarf is enough.",
+  },
+  {
+    icon: "visibility",
+    title: "Ararat views",
+    desc: "Mount Ararat is clearest in the morning and in settled weather. Haze can hide it on hot afternoons.",
+  },
+];
+
+// 1. List the paths of any images that are too low-quality for the big screen
+const lowResImages: string[] = [];
+
+// 2. Hero carousel uses the curated card images, minus the low-res ones
+const heroImages = tour.images.filter((img) => !lowResImages.includes(img));
+---
+
+<TourLayout
+  label={tour.label}
+  tourNumber={tour.tourNumber}
+  title={tour.title}
+  summary={tour.desc}
+  heroImage={heroImages[0]}
+  images={heroImages}
+  duration={tour.duration}
+  region={tour.region}
+  languages={tour.languages}
+  pricing={tour.pricing}
+  days={days}
+  included={included}
+  notIncluded={notIncluded}
+  tips={tips}
+/>

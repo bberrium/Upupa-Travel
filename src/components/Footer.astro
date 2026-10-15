@@ -28,7 +28,7 @@ const year = new Date().getFullYear();
     </div>
 
     <!-- Column 3: Contact & Mascot -->
-    <div>
+    <div class="relative">
       <h3 class="mb-4 text-label-md font-label-md uppercase tracking-widest text-white/60">Contact</h3>
       <ul class="space-y-2.5">
         <li><a class="text-white/80 transition-colors hover:text-white" href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
@@ -45,16 +45,15 @@ const year = new Date().getFullYear();
         </li>
         <li><a class="text-white/80 transition-colors hover:text-white" href={`tel:${SITE.phoneE164}`}>Call {SITE.phoneDisplay}</a></li>
         
-        <li class="relative pt-1 text-white/60 w-max">
-          {SITE.city}, Armenia
-          <img 
-            src={`${base}images/mascot.png`} 
-            alt="Upupa Travel Mascot" 
-            width="55" 
-            class="mt-4 drop-shadow-md transition-transform duration-300 hover:scale-110 md:absolute md:-bottom-2 md:-right-20 md:mt-0"
-          />
-        </li>
+        <li class="pt-1 text-white/60">{SITE.city}, Armenia</li>
       </ul>
+
+      <img
+        src={`${base}images/mascot.png`}
+        alt="Upupa Travel Mascot"
+        width="55"
+        class="mt-4 block drop-shadow-md transition-transform duration-300 hover:scale-110 lg:absolute lg:right-0 lg:top-0 lg:mt-0"
+      />
 
       {SOCIAL_LINKS.length > 0 && (
         <div class="mt-5 flex flex-wrap gap-4">

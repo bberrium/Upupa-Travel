@@ -150,6 +150,7 @@ export const TOURS = [
     // DRAFT teaser — the client left this blank.
     desc: "Two UNESCO-listed monasteries and a fortress with Byzantine frescoes, in the forested canyons of Lori.",
     images: [
+      "images/tours/sanahin-haghpat-akhtala/haghpat7.webp",
       "images/tours/sanahin-haghpat-akhtala/sanahin4.webp",
       "images/tours/sanahin-haghpat-akhtala/haghpat1.webp",
       "images/tours/sanahin-haghpat-akhtala/akhtala1.webp",
@@ -174,6 +175,83 @@ export const TOURS = [
         7: 124000, 8: 126000, 9: 128000, 10: 144000,
         11: 146000, 12: 148000, 13: 150000, 14: 152000, 15: 154000,
         16: 156000, 17: 158000, 18: 160000, 19: 162000,
+        extraPerPerson: 2000, maxPeople: 19,
+      },
+    },
+  },
+  {
+    slug: "noravank-shaki-tatev",
+    tourNumber: 6,
+    label: "Day Tour",
+    category: "day",
+    title: "Noravank, Shaki Waterfall, Wings of Tatev Ropeway, Tatev Monastery",
+    // DRAFT teaser — the client left this blank.
+    desc: "Brick-red Noravank gorge, Shaki Waterfall and the world's longest non-stop ropeway to Tatev Monastery.",
+    images: [
+      "images/tours/noravank-shaki-tatev/noravank1.webp",
+      "images/tours/noravank-shaki-tatev/shaki1.webp",
+      "images/tours/noravank-shaki-tatev/tatev1.webp",
+      "images/tours/noravank-shaki-tatev/tatev9.webp",
+      "images/tours/noravank-shaki-tatev/tatev25.webp",
+    ],
+    languages: ["en", "ru", "am"],
+    duration: "14-15 hours",
+    region: "Yerevan",
+    pricing: {
+      // NOTE: the client gave no 1-person price, so 1 person shows
+      // "Contact for price". Guide: 14 and 15 people are both 188000 in the
+      // form — confirm 15 is not a typo (the pattern suggests 190000).
+      noGuide: {
+        2: 66000, 3: 68000, 4: 70000, 5: 88000, 6: 90000,
+        7: 122000, 8: 124000, 9: 126000, 10: 128000,
+        11: 154000, 12: 156000, 13: 158000, 14: 160000, 15: 162000,
+        16: 164000, 17: 166000, 18: 168000, 19: 170000, 20: 172000,
+        extraPerPerson: 2000, maxPeople: 20,
+      },
+      guide: {
+        2: 106000, 3: 108000, 4: 128000, 5: 130000, 6: 150000,
+        7: 152000, 8: 154000, 9: 156000, 10: 180000,
+        11: 182000, 12: 184000, 13: 186000, 14: 188000, 15: 188000,
+        16: 190000, 17: 192000, 18: 194000, 19: 196000,
+        extraPerPerson: 2000, maxPeople: 19,
+      },
+    },
+  },
+
+  {
+    slug: "khorvirap-birdscave-noravank",
+    tourNumber: 7,
+    label: "Day Tour",
+    category: "day",
+    title: "Khor Virap Monastery, Birds' Cave (Areni-1), Noravank Monastery",
+    // DRAFT teaser — the client left this blank.
+    desc: "Ararat views at Khor Virap, the world's oldest winery in Areni-1 and Noravank's red cliffs.",
+    images: [
+      "images/tours/noravank-shaki-tatev/noravank7.webp",
+      "images/tours/khorvirap-birdscave-noravank/khorvirap1.webp",
+      "images/tours/khorvirap-birdscave-noravank/birdscave1.webp",
+      "images/tours/noravank-shaki-tatev/noravank1.webp",
+      "images/tours/khorvirap-birdscave-noravank/khorvirap3.webp",
+      "images/tours/khorvirap-birdscave-noravank/birdscave3.webp",
+    ],
+    languages: ["en", "ru", "am"],
+    duration: "9-10 hours",
+    region: "Yerevan",
+    pricing: {
+      // NOTE: the client gave no 1-person price, so 1 person shows
+      // "Contact for price".
+      noGuide: {
+        2: 38000, 3: 40000, 4: 42000, 5: 54000, 6: 56000,
+        7: 66000, 8: 68000, 9: 70000, 10: 72000,
+        11: 76000, 12: 78000, 13: 80000, 14: 82000, 15: 84000,
+        16: 86000, 17: 88000, 18: 90000, 19: 92000, 20: 94000,
+        extraPerPerson: 2000, maxPeople: 20,
+      },
+      guide: {
+        2: 74000, 3: 76000, 4: 88000, 5: 90000, 6: 100000,
+        7: 102000, 8: 104000, 9: 106000, 10: 110000,
+        11: 112000, 12: 114000, 13: 116000, 14: 118000, 15: 120000,
+        16: 122000, 17: 124000, 18: 126000, 19: 128000,
         extraPerPerson: 2000, maxPeople: 19,
       },
     },
