@@ -188,6 +188,7 @@ export const TOURS = [
     // DRAFT teaser — the client left this blank.
     desc: "Brick-red Noravank gorge, Shaki Waterfall and the world's longest non-stop ropeway to Tatev Monastery.",
     images: [
+      "images/tours/noravank-shaki-tatev/tatev27.webp",
       "images/tours/noravank-shaki-tatev/noravank1.webp",
       "images/tours/noravank-shaki-tatev/shaki1.webp",
       "images/tours/noravank-shaki-tatev/tatev1.webp",
