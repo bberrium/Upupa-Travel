@@ -117,6 +117,7 @@ export const TOURS = [
     title: "Lake Sevan, Sevanavank, Dilijan, Goshavank, Haghartsin",
     desc: "Explore the 'Blue Pearl of Armenia' and discover medieval monasteries hidden deep within the lush forests of the Armenian Switzerland.",
     images: [
+          "images/tours/sevan-dilijan/goshavank.webp",
           "images/tours/sevan-dilijan/sevanavank3.webp",
           "images/tours/sevan-dilijan/dilijan4.webp",
           "images/tours/sevan-dilijan/dilijan5.webp",
