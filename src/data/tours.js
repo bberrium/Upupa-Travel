@@ -23,10 +23,18 @@ export const TOURS = [
     title: "Garni, Geghard & Symphony of Stones",
     desc: "Temple, cliffside monastery & basalt gorge in a day. Discover the pre-Christian roots and unique geology of Armenia.",
     images: [
-      "images/tours/garni-geghard/monastery3.webp",
-      "images/tours/garni-geghard/stones2.webp",
+      "images/tours/garni-geghard/garni1.webp",
+      "images/tours/garni-geghard/arch1.webp",
       "images/tours/garni-geghard/arch2.webp",
-      "images/tours/garni-geghard/lavash2.webp"
+      "images/tours/garni-geghard/monastery-1.webp",
+      "images/tours/garni-geghard/monastery-7.webp",
+      "images/tours/garni-geghard/monastery-13.webp",
+      "images/tours/garni-geghard/stones1.webp",
+      "images/tours/garni-geghard/garni7.webp",
+      "images/tours/garni-geghard/garni8.webp",
+      "images/tours/garni-geghard/lavash3.webp",
+      "images/tours/garni-geghard/lavash6.webp"
+
     ],
     languages: ["en", "ru", "am"],
     duration: "6-7 hours",
@@ -52,7 +60,7 @@ export const TOURS = [
     title: "Tsaghkadzor, Kecharis Monastery, Ropeway & Lake Sevan",
     desc: "Ride a mountain ropeway above Tsaghkadzor, then unwind at Lake Sevan's ancient clifftop monastery — with time on the water.",
     images: [
-          "images/tours/tsaghkadzor-sevan/kecharis1.webp",
+          "images/tours/tsaghkadzor-sevan/kecharis3.webp",
           "images/tours/tsaghkadzor-sevan/ropeway1.webp",
           "images/tours/sevan-dilijan/sevan2.webp",
           "images/tours/sevan-dilijan/sevanavank2.webp",
@@ -151,7 +159,8 @@ export const TOURS = [
     // DRAFT teaser — the client left this blank.
     desc: "Two UNESCO-listed monasteries and a fortress with Byzantine frescoes, in the forested canyons of Lori.",
     images: [
-      "images/tours/sanahin-haghpat-akhtala/haghpat7.webp",
+
+      "images/tours/sanahin-haghpat-akhtala/haghpat4.webp",
       "images/tours/sanahin-haghpat-akhtala/sanahin4.webp",
       "images/tours/sanahin-haghpat-akhtala/haghpat1.webp",
       "images/tours/sanahin-haghpat-akhtala/akhtala1.webp",
