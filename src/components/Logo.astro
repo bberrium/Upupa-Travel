@@ -1,36 +1,34 @@
 ---
-// The header lockup.
-//
-// The original file (public/images/brand/logo.png) is a circular badge: the
-// name is set in an arch around a photo of the bird. Two things made it look
-// small in the header:
-//   1. ~40% of the PNG was empty transparent padding, so the artwork only
-//      filled about half the box it was given;
-//   2. a near-square badge inside a horizontal bar can only be as tall as the
-//      bar, and at 48-80px the arched lettering is 4-6px tall — unreadable.
-//
-// So the header now uses a lockup: the hoopoe (redrawn illustration, background
-// knocked out) next to the name as live text. Same brand, several times more
-// legible, and it scales perfectly on every screen. Switch to the full badge
-// with `logo.style: "badge"` in src/lib/site.js.
+/**
+ * UPUPA Travel – animated neon crest made from the client's actual artwork.
+ * Place this file at src/components/Logo.astro.
+ * Copy the six feather/eye layers into public/images/brand/upupa-neon/.
+ * The existing Header.astro and Footer.astro need no changes.
+ */
 import { SITE } from "../lib/site.js";
 import { image } from "../lib/images.js";
 
 interface Props {
   href: string;
-  /** Tailwind height classes for the mark, e.g. "h-12 md:h-14". */
   size?: string;
   variant?: "header" | "footer";
 }
 
 const { href, size = "h-12 md:h-14", variant = "header" } = Astro.props;
-const mark = image("images/brand/mark.webp");
 const badge = image("images/brand/logo-badge.webp");
 const onDark = variant === "footer";
 const useBadge = SITE.logo.style === "badge" && variant === "header";
+// The project is deployed at /Upupa-Travel/ on GitHub Pages, not at domain root.
+const base = import.meta.env.BASE_URL.replace(/\/?$/, "/");
+const layers = [1, 2, 3, 4, 5, 6].map((n) => `${base}images/brand/upupa-neon/layer-${n}.webp`);
 ---
 
-<a href={href} class="flex shrink-0 items-center gap-3" aria-label={`${SITE.name} — home`}>
+<a
+  href={href}
+  class="upupa-exact-link group flex shrink-0 items-center gap-2 sm:gap-3"
+  aria-label={`${SITE.name} — go to homepage`}
+  data-upupa-exact={!useBadge ? "true" : undefined}
+>
   {useBadge ? (
     <picture>
       {badge.webp && <source srcset={badge.webp} type="image/webp" />}
@@ -44,17 +42,31 @@ const useBadge = SITE.logo.style === "badge" && variant === "header";
     </picture>
   ) : (
     <>
-      <picture>
-        {mark.webp && <source srcset={mark.webp} type="image/webp" />}
-        <img
-          src={mark.src}
-          alt=""
-          width="125"
-          height="180"
-          class={`w-auto object-contain transition-all duration-300 ${size}`}
-        />
-      </picture>
-
+      <span class={`upupa-exact-mark ${size}`} aria-hidden="true">
+        <svg
+          class="upupa-exact-svg"
+          viewBox="445 130 565 623"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+          focusable="false"
+        >
+          {layers.slice(0, 5).map((src, i) => (
+            <g class={`upupa-exact-feather ef-${i + 1}`}>
+              <image
+                href={src}
+                x="445"
+                y="130"
+                width="565"
+                height="623"
+                preserveAspectRatio="none"
+              />
+            </g>
+          ))}
+          <g class="upupa-exact-eye">
+            <image href={layers[5]} x="445" y="130" width="565" height="623" preserveAspectRatio="none" />
+          </g>
+        </svg>
+      </span>
       <span class="flex flex-col leading-none">
         <span
           class={`font-display font-bold tracking-[0.16em] transition-all duration-300 ${
@@ -71,3 +83,89 @@ const useBadge = SITE.logo.style === "badge" && variant === "header";
     </>
   )}
 </a>
+
+<style is:global>
+  .upupa-exact-link { border-radius: 8px; text-decoration: none; }
+  .upupa-exact-link:focus-visible { outline: 2px solid #fa4dba; outline-offset: 5px; }
+  /* Transparent background so the exact neon crest sits directly on the site header. */
+  .upupa-exact-mark {
+    position: relative;
+    display: inline-grid;
+    place-items: center;
+    flex-shrink: 0;
+    aspect-ratio: 1 / 1;
+    padding: 0;
+    overflow: visible;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    transition: filter .3s ease, transform .3s ease;
+  }
+  .upupa-exact-svg { display: block; width: 100%; height: 100%; overflow: visible; }
+  .upupa-exact-feather {
+    transform-box: view-box;
+    transition: transform .4s cubic-bezier(.2, .8, .2, 1);
+  }
+  /* Separate pivot for each real feather, not five artificial vector substitutes. */
+  .upupa-exact-feather.ef-1 { transform-origin: 51% 76%; --hover: -4deg; --in: 5deg; --out: -15deg; --delay: 0ms; }
+  .upupa-exact-feather.ef-2 { transform-origin: 61% 76%; --hover: -3deg; --in: 3deg; --out: -10deg; --delay: 55ms; }
+  .upupa-exact-feather.ef-3 { transform-origin: 74% 75%; --hover: -1deg; --in: 2deg; --out: -5deg; --delay: 110ms; }
+  .upupa-exact-feather.ef-4 { transform-origin: 81% 88%; --hover: 2deg; --in: -3deg; --out: 7deg; --delay: 165ms; }
+  .upupa-exact-feather.ef-5 { transform-origin: 81% 94%; --hover: 4deg; --in: -4deg; --out: 13deg; --delay: 220ms; }
+  .upupa-exact-eye { transform-box: view-box; transform-origin: 69% 88%; }
+  .upupa-exact-link:not(.is-blooming):hover .upupa-exact-feather,
+  .upupa-exact-link:not(.is-blooming):focus-visible .upupa-exact-feather { transform: rotate(var(--hover)); }
+  .upupa-exact-link:hover .upupa-exact-mark,
+  .upupa-exact-link:focus-visible .upupa-exact-mark {
+    filter: drop-shadow(0 0 10px rgba(246, 55, 165, .18)) drop-shadow(0 0 18px rgba(255, 157, 77, .12));
+  }
+  .upupa-exact-link.is-blooming .upupa-exact-feather {
+    animation: upupa-exact-bloom .68s cubic-bezier(.19, .84, .22, 1) both;
+    animation-delay: var(--delay);
+  }
+  .upupa-exact-link.is-blooming .upupa-exact-eye { animation: upupa-exact-eye-pulse .76s ease-out both; }
+  .upupa-exact-link.is-blooming .upupa-exact-mark {
+    filter: drop-shadow(0 0 14px rgba(251, 51, 160, .26)) drop-shadow(0 0 26px rgba(255, 155, 77, .16));
+  }
+  @keyframes upupa-exact-bloom {
+    0% { transform: rotate(0deg) scale(1); }
+    19% { transform: rotate(var(--in)) scale(.975); }
+    62% { transform: rotate(var(--out)) scale(1.045); }
+    100% { transform: rotate(0deg) scale(1); }
+  }
+  @keyframes upupa-exact-eye-pulse {
+    0%, 100% { transform: scale(1); filter: brightness(1); }
+    48% { transform: scale(1.22); filter: brightness(1.55) drop-shadow(0 0 4px #ff9b4d); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .upupa-exact-mark, .upupa-exact-feather, .upupa-exact-eye { transition: none !important; animation: none !important; }
+  }
+</style>
+
+<script>
+  // Works for the header and footer. Astro page swaps also rebind correctly.
+  function wireExactLogo() {
+    document.querySelectorAll<HTMLAnchorElement>('[data-upupa-exact="true"]').forEach((link) => {
+      if (link.dataset.logoBound) return;
+      link.dataset.logoBound = 'true';
+      link.addEventListener('click', (event: MouseEvent) => {
+        if (event.defaultPrevented || event.button !== 0 ||
+            event.metaKey || event.ctrlKey || event.shiftKey || event.altKey ||
+            window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        if (link.classList.contains('is-blooming')) { event.preventDefault(); return; }
+        event.preventDefault();
+        const destination = new URL(link.href, location.href);
+        const here = new URL(location.href);
+        const samePage = destination.pathname === here.pathname && destination.search === here.search;
+        link.classList.add('is-blooming');
+        window.setTimeout(() => {
+          link.classList.remove('is-blooming');
+          if (samePage) window.scrollTo({ top: 0, behavior: 'smooth' });
+          else window.location.assign(destination.href);
+        }, 940);
+      });
+    });
+  }
+  wireExactLogo();
+  document.addEventListener('astro:page-load', wireExactLogo);
+</script>

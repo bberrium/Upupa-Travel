@@ -1,0 +1,99 @@
+---
+import TourLayout from "../../layouts/TourLayout.astro";
+import { TOURS } from "../../data/tours.js";
+
+const tour = TOURS.find((t) => t.slug === "etchmiadzin-hripsime-gayane-zvartnots")!;
+
+// PLACEHOLDER photos — the form came without images. Drop files at these
+// paths (public/images/tours/etchmiadzin-zvartnots/) and they appear; until
+// then the site shows a neutral placeholder.
+const days = [
+  {
+    dayNumber: "01",
+    title: "Etchmiadzin Mother Cathedral and Museum, St. Hripsime & Gayane, Zvartnots Temple",
+    subtitle: "The UNESCO Churches of Vagharshapat",
+    stops: [
+      {
+        time: "30-40 minutes",
+        title: "St. Hripsime Church",
+        desc: "Built in 618 AD in Vagharshapat, the UNESCO-listed Saint Hripsime Church is a famous example of classic Armenian architecture. It was built over the grave of Saint Hripsime, a Christian martyr whose death led to Armenia adopting Christianity in 301 AD. Today, visitors can explore its peaceful, earthquake-resistant stone interior and visit the underground room that holds the saint's tomb.",
+        images: [
+            "images/tours/etchmiadzin-zvartnots/hripsime1.webp",
+            "images/tours/etchmiadzin-zvartnots/hripsime2.webp",
+            "images/tours/etchmiadzin-zvartnots/hripsime3.webp",
+            "images/tours/etchmiadzin-zvartnots/hripsime4.webp",
+            ],
+      },
+      {
+        time: "60 minutes",
+        title: "Etchmiadzin Mother Cathedral and Museum",
+        desc: "Founded in 301–303 AD by Saint Gregory the Illuminator, Etchmiadzin Mother Cathedral is the spiritual center of the Armenian Apostolic Church and is widely considered the oldest state-built cathedral in the world. Located in Vagharshapat, this UNESCO World Heritage Site marks the spot where Christ is believed to have descended from heaven in a vision to show where the church should be built. Today, visitors can admire its rich stone carvings, colorful interior frescoes, and a museum holding sacred Christian relics, including the Spear of Longinus and a piece of Noah's Ark.",
+        images: [
+            "images/tours/etchmiadzin-zvartnots/etchmiadzin1.webp",
+            "images/tours/etchmiadzin-zvartnots/etchmiadzin2.webp",
+            "images/tours/etchmiadzin-zvartnots/etchmiadzin3.webp",
+            "images/tours/etchmiadzin-zvartnots/etchmiadzin4.webp",
+            "images/tours/etchmiadzin-zvartnots/etchmiadzin5.webp",
+            "images/tours/etchmiadzin-zvartnots/etchmiadzin6.webp",
+            "images/tours/etchmiadzin-zvartnots/etchmiadzin7.webp",
+            "images/tours/etchmiadzin-zvartnots/etchmiadzin9.webp",
+            "images/tours/etchmiadzin-zvartnots/etchmiadzin10.webp",
+            "images/tours/etchmiadzin-zvartnots/etchmiadzin11.webp",
+            "images/tours/etchmiadzin-zvartnots/etchmiadzin12.webp",
+            ],
+      },
+      {
+        time: "30-40 minutes",
+        title: "St. Gayane Church",
+        desc: "Built in 630 AD in Vagharshapat, the UNESCO-listed Saint Gayane Church is famous for its balanced proportions and classic Armenian design. It was built over the grave of Saint Gayane, the leader of the Christian nuns who was killed for her faith in 301 AD alongside Saint Hripsime. Unlike Saint Hripsime Church, this building has a traditional basilica layout with four tall pillars holding up its central dome. Today, visitors can enjoy its peaceful stone interior, see historic wall paintings, and visit the underground tomb of Saint Gayane.",
+        images: [
+          "images/tours/etchmiadzin-zvartnots/gayane1.webp",
+          "images/tours/etchmiadzin-zvartnots/gayane2.webp",
+          "images/tours/etchmiadzin-zvartnots/gayane3.webp",
+          ],
+      },
+      {
+        time: "30-40 minutes",
+        title: "Zvartnots Temple",
+        desc: "Built in the mid-7th century near Vagharshapat, the UNESCO-listed Zvartnots Temple is one of Armenia's most famous historic landmarks. Unlike traditional churches of the time, it was designed as a unique three-story circular cathedral with an impressive central dome. Although a powerful earthquake destroyed the building in the 10th century, its dramatic ruins still showcase detailed stone carvings of eagles, pomegranates, and vines. Today, visitors can walk among the ancient columns, explore the on-site museum, and enjoy stunning views of Mount Ararat in the background.",
+        images: [
+            "images/tours/etchmiadzin-zvartnots/zvartnots1.webp",
+            "images/tours/etchmiadzin-zvartnots/zvartnots2.webp",
+            "images/tours/etchmiadzin-zvartnots/zvartnots3.webp",
+            "images/tours/etchmiadzin-zvartnots/zvartnots4.webp",
+            "images/tours/etchmiadzin-zvartnots/zvartnots5.webp",
+            "images/tours/etchmiadzin-zvartnots/zvartnots6.webp",
+            "images/tours/etchmiadzin-zvartnots/zvartnots7.webp",
+            "images/tours/etchmiadzin-zvartnots/zvartnots8.webp",
+            "images/tours/etchmiadzin-zvartnots/zvartnots9.webp",
+            "images/tours/etchmiadzin-zvartnots/zvartnots10.webp",
+            ],
+      },
+    ],
+  },
+];
+
+const included = [
+  // PLACEHOLDER — form's "What's Included" section was left blank
+];
+
+const tips = [
+  // PLACEHOLDER — form's "Know Before You Go" section was left blank
+];
+---
+
+<TourLayout
+  label={tour.label}
+  tourNumber={tour.tourNumber}
+  title={tour.title}
+  summary={tour.desc}
+  heroImage={tour.images[0]}
+  images={tour.images}
+  duration={tour.duration}
+  region={tour.region}
+  languages={tour.languages}
+  pricing={tour.pricing}
+  days={days}
+  included={included}
+  tips={tips}
+/>

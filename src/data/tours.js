@@ -267,6 +267,48 @@ export const TOURS = [
       },
     },
   },
+
+  {
+    slug: "etchmiadzin-hripsime-gayane-zvartnots",
+    tourNumber: 8,
+    label: "Half Day Tour",
+    category: "day",
+    title: "Etchmiadzin Mother Cathedral and Museum, St. Hripsime & Gayane, Zvartnots Temple",
+    // DRAFT teaser — the client left this blank.
+    desc: "Armenia's spiritual heart in half a day: the world's oldest state-built cathedral, two 7th-century saints' churches and the ruins of Zvartnots.",
+    // PLACEHOLDER photos — none were sent with the form; the site shows a
+    // neutral placeholder until files are dropped at these paths.
+    images: [
+      "images/tours/etchmiadzin-zvartnots/etchmiadzin1.webp",
+      "images/tours/etchmiadzin-zvartnots/hripsime1.webp",
+      "images/tours/etchmiadzin-zvartnots/gayane1.webp",
+      "images/tours/etchmiadzin-zvartnots/zvartnots1.webp",
+    ],
+    languages: ["en", "ru", "am"],
+    duration: "4-5 hours",
+    region: "Yerevan",
+    pricing: {
+      // NOTE: the client gave no 1-person price, so 1 person shows
+      // "Contact for price". The form gave no 20-person guide price, so the
+      // guide table stops at 19. Guide 10 people was typed "660000" in the
+      // form; entered as 64000 because every other guide price is exactly
+      // 24000 above the no-guide price — confirm with the client.
+      noGuide: {
+        2: 22000, 3: 24000, 4: 28000, 5: 30000, 6: 32000,
+        7: 34000, 8: 36000, 9: 38000, 10: 40000,
+        11: 44000, 12: 46000, 13: 48000, 14: 50000, 15: 52000,
+        16: 54000, 17: 56000, 18: 58000, 19: 60000, 20: 62000,
+        extraPerPerson: 2000, maxPeople: 20,
+      },
+      guide: {
+        2: 44000, 3: 50000, 4: 52000, 5: 54000, 6: 56000,
+        7: 58000, 8: 60000, 9: 62000, 10: 64000,
+        11: 68000, 12: 70000, 13: 72000, 14: 74000, 15: 76000,
+        16: 78000, 17: 80000, 18: 82000, 19: 84000,
+        extraPerPerson: 2000, maxPeople: 19,
+      },
+    },
+  },
 ];
 
 

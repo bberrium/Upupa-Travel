@@ -10,14 +10,15 @@
     "astro": "astro",
     "images:fetch": "node scripts/fetch-images.mjs",
     "images:optimize": "node scripts/optimize-images.mjs",
+    "images:crop": "node scripts/smart-crop.mjs",
     "check": "astro check",
     "dev:mobile": "astro dev --host"
   },
   "dependencies": {
-    "astro": "^7.3.3"
+    "astro": "^7.4.12"
   },
   "devDependencies": {
-    "@astrojs/sitemap": "^3.7.4",
+    "@astrojs/sitemap": "^3.7.5",
     "@astrojs/tailwind": "^6.0.2",
     "autoprefixer": "^10.5.4",
     "postcss": "^8.5.26",

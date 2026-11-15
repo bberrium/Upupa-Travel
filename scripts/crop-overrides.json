@@ -1,0 +1,12 @@
+// Add a line to crop-overrides.json and run the command again. Each value is one of:
+// "top", "bottom", "centre", "left" or "right"
+// { "focusY": 0.7 }, where 0 is the top edge and 1 is the bottom
+// "skip", to leave that photo uncropped
+
+
+{
+  "_help": "Add one line per photo whose automatic crop you don't like. Keys start with images/... Values: \"top\" | \"bottom\" | \"centre\" | \"left\" | \"right\" | \"skip\" | { \"focusX\": 0.5, \"focusY\": 0.7 }",
+  "images/tours/etchmiadzin-zvartnots/etchmiadzin3.webp": "top",
+  "images/tours/etchmiadzin-zvartnots/etchmiadzin8.webp": "top",
+  "images/tours/etchmiadzin-zvartnots/etchmiadzin10.webp": { "focusY": 0.7 }
+}
