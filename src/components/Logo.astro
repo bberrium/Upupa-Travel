@@ -1,12 +1,17 @@
 ---
 /**
- * UPUPA Travel – animated neon crest made from the client's actual artwork.
- * Place this file at src/components/Logo.astro.
- * Copy the six feather/eye layers into public/images/brand/upupa-neon/.
- * The existing Header.astro and Footer.astro need no changes.
+ * UPUPA Travel – neon hoopoe logo with a smooth click animation.
+ *
+ * Files this needs:
+ *   src/components/Logo.astro                         (this file)
+ *   src/lib/logo-warp.js                              (the animation maths)
+ *   public/images/brand/upupa-flame/logo-transparent.webp
+ *
+ * The animation bends the ONE complete logo image (feathers fan out and a soft
+ * ripple runs up them), so nothing is ever cut apart or crossfaded. The old
+ * feather-N.webp / head.webp files are no longer used and can be deleted.
  */
 import { SITE } from "../lib/site.js";
-import { image } from "../lib/images.js";
 
 interface Props {
   href: string;
@@ -15,157 +20,161 @@ interface Props {
 }
 
 const { href, size = "h-12 md:h-14", variant = "header" } = Astro.props;
-const badge = image("images/brand/logo-badge.webp");
 const onDark = variant === "footer";
-const useBadge = SITE.logo.style === "badge" && variant === "header";
-// The project is deployed at /Upupa-Travel/ on GitHub Pages, not at domain root.
 const base = import.meta.env.BASE_URL.replace(/\/?$/, "/");
-const layers = [1, 2, 3, 4, 5, 6].map((n) => `${base}images/brand/upupa-neon/layer-${n}.webp`);
+const logoSrc = `${base}images/brand/upupa-flame/logo-transparent.webp`;
 ---
 
 <a
   href={href}
-  class="upupa-exact-link group flex shrink-0 items-center gap-2 sm:gap-3"
+  class="upupa-flame-link group flex shrink-0 items-center gap-2 sm:gap-3"
   aria-label={`${SITE.name} — go to homepage`}
-  data-upupa-exact={!useBadge ? "true" : undefined}
+  data-upupa-flame="true"
 >
-  {useBadge ? (
-    <picture>
-      {badge.webp && <source srcset={badge.webp} type="image/webp" />}
-      <img
-        src={badge.src}
-        alt={SITE.name}
-        width="689"
-        height="600"
-        class={`w-auto object-contain transition-all duration-300 ${size}`}
-      />
-    </picture>
-  ) : (
-    <>
-      <span class={`upupa-exact-mark ${size}`} aria-hidden="true">
-        <svg
-          class="upupa-exact-svg"
-          viewBox="445 130 565 623"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true"
-          focusable="false"
-        >
-          {layers.slice(0, 5).map((src, i) => (
-            <g class={`upupa-exact-feather ef-${i + 1}`}>
-              <image
-                href={src}
-                x="445"
-                y="130"
-                width="565"
-                height="623"
-                preserveAspectRatio="none"
-              />
-            </g>
-          ))}
-          <g class="upupa-exact-eye">
-            <image href={layers[5]} x="445" y="130" width="565" height="623" preserveAspectRatio="none" />
-          </g>
-        </svg>
-      </span>
-      <span class="flex flex-col leading-none">
-        <span
-          class={`font-display font-bold tracking-[0.16em] transition-all duration-300 ${
-            onDark ? "text-white" : "text-primary"
-          } text-[17px] sm:text-[20px] md:text-[23px]`}
-        >
-          {SITE.logo.wordmark}
-        </span>
-        <span class="mt-1 flex items-baseline gap-1 text-[10px] font-semibold tracking-[0.22em] sm:text-[11px]">
-          <span class={onDark ? "text-white/70" : "text-secondary"}>{SITE.logo.taglineLead}</span>
-          <span class={onDark ? "text-white" : "text-tertiary"}>{SITE.logo.taglineName}</span>
-        </span>
-      </span>
-    </>
-  )}
+  <span class={`upupa-flame-mark ${size}`} aria-hidden="true">
+    <img
+      class="upupa-flame-still"
+      src={logoSrc}
+      alt=""
+      width="720"
+      height="770"
+      decoding="async"
+      draggable="false"
+    />
+    <!-- Drawn on click only. Slightly larger than the logo so the feathers have room to fan out. -->
+    <canvas class="upupa-flame-canvas"></canvas>
+  </span>
+  <span class="flex flex-col leading-none">
+    <span
+      class={`font-display font-bold tracking-[0.16em] transition-colors duration-300 ${
+        onDark ? "text-white" : "text-primary"
+      } text-[17px] sm:text-[20px] md:text-[23px]`}
+    >
+      {SITE.logo.wordmark}
+    </span>
+    <span class="mt-1 flex items-baseline gap-1 text-[10px] font-semibold tracking-[0.22em] sm:text-[11px]">
+      <span class={onDark ? "text-white/70" : "text-secondary"}>{SITE.logo.taglineLead}</span>
+      <span class={onDark ? "text-white" : "text-tertiary"}>{SITE.logo.taglineName}</span>
+    </span>
+  </span>
 </a>
 
 <style is:global>
-  .upupa-exact-link { border-radius: 8px; text-decoration: none; }
-  .upupa-exact-link:focus-visible { outline: 2px solid #fa4dba; outline-offset: 5px; }
-  /* Transparent background so the exact neon crest sits directly on the site header. */
-  .upupa-exact-mark {
+  .upupa-flame-link { text-decoration: none; border-radius: 8px; --upupa-hover-scale: 1.15; /* how much the logo grows on hover */ }
+  .upupa-flame-link:focus-visible { outline: 2px solid #ee2ea8; outline-offset: 5px; }
+  .upupa-flame-mark {
     position: relative;
-    display: inline-grid;
-    place-items: center;
-    flex-shrink: 0;
+    display: inline-block;
     aspect-ratio: 1 / 1;
+    flex-shrink: 0;
     padding: 0;
     overflow: visible;
-    border-radius: 0;
-    background: transparent;
+    background: transparent !important;
+    border: 0;
     box-shadow: none;
-    transition: filter .3s ease, transform .3s ease;
+    line-height: 0;
+    transition: filter .4s ease, transform .4s cubic-bezier(.22, 1, .36, 1);
   }
-  .upupa-exact-svg { display: block; width: 100%; height: 100%; overflow: visible; }
-  .upupa-exact-feather {
-    transform-box: view-box;
-    transition: transform .4s cubic-bezier(.2, .8, .2, 1);
+  .upupa-flame-still {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    user-select: none;
   }
-  /* Separate pivot for each real feather, not five artificial vector substitutes. */
-  .upupa-exact-feather.ef-1 { transform-origin: 51% 76%; --hover: -4deg; --in: 5deg; --out: -15deg; --delay: 0ms; }
-  .upupa-exact-feather.ef-2 { transform-origin: 61% 76%; --hover: -3deg; --in: 3deg; --out: -10deg; --delay: 55ms; }
-  .upupa-exact-feather.ef-3 { transform-origin: 74% 75%; --hover: -1deg; --in: 2deg; --out: -5deg; --delay: 110ms; }
-  .upupa-exact-feather.ef-4 { transform-origin: 81% 88%; --hover: 2deg; --in: -3deg; --out: 7deg; --delay: 165ms; }
-  .upupa-exact-feather.ef-5 { transform-origin: 81% 94%; --hover: 4deg; --in: -4deg; --out: 13deg; --delay: 220ms; }
-  .upupa-exact-eye { transform-box: view-box; transform-origin: 69% 88%; }
-  .upupa-exact-link:not(.is-blooming):hover .upupa-exact-feather,
-  .upupa-exact-link:not(.is-blooming):focus-visible .upupa-exact-feather { transform: rotate(var(--hover)); }
-  .upupa-exact-link:hover .upupa-exact-mark,
-  .upupa-exact-link:focus-visible .upupa-exact-mark {
-    filter: drop-shadow(0 0 10px rgba(246, 55, 165, .18)) drop-shadow(0 0 18px rgba(255, 157, 77, .12));
+  /* 12% bigger than the logo on every side: this is the room the feathers fan into.
+     Must match `bleed` in logo-warp.js (0.12). */
+  .upupa-flame-canvas {
+    position: absolute;
+    inset: -12%;
+    width: 124%;
+    height: 124%;
+    pointer-events: none;
+    visibility: hidden;
   }
-  .upupa-exact-link.is-blooming .upupa-exact-feather {
-    animation: upupa-exact-bloom .68s cubic-bezier(.19, .84, .22, 1) both;
-    animation-delay: var(--delay);
+  /* Grows on hover. It stays sharp because the still image is much bigger than
+     it is shown, and the click animation draws its canvas at the grown size
+     (see pixelScale in the script), so nothing is stretched. */
+  .upupa-flame-link:hover .upupa-flame-mark,
+  .upupa-flame-link:focus-visible .upupa-flame-mark {
+    transform: scale(var(--upupa-hover-scale));
+    filter: drop-shadow(0 0 9px rgba(237, 52, 164, .25));
   }
-  .upupa-exact-link.is-blooming .upupa-exact-eye { animation: upupa-exact-eye-pulse .76s ease-out both; }
-  .upupa-exact-link.is-blooming .upupa-exact-mark {
-    filter: drop-shadow(0 0 14px rgba(251, 51, 160, .26)) drop-shadow(0 0 26px rgba(255, 155, 77, .16));
-  }
-  @keyframes upupa-exact-bloom {
-    0% { transform: rotate(0deg) scale(1); }
-    19% { transform: rotate(var(--in)) scale(.975); }
-    62% { transform: rotate(var(--out)) scale(1.045); }
-    100% { transform: rotate(0deg) scale(1); }
-  }
-  @keyframes upupa-exact-eye-pulse {
-    0%, 100% { transform: scale(1); filter: brightness(1); }
-    48% { transform: scale(1.22); filter: brightness(1.55) drop-shadow(0 0 4px #ff9b4d); }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .upupa-exact-mark, .upupa-exact-feather, .upupa-exact-eye { transition: none !important; animation: none !important; }
+  /* While playing, the canvas shows the exact same logo, bent. The still image
+     is hidden under it, so the swap at the start and end is invisible. */
+  .upupa-flame-link.is-playing .upupa-flame-still { visibility: hidden; }
+  .upupa-flame-link.is-playing .upupa-flame-canvas { visibility: visible; }
+  .upupa-flame-link.is-playing .upupa-flame-mark {
+    transform: scale(var(--upupa-hover-scale)); /* same size as hover: no jump on click */
+    filter: drop-shadow(0 0 10px rgba(251, 71, 153, .3));
   }
 </style>
 
 <script>
-  // Works for the header and footer. Astro page swaps also rebind correctly.
-  function wireExactLogo() {
-    document.querySelectorAll<HTMLAnchorElement>('[data-upupa-exact="true"]').forEach((link) => {
+  import { createLogoWarp } from "../lib/logo-warp.js";
+
+  const DURATION = 1150; // ms for the whole unfold-and-settle
+
+  function bindUpupaFlame() {
+    document.querySelectorAll<HTMLAnchorElement>('[data-upupa-flame="true"]').forEach((link) => {
       if (link.dataset.logoBound) return;
-      link.dataset.logoBound = 'true';
-      link.addEventListener('click', (event: MouseEvent) => {
-        if (event.defaultPrevented || event.button !== 0 ||
-            event.metaKey || event.ctrlKey || event.shiftKey || event.altKey ||
-            window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-        if (link.classList.contains('is-blooming')) { event.preventDefault(); return; }
+      link.dataset.logoBound = "true";
+
+      const img = link.querySelector<HTMLImageElement>(".upupa-flame-still");
+      const canvas = link.querySelector<HTMLCanvasElement>(".upupa-flame-canvas");
+      let warp: ReturnType<typeof createLogoWarp> | null = null;
+
+      link.addEventListener("click", async (event: MouseEvent) => {
+        if (
+          event.defaultPrevented || event.button !== 0 ||
+          event.metaKey || event.ctrlKey || event.shiftKey || event.altKey ||
+          window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+          !img || !canvas
+        ) return;
+
         event.preventDefault();
-        const destination = new URL(link.href, location.href);
-        const here = new URL(location.href);
-        const samePage = destination.pathname === here.pathname && destination.search === here.search;
-        link.classList.add('is-blooming');
-        window.setTimeout(() => {
-          link.classList.remove('is-blooming');
-          if (samePage) window.scrollTo({ top: 0, behavior: 'smooth' });
-          else window.location.assign(destination.href);
-        }, 940);
+        if (link.classList.contains("is-playing")) return;
+
+        const target = new URL(link.href, window.location.href);
+        const current = new URL(window.location.href);
+        const samePage = target.pathname === current.pathname && target.search === current.search;
+        const go = () => {
+          if (samePage) window.scrollTo({ top: 0, behavior: "smooth" });
+          else window.location.assign(target.href);
+        };
+
+        try {
+          if (!img.complete) await img.decode();
+          // Show the canvas at the logo's current on-screen size.
+          canvas.style.visibility = "visible"; // so it can be measured
+          // Draw at the hover size so the bitmap is never stretched (stays sharp).
+          const pixelScale = parseFloat(getComputedStyle(link).getPropertyValue("--upupa-hover-scale")) || 1.15;
+          if (!warp) warp = createLogoWarp(canvas, img, { bleed: 0.12, pixelScale });
+          else warp.resize();
+          canvas.style.visibility = "";
+          warp.draw(0); // identical to the still logo, so the swap is invisible
+        } catch {
+          go(); // if anything goes wrong, just navigate
+          return;
+        }
+
+        link.classList.add("is-playing");
+        const start = performance.now();
+        const tick = (now: number) => {
+          const q = Math.min(1, (now - start) / DURATION);
+          warp!.draw(q);
+          if (q < 1) {
+            requestAnimationFrame(tick);
+          } else {
+            link.classList.remove("is-playing");
+            go();
+          }
+        };
+        requestAnimationFrame(tick);
       });
     });
   }
-  wireExactLogo();
-  document.addEventListener('astro:page-load', wireExactLogo);
+
+  bindUpupaFlame();
+  document.addEventListener("astro:page-load", bindUpupaFlame);
 </script>
