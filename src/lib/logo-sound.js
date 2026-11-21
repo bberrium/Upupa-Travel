@@ -9,6 +9,10 @@
  * To use only the synthesized sound, set SOUND_FILE = null.
  */
 const SOUND_FILE = "sounds/upupa-click.mp3";
+// Browsers (and GitHub Pages) keep audio files cached for a long time. If you
+// ever replace public/sounds/upupa-click.mp3 with a different recording, add 1
+// to this number so every visitor downloads the new one.
+const SOUND_VERSION = 2;
 const VOLUME = 0.55; // 0..1 master volume. The sound is already quiet.
 
 let ctx = null;
@@ -96,7 +100,7 @@ function getAudio() {
   if (!SOUND_FILE || fileBroken || typeof Audio === "undefined") return null;
   if (!audio) {
     const base = import.meta.env.BASE_URL.replace(/\/?$/, "/");
-    audio = new Audio(base + SOUND_FILE);
+    audio = new Audio(`${base}${SOUND_FILE}?v=${SOUND_VERSION}`);
     audio.preload = "auto"; // it is only ~10 KB
     audio.volume = VOLUME;
     audio.addEventListener("error", () => { fileBroken = true; });
