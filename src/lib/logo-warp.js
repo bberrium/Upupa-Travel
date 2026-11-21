@@ -38,6 +38,7 @@ const smooth = (a, b, x) => {
 const SS = 2;
 
 export function createLogoWarp(canvas, img, opts = {}) {
+  const cycles = opts.cycles ?? 1.15; // how many ripples travel up the feathers during the animation
   const bleed = opts.bleed ?? 0.12; // extra room around the logo for the fan-out
   const pixelScale = opts.pixelScale ?? 1; // CSS will enlarge the logo by this much; draw that many more pixels
   const ctx = canvas.getContext("2d", { willReadFrequently: true });
@@ -143,7 +144,7 @@ export function createLogoWarp(canvas, img, opts = {}) {
               const wr = smooth(0.1, 0.3, rn);
               const w = s * wa * wr;
               if (w > 0.0005) {
-                const wave = Math.sin(TAU * (rn / 0.55 - q * 1.15));
+                const wave = Math.sin(TAU * (rn / 0.55 - q * cycles));
                 const shift = FAN * w * d + RIPPLE * w * wave; // angular displacement
                 const rs = r / (1 + LIFT * w);
                 const as = a - shift;

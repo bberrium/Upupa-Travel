@@ -114,7 +114,8 @@ const logoSrc = `${base}images/brand/upupa-flame/logo-transparent.webp`;
   import { createLogoWarp } from "../lib/logo-warp.js";
   import { playUpupaSound } from "../lib/logo-sound.js";
 
-  const DURATION = 1150; // ms for the whole unfold-and-settle
+  const DURATION = 4000; // ms for the whole unfold-and-settle (the sound is 4 s too)
+  const RIPPLES = 3; // ripples that run up the feathers during that time
 
   function bindUpupaFlame() {
     document.querySelectorAll<HTMLAnchorElement>('[data-upupa-flame="true"]').forEach((link) => {
@@ -151,7 +152,7 @@ const logoSrc = `${base}images/brand/upupa-flame/logo-transparent.webp`;
           canvas.style.visibility = "visible"; // so it can be measured
           // Draw at the hover size so the bitmap is never stretched (stays sharp).
           const pixelScale = parseFloat(getComputedStyle(link).getPropertyValue("--upupa-hover-scale")) || 1.15;
-          if (!warp) warp = createLogoWarp(canvas, img, { bleed: 0.12, pixelScale });
+          if (!warp) warp = createLogoWarp(canvas, img, { bleed: 0.12, pixelScale, cycles: RIPPLES });
           else warp.resize();
           canvas.style.visibility = "";
           warp.draw(0); // identical to the still logo, so the swap is invisible
